@@ -20,4 +20,15 @@ class WebsiteCrawler(object):
         '''
         Constructor
         '''
-        
+        self.mech = mechanize.Browser()
+    def get_links(self,url):
+        self.mech.open(url)
+        response = self.mech.response()
+        #print response.info()
+        #print response.read()
+        links = self.mech.links()
+        print links.next()
+
+
+crawler = WebsiteCrawler()
+print crawler.get_links("http://www.nytimes.com/")
