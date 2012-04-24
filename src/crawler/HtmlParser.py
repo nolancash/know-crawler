@@ -5,11 +5,12 @@ Created on Apr 23, 2012
 '''
 
 import sys
-import os
+import os, re
 import urlparse
+from urllib2 import HTTPError
 import mechanize
 
-class MyClass(object):
+class HtmlParser(object):
     '''
     classdocs
     '''
