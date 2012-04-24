@@ -27,9 +27,12 @@ class WebsiteCrawler(object):
         #print response.info()
         #print response.read()
         links = self.mech.links(url_regex=url)
+        articles = []
         for link in self.mech.links(url_regex=url):
-            link.url
-            print link.url
+#            print link.url
+            articles.append(link.url)
+        for url in articles:
+            print url
 
             
         
@@ -38,4 +41,4 @@ class WebsiteCrawler(object):
 
 
 crawler = WebsiteCrawler()
-print crawler.get_links("http://www.nytimes.com/")
+print crawler.get_links("http://seattletimes.nwsource.com/")
