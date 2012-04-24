@@ -26,8 +26,15 @@ class WebsiteCrawler(object):
         response = self.mech.response()
         #print response.info()
         #print response.read()
-        links = self.mech.links()
-        print links.next()
+        links = self.mech.links(url_regex="nytimes.com")
+        for link in self.mech.links(url_regex="nytimes.com"):
+            link.url
+            print link.url
+
+            
+        
+        
+     
 
 
 crawler = WebsiteCrawler()
