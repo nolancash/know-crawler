@@ -24,8 +24,8 @@ class WebsiteCrawler(object):
     def get_links(self,baseurl):
         self.mech.open(baseurl)
         response = self.mech.response()
-        #print response.info()
-        #print response.read()
+        print response.info()
+        print response.read()
         links = self.mech.links(url_regex=baseurl)
         articles = []
         for link in self.mech.links(url_regex=baseurl):
@@ -33,15 +33,19 @@ class WebsiteCrawler(object):
             nurl = self.__normalize_url(link.url)
             if len(nurl) - nurl.rfind("/") > 20 and len(nurl) > len(baseurl):
                 articles.append(nurl)
+        for article in articles:
+            print ""
         
         for name in set(articles):
             print name
             
     def __normalize_url(self, url):
-            if url.find("?") != -1:
-                return url[0:url.find("?")]
-            else:
-                return url
+        res = ""
+        if url.find("?") != -1:
+            res = url[0:url.find("?")]
+        if res.find("#") != -1:
+            res = res[0:res.find("#")]
+        return res
 
         
         
