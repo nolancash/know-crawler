@@ -29,8 +29,8 @@ class ArticleParser(HTMLParser):
     def get_HTML(self, url):
         self.mech.open(url)
         response = self.mech.response()
-        html = response.read()
-        return html
+        self.html = response.read()
+        return self.html
     
     def handle_starttag(self, tag, attrs):
         if self.ignoreline < self.getpos()[0]:
@@ -47,8 +47,9 @@ class ArticleParser(HTMLParser):
 
                 
     def delete_line(self, data, pos):
-        print "deleted line" + pos[0]
+        print "deleted line" + str(pos[0])
         res = data.split("\n")
+        print "res lines" + str(len(res))
         res.pop(pos[0]-1)
         self.ignoreline = pos[0]
         return "\n".join(res)
@@ -57,7 +58,7 @@ class ArticleParser(HTMLParser):
         temphtml = self.html
         pos = self.getpos()
         self.reset()
-        self.html = parser.delete_line(temphtml, pos)
+        self.html = self.delete_line(temphtml, pos)
         
 parser = ArticleParser()
 
@@ -68,4 +69,5 @@ while (parser.done == 0):
         print "running"
         parser.feed(html)
     except:
+        print "Unexpected error:", sys.exc_info()
         parser.skip_broken_line()
