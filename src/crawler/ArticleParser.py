@@ -16,6 +16,8 @@ class ArticleParser(HTMLParser):
     classdocs
     '''
     done = 0
+    ignoreline = -1
+    html = ""
 
     def __init__(self):
         '''
@@ -27,24 +29,35 @@ class ArticleParser(HTMLParser):
     def get_HTML(self, url):
         self.mech.open(url)
         response = self.mech.response()
-        return response.read()
+        html = response.read()
+        return html
     
-    def handle_starttag(selfself, tag, attrs):
-        if tag == "meta":
-            print "Encountered a start tag:", tag
-            for attr in attrs:
-                print attr
+    def handle_starttag(self, tag, attrs):
+        if self.ignoreline < self.getpos()[0]:
+            if tag == "meta" or tag == "p":
+                print "Encountered a start tag:", tag
+                for attr in attrs:
+                    print attr
     def handle_endtag(self, tag):
         if tag == "html":
             self.done = 1
+            print "done"
 #    def handle_data(self, data):
 #        print "Encountered some data  :", data
 
                 
-    def delete_line(self, input, pos):
-        res = input.split("\n")
+    def delete_line(self, data, pos):
+        print "deleted line" + pos[0]
+        res = data.split("\n")
         res.pop(pos[0]-1)
+        self.ignoreline = pos[0]
         return "\n".join(res)
+    
+    def skip_broken_line(self):
+        temphtml = self.html
+        pos = self.getpos()
+        self.reset()
+        self.html = parser.delete_line(temphtml, pos)
         
 parser = ArticleParser()
 
@@ -52,9 +65,7 @@ parser = ArticleParser()
 html = parser.get_HTML("http://www.nytimes.com/2012/04/26/us/considering-arizona-immigration-law-justices-are-again-in-political-storm.html")
 while (parser.done == 0):
     try:
+        print "running"
         parser.feed(html)
     except:
-        print "oh shit"
-        html = parser.delete_line(html, parser.getpos())
-        parser.reset()
-        pass
+        parser.skip_broken_line()
