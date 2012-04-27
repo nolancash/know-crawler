@@ -60,6 +60,8 @@ class WebsiteCrawler(object):
             time.sleep(1)
             print "finished"
             parser.feed(html)
+            del parser
+            del html
 
 crawler = WebsiteCrawler()
 #print crawler.get_links("http://www.aljazeera.com/")
