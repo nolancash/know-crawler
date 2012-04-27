@@ -26,6 +26,24 @@ class ArticleParser(HTMLParser):
         HTMLParser.__init__(self)
         self.mech = mechanize.Browser()
         
+    '''
+    removes script tags from html so htmlparser doesn't break
+    '''
+    @staticmethod
+    def pre_parse(html, tag):
+        counter = 1
+        start = html.find("<" + tag)
+        while (start != -1 and counter < 30):
+            print counter
+            counter += 1
+            start = html.find("<" + tag)
+            if start != -1:
+                end = html.find("<\\" + tag + ">")
+                firsthalf = html[:start]
+                secondhalf = html[end + len("<\\" + tag + ">"):]
+                html = firsthalf + secondhalf
+        return html
+
     def get_HTML(self, url):
         self.mech.open(url)
         response = self.mech.response()
@@ -67,7 +85,9 @@ html = parser.get_HTML("http://www.nytimes.com/2012/04/26/us/considering-arizona
 while (parser.done == 0):
     try:
         print "running"
+        html = ArticleParser.pre_parse(html, "script")
+        print "finished"
         parser.feed(html)
     except:
         print "Unexpected error:", sys.exc_info()
-        parser.skip_broken_line()
+#        parser.skip_broken_line()
