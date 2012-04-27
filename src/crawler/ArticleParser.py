@@ -19,7 +19,7 @@ class ArticleParser(HTMLParser):
     ignoreline = -1
     gottext = 0
     html = ""
-    firstonly = [0,0,0,0,0,0]
+    firstonly = [0,0,0,0,0,0,0]
 
     def __init__(self):
         '''
@@ -76,20 +76,19 @@ class ArticleParser(HTMLParser):
                 self.get_tag_by_name("author", attrs,3)
                 self.get_tag_by_name("date", attrs,4)
                 self.get_tag_by_name("time", attrs,5)  
+                self.get_tag_by_name("type", attrs,5)
             if tag == "p":
                 self.gottext = 1
    
     def handle_data(self,data):
-        if self.gottext:
-            print data
+#        if self.gottext:
+#            print data
         self.gottext = 0
+
     def handle_endtag(self, tag):
         if tag == "html":
             self.done = 1
             print "done"
-#    def handle_data(self, data):
-#        print "Encountered some data  :", data
-
                 
     def delete_line(self, data, pos):
         print "deleted line" + str(pos[0])
@@ -105,17 +104,17 @@ class ArticleParser(HTMLParser):
         self.reset()
         self.html = self.delete_line(temphtml, pos)
         
-parser = ArticleParser()
+#parser = ArticleParser()
 
 #parser.get_HTML("http://www.nytimes.com/2012/04/26/us/considering-arizona-immigration-law-justices-are-again-in-political-storm.html")
-html = parser.get_HTML("http://www.nytimes.com/2012/04/26/us/considering-arizona-immigration-law-justices-are-again-in-political-storm.html")
-#html = parser.get_HTML("http://www.aljazeera.com/news/asia-pacific/2012/04/201242733733409278.html")
-#while (parser.done == 0):
-#    try:
-print "running"
-html = ArticleParser.pre_parse(html, "script")
-print "finished"
-parser.feed(html)
+#html = parser.get_HTML("http://www.nytimes.com/2012/04/26/us/considering-arizona-immigration-law-justices-are-again-in-political-storm.html")
+##html = parser.get_HTML("http://www.aljazeera.com/news/asia-pacific/2012/04/201242733733409278.html")
+##while (parser.done == 0):
+##    try:
+#print "running"
+#html = ArticleParser.pre_parse(html, "script")
+#print "finished"
+#parser.feed(html)
 #    except:
 #        print "Unexpected error:", sys.exc_info()
 #        parser.skip_broken_line()
