@@ -7,6 +7,7 @@ import sys
 import os, re
 import urlparse
 import time
+import MySQLdb
 from ArticleParser import ArticleParser
 from urllib2 import HTTPError
 import mechanize
@@ -16,7 +17,6 @@ class WebsiteCrawler(object):
     '''
     classdocs
     '''
-
 
     def __init__(self):
         '''
