@@ -28,7 +28,7 @@ class ArticleParser(HTMLParser):
         self.mech = mechanize.Browser()
         
     '''
-    removes script tags from __html so htmlparser doesn't break
+    removes script tags from __html so ArticleParser doesn't break
     '''
     @staticmethod
     def pre_parse(html, tag):
@@ -106,10 +106,10 @@ class ArticleParser(HTMLParser):
 #parser = ArticleParser()
 
 #parser.get_HTML("http://www.nytimes.com/2012/04/26/us/considering-arizona-immigration-law-justices-are-again-in-political-storm.__html")
-#__html = parser.get_HTML("http://www.nytimes.com/2012/04/26/us/considering-arizona-immigration-law-justices-are-again-in-political-storm.__html")
+#__html = parser.get_HTML("http://www.nytimes.com/2012/04/26/us/considering-arizona-immigration-law-justices-are-again-in-political-storm.html")
 ##__html = parser.get_HTML("http://www.aljazeera.com/news/asia-pacific/2012/04/201242733733409278.__html")
-##while (parser.__done == 0):
-##    try:
+#while (parser.__done == 0):
+#    try:
 #print "running"
 #__html = ArticleParser.pre_parse(__html, "script")
 #print "finished"
