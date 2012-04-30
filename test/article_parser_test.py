@@ -28,7 +28,7 @@ class Test(unittest.TestCase):
 </html>'''
         self.assertEqual(html, ArticleParser.ArticleParser.pre_parse(html, "script"))
         
-    def test_pre_parse_with_tag(self):
+    def test_pre_parse_one_tag(self):
         html = '''<html>
 <body>
 
@@ -45,6 +45,25 @@ class Test(unittest.TestCase):
 
 <p>My first paragraph.</p>
 
+</body>
+</html>'''
+        self.assertEqual(expected, ArticleParser.ArticleParser.pre_parse(html, "h1"))
+        
+    def test_pre_parse_multiple_tags(self):
+        html = '''<html>
+<body>
+<h1>My First Heading</h1>
+<p>My first paragraph.</p>
+<h2>This is a dummy tag</h2>
+<h1>To be removed</h1><p>Keep this</p><h1>Delete this</h1>
+</body>
+</html>'''
+        expected = '''<html>
+<body>
+
+<p>My first paragraph.</p>
+<h2>This is a dummy tag</h2>
+<p>Keep this</p>
 </body>
 </html>'''
         self.assertEqual(expected, ArticleParser.ArticleParser.pre_parse(html, "h1"))

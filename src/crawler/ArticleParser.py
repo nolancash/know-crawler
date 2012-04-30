@@ -32,20 +32,15 @@ class ArticleParser(HTMLParser):
     '''
     @staticmethod
     def pre_parse(html, tag):
-        counter = 1
         start = html.find("<" + tag)
-        while (start != -1 and counter < 100):
-#            print counter
-            counter += 1
+        while start != -1:
+            end_tag = "</" + tag + ">"
+            end = html.find(end_tag)
+            first_half = html[:start]
+            second_half = html[end + len(end_tag):]
+#           print __html[start:end]
+            html = first_half + second_half
             start = html.find("<" + tag)
-            if start != -1:
-                end = html.find("</" + tag + ">")
-                firsthalf = html[:start]
-                secondhalf = html[end + len("<\\" + tag + ">"):]
-#                print __html[start:end]
-                html = firsthalf + secondhalf
-                if end ==  -1:
-                    start = -1
         return html
 
     def get_HTML(self, url):
