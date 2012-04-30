@@ -21,10 +21,10 @@ class ArticleParser(HTMLParser):
         '''
         HTMLParser.__init__(self)
         self.__done = 0
-        self.__ignoreline = -1
-        self.__gottext = 0
+        self.__ignore_line = -1
+        self.__got_text = 0
         self.__html = ""
-        self.__firstonly = [0,0,0,0,0,0,0]
+        self.__first_only = [0,0,0,0,0,0,0]
         self.mech = mechanize.Browser()
         
     '''
@@ -51,17 +51,17 @@ class ArticleParser(HTMLParser):
 
     def get_tag_by_name(self, tag, attrs, isfound):
         found_description = 0
-        if (self.__firstonly[isfound] == 0):
+        if (self.__first_only[isfound] == 0):
             for attr in attrs:
                 if attr[1].find(tag) != -1:
                     found_description = 1
                     print attr[1]
                 if attr[0].find("content") != -1 and found_description == 1:
                     print attr[1]
-                    self.__firstonly[isfound] = 1
+                    self.__first_only[isfound] = 1
     
     def handle_starttag(self, tag, attrs):
-        if self.__ignoreline < self.getpos()[0]:
+        if self.__ignore_line < self.getpos()[0]:
             if tag == "meta":
 #                print "Encountered a start tag:", tag
                 self.get_tag_by_name("title", attrs, 0)
@@ -72,12 +72,12 @@ class ArticleParser(HTMLParser):
                 self.get_tag_by_name("time", attrs,5)  
                 self.get_tag_by_name("type", attrs,5)
             if tag == "p":
-                self.__gottext = 1
+                self.__got_text = 1
    
     def handle_data(self,data):
-#        if self.__gottext:
+#        if self.__got_text:
 #            print data
-        self.__gottext = 0
+        self.__got_text = 0
 
     def handle_endtag(self, tag):
         if tag == "__html":
@@ -89,14 +89,14 @@ class ArticleParser(HTMLParser):
         res = data.split("\n")
         print "res lines" + str(len(res))
         res.pop(pos[0]-1)
-        self.__ignoreline = pos[0]
+        self.__ignore_line = pos[0]
         return "\n".join(res)
     
     def skip_broken_line(self):
-        temphtml = self.__html
+        temp_html = self.__html
         pos = self.getpos()
         self.reset()
-        self.__html = self.delete_line(temphtml, pos)
+        self.__html = self.delete_line(temp_html, pos)
         
 #parser = ArticleParser()
 
