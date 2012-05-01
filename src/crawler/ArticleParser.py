@@ -26,6 +26,7 @@ class ArticleParser(HTMLParser):
         self.__html = ""
         self.__first_only = [0,0,0,0,0,0,0]
         self.mech = mechanize.Browser()
+        self.results = ["","","","","","",""]
         
     '''
     removes script tags from __html so ArticleParser doesn't break
@@ -52,16 +53,17 @@ class ArticleParser(HTMLParser):
         self.__html = response.read()
         return self.__html
 
-    def get_tag_by_name(self, tag, attrs, isfound):
+    def get_tag_by_name(self, tag, attrs, result_index):
         found_description = 0
-        if (self.__first_only[isfound] == 0):
+        if (self.__first_only[result_index] == 0):
             for attr in attrs:
                 if attr[1].find(tag) != -1:
                     found_description = 1
                     print attr[1]
                 if attr[0].find("content") != -1 and found_description == 1:
+                    self.results[result_index] = attr[1]
                     print attr[1]
-                    self.__first_only[isfound] = 1
+                    self.__first_only[result_index] = 1
     
     def handle_starttag(self, tag, attrs):
         if self.__ignore_line < self.getpos()[0]:
