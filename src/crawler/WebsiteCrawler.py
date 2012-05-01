@@ -23,6 +23,7 @@ class WebsiteCrawler(object):
         Constructor
         '''
         self.mech = mechanize.Browser()
+        self.__article_results = []
         
     def get_links(self,base_url):
         try:
@@ -68,12 +69,15 @@ class WebsiteCrawler(object):
                 print "finished"
                 try:
                     parser.feed(html)
+                    self.__article_results.append(parser.results)
                 except UnicodeDecodeError:
                     print "Bad character."
                 del parser
                 del html
             except HTTPError:
                 pass
+        for a in self.__article_results:
+            print a
             
 
 crawler = WebsiteCrawler()
