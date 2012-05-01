@@ -87,19 +87,6 @@ class ArticleParser(HTMLParser):
             self.__done = 1
             print "done"
                 
-    def delete_line(self, data, pos):
-        print "deleted line" + str(pos[0])
-        res = data.split("\n")
-        print "res lines" + str(len(res))
-        res.pop(pos[0]-1)
-        self.__ignore_line = pos[0]
-        return "\n".join(res)
-    
-    def skip_broken_line(self):
-        temp_html = self.__html
-        pos = self.getpos()
-        self.reset()
-        self.__html = self.delete_line(temp_html, pos)
         
 #parser = ArticleParser()
 
