@@ -35,12 +35,13 @@ class ArticleParser(HTMLParser):
         start = html.find("<" + tag)
         while start != -1:
             end_tag = "</" + tag + ">"
-            end = html.find(end_tag)
-            first_half = html[:start]
-            second_half = html[end + len(end_tag):]
-#           print __html[start:end]
-            html = first_half + second_half
-            start = html.find("<" + tag)
+            end = html.find(end_tag, start)
+            if start < end:
+                first_half = html[:start]
+                second_half = html[end + len(end_tag):]
+    #           print __html[start:end]
+                html = first_half + second_half
+                start = html.find("<" + tag)
         return html
 
     def get_html(self, url):
