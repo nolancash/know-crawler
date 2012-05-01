@@ -53,19 +53,26 @@ class WebsiteCrawler(object):
             print "running"
             print article
             parser = ArticleParser()
-            html = parser.get_HTML(article)
+            html = parser.get_html(article)
             if len(html) > 10:
                 print "full"
             html = ArticleParser.pre_parse(html, "script")
             time.sleep(1)
             print "finished"
-            parser.feed(html)
+            try:
+                parser.feed(html)
+            except UnicodeDecodeError, e:
+                print "Bad character."
             del parser
             del html
 
-crawler = WebsiteCrawler()
-#print crawler.get_links("http://www.aljazeera.com/")
+#crawler = WebsiteCrawler()
+##print crawler.get_links("http://www.nytimes.com/")
+#try:
+#    print crawler.get_links("http://www.nytimes.com/reuters/2012/04/30/sports/golf/30reuters-golf-european.html")
+#except Exception, e:
+#    print e
 #for article in crawler.get_links("http://www.washingtonpost.com/politics/"):
 #    print article
-crawler.parse_articles(crawler.get_links("http://www.washingtonpost.com/politics/"))
+#crawler.parse_articles(crawler.get_links("http://www.aljazeera.com/"))
 

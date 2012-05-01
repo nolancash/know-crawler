@@ -33,8 +33,8 @@ class ArticleParser(HTMLParser):
     @staticmethod
     def pre_parse(html, tag):
         start = html.find("<" + tag)
+        end_tag = "</" + tag + ">"
         while start != -1:
-            end_tag = "</" + tag + ">"
             end = html.find(end_tag, start)
             if start < end:
                 first_half = html[:start]
@@ -42,6 +42,8 @@ class ArticleParser(HTMLParser):
     #           print __html[start:end]
                 html = first_half + second_half
                 start = html.find("<" + tag)
+            else:
+                start = -1
         return html
 
     def get_html(self, url):
