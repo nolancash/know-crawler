@@ -24,9 +24,9 @@ class ArticleParser(HTMLParser):
         self.__ignore_line = -1
         self.__got_text = 0
         self.__html = ""
-        self.__first_only = [0,0,0,0,0,0,0]
+        self.__first_only = [0,0,0,0,0,0]
         self.mech = mechanize.Browser()
-        self.results = ["","","","","","",""]
+        self.results = ["null", "null", "null", "null", "null", "null"]
         
     '''
     removes script tags from __html so ArticleParser doesn't break
@@ -61,7 +61,10 @@ class ArticleParser(HTMLParser):
                     found_description = 1
 #                    print attr[1]
                 if attr[0].find("content") != -1 and found_description == 1:
-                    self.results[result_index] = attr[1]
+                    try:
+                        self.results[result_index] = attr[1].decode("utf-8").encode("ascii", "ignore")
+                    except UnicodeDecodeError:
+                        print "Decode error."
 #                    print attr[1]
                     self.__first_only[result_index] = 1
     
@@ -74,8 +77,7 @@ class ArticleParser(HTMLParser):
                 self.get_tag_by_name("keywords", attrs,2)
                 self.get_tag_by_name("author", attrs,3)
                 self.get_tag_by_name("date", attrs,4)
-                self.get_tag_by_name("time", attrs,5)  
-                self.get_tag_by_name("type", attrs,6)
+                self.get_tag_by_name("type", attrs,5)
             if tag == "p":
                 self.__got_text = 1
    
