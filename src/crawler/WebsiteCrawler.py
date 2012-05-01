@@ -57,16 +57,16 @@ class WebsiteCrawler(object):
 
     def parse_articles(self, articles):
         for article in articles:
-            print "running"
-            print article
+#            print "running"
+#            print article
             parser = ArticleParser()
             try:
                 html = parser.get_html(article)
-                if len(html) > 10:
-                    print "full"
+#                if len(html) > 10:
+#                    print "full"
                 html = ArticleParser.pre_parse(html, "script")
 #                time.sleep(1)
-                print "finished"
+#                print "finished"
                 try:
                     parser.feed(html)
                     self.__article_results.append(parser.results)
