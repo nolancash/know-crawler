@@ -20,7 +20,7 @@ class ArticleParser(HTMLParser):
         Constructor
         '''
         HTMLParser.__init__(self)
-        self.__done = 0
+#        self.__done = 0
         self.__ignore_line = -1
         self.__got_text = 0
         self.__html = ""
@@ -59,10 +59,10 @@ class ArticleParser(HTMLParser):
             for attr in attrs:
                 if attr[1].find(tag) != -1:
                     found_description = 1
-                    print attr[1]
+#                    print attr[1]
                 if attr[0].find("content") != -1 and found_description == 1:
                     self.results[result_index] = attr[1]
-                    print attr[1]
+#                    print attr[1]
                     self.__first_only[result_index] = 1
     
     def handle_starttag(self, tag, attrs):
@@ -84,10 +84,10 @@ class ArticleParser(HTMLParser):
 #            print data
         self.__got_text = 0
 
-    def handle_endtag(self, tag):
-        if tag == "html":
-            self.__done = 1
-            print "done"
+#    def handle_endtag(self, tag):
+#        if tag == "html":
+#            self.__done = 1
+#            print "done"
                 
         
 #parser = ArticleParser()
