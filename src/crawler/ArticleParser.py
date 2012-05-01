@@ -73,7 +73,7 @@ class ArticleParser(HTMLParser):
                 self.get_tag_by_name("author", attrs,3)
                 self.get_tag_by_name("date", attrs,4)
                 self.get_tag_by_name("time", attrs,5)  
-                self.get_tag_by_name("type", attrs,5)
+                self.get_tag_by_name("type", attrs,6)
             if tag == "p":
                 self.__got_text = 1
    
@@ -83,9 +83,9 @@ class ArticleParser(HTMLParser):
         self.__got_text = 0
 
     def handle_endtag(self, tag):
-        if tag == "__html":
+        if tag == "html":
             self.__done = 1
-            print "__done"
+            print "done"
                 
     def delete_line(self, data, pos):
         print "deleted line" + str(pos[0])
