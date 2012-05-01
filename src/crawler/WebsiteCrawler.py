@@ -34,6 +34,8 @@ class WebsiteCrawler(object):
     #        print response.info()
     #        print response.read()
             links = self.mech.links(url_regex=base_url)
+#            for l in self.mech.links():
+#                print l
             articles = []
             for link in self.mech.links(url_regex=base_url):
     #            print link.url        
@@ -44,7 +46,9 @@ class WebsiteCrawler(object):
             articles = set(articles)
             return articles
         except HTTPError:
-            pass
+            print "error"
+        except mechanize._form.ParseError:
+            print "error"
             
             
     def __normalize_url(self, url):
@@ -69,24 +73,35 @@ class WebsiteCrawler(object):
 #                print "finished"
                 try:
                     parser.feed(html)
-                    self.__article_results.append(parser.results)
+                    result = parser.results
+                    result.append(article)
+                    self.__article_results.append(result)
                 except UnicodeDecodeError:
                     print "Bad character."
                 del parser
                 del html
             except HTTPError:
                 pass
-        for a in self.__article_results:
-            print a
+#        for article in self.__article_results:
+#            for tag in article:
+#                print tag
+#            print "====="
+        for l in self.__article_results:
+            print l
+        return self.__article_results
+    
+    def get_article_results(self):
+        return self.__article_results
             
 
-crawler = WebsiteCrawler()
-#print crawler.get_links("http://www.nytimes.com/reuters/2012/04/30/sports/golf/30reuters-golf-european.html")
+#crawler = WebsiteCrawler()
+#print crawler.get_links("http://www.foxnews.com/")
 #try:
 #    print crawler.get_links("http://www.nytimes.com/reuters/2012/04/30/sports/golf/30reuters-golf-european.html")
 #except Exception, e:
 #    print e
 #for article in crawler.get_links("http://www.washingtonpost.com/politics/"):
 #    print article
-crawler.parse_articles(crawler.get_links("http://www.nytimes.com/"))
+#crawler.parse_articles(crawler.get_links("http://www.nytimes.com/"))
+#crawler.parse_articles(["http://www.nytimes.com/2012/05/03/fashion/at-the-renovated-ferragamo-flagship-a-transporting-trill-of-amore.html"])
 
