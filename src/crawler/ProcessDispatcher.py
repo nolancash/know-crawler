@@ -30,11 +30,11 @@ def main(args):
     crawler = WebsiteCrawler.WebsiteCrawler()
     print args.SOURCE_URL
     results = crawler.parse_articles(crawler.get_links(args.SOURCE_URL))
-    print "done"
-#    results = crawler.parse_articles(crawler.get_links("http://www.nytimes.com/"))
     for article in results:
-        print article
-
+        db.add_article_list(article)
+    db.print_database()
+    db.close()
+  
 if __name__ == "__main__":
     (options, args) = parse_arguments()
     main(options)
