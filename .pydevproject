@@ -10,5 +10,13 @@
 <path>/know-crawler/tests</path>
 <path>/know-crawler/src.test</path>
 <path>/know-crawler/test</path>
+<path>/know-crawler/test</path>
+<path>/know-crawler/src</path>
+</pydev_pathproperty>
+<pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
+<path>C:\Python27\Lib\site-packages\MySQLdb</path>
+<path>C:\Python27\Lib\site-packages\mechanize-0.2.5\build\lib</path>
+<path>C:\Python27\Lib\site-packages\mechanize-0.2.5\mechanize</path>
+<path>C:\Python27\Lib\site-packages\mechanize-0.2.5</path>
 </pydev_pathproperty>
 </pydev_project>

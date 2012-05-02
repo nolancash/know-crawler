@@ -32,7 +32,7 @@ def main(args):
     results = crawler.parse_articles(crawler.get_links(args.SOURCE_URL))
     for article in results:
         db.add_article_list(article)
-    db.print_database()
+    #db.print_database()
     db.close()
   
 if __name__ == "__main__":

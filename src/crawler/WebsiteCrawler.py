@@ -95,7 +95,7 @@ class WebsiteCrawler(object):
             
 
 #crawler = WebsiteCrawler()
-#print crawler.get_links("http://www.foxnews.com/")
+#print crawler.get_links("http://www.nytimes.com/")
 #try:
 #    print crawler.get_links("http://www.nytimes.com/reuters/2012/04/30/sports/golf/30reuters-golf-european.html")
 #except Exception, e:
