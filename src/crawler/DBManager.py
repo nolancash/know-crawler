@@ -37,12 +37,19 @@ class DBManager(object):
         self.conn.query(query)
         
     def add_article_list(self, article):
-        query = "select * from articles a where a.url = \"" + article[6] + "\";"
-        self.conn.query(query)
-        r = self.conn.store_result()
-        for row in r.fetch_row(0):
-            print row
-        if len(r.fetch_row(0)) == 0:
+        count=0
+        print article[6]
+        query = "select * from articles a where a.url like \"%" + article[6] + "%\";"
+        #self.conn.query(query)
+        #r = self.conn.store_result()
+        curs = self.conn.cursor()
+        curs.execute(query)
+        rows = curs.fetchall()
+        print len(rows)
+        #print r.fetch_row(0)
+        #for row in r.fetch_row(0):
+        #    count += 1
+        if len(rows) == 0:
             self.add_article_info(article[0], article[1], article[2], article[3], article[4], article[6])
     
     def print_database(self):
