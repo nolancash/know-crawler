@@ -7,6 +7,9 @@ import WebsiteCrawler
 import DBManager
 import optparse
 
+"""
+This script runs the web crawler. In future releases it will also manage the multiprocessing of the crawler
+"""
 
 """
 Parses out the passed arguments for the url to be crawled
