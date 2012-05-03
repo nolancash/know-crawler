@@ -26,7 +26,7 @@ Crawls the passed arguments url and saves all data to the sql database
 def main(args):
     db = DBManager.DBManager()
     crawler = WebsiteCrawler.WebsiteCrawler()
-    if len(args) != 1:
+    if args.SOURCE_URL == None:
         print "knowcrawler.zip: try knowcrawler.zip -u http://www.nytimes.com/"
         
     if args.SOURCE_URL == "http://www.nytimes.com/":
