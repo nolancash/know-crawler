@@ -7,12 +7,12 @@ import MySQLdb
 
 """
 This class handles all interaction with the mysql database including but not limited to adding article summaries
-to the database
+to the database.
 """
 class DBManager(object):
 
     '''
-    Constructs the dbmanager and connects to the database
+    Constructs the dbmanager and connects to the database.
     '''
     def __init__(self):
         self.conn = MySQLdb.connect(host = "ovid.u.washington.edu",
@@ -22,8 +22,8 @@ class DBManager(object):
                            , port= 32001)
         
     """
-    retrieves a list of all countries in the world from the database and returns them as a list 
-    of strings
+    Retrieves a list of all countries in the world from the database and returns them as a list 
+    of strings.
     """
     def get_country_list(self):
         self.conn.query("select cntry_name from world_countries;")
@@ -34,14 +34,14 @@ class DBManager(object):
         return res
 
     """
-    Closes the connection to the database
+    Closes the connection to the database.
     """    
     def close(self):
         self.conn.close()
     
     """
     Adds the passed strings title, description, keywords, author date and url to the database but only if 
-    the passed title, description and keywords have values that are != "null"
+    the passed title, description and keywords have values that are != "null".
     """
     def add_article_info(self, title, description, keywords, author, date, url):
         query = "insert into articles values(0, \"" + title + "\", \"" + description +"\", \"" + keywords + "\", \"" + author + "\", \"" + date + "\", \"" + url + "\")";
@@ -67,7 +67,7 @@ class DBManager(object):
         return False
     
     """
-    Prints out all article summaries that are stored in the database
+    Prints out all article summaries that are stored in the database.
     """
     def print_database(self):
         self.conn.query("select * from articles;")

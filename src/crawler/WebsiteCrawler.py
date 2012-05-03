@@ -17,7 +17,7 @@ news articles saves it.
 class WebsiteCrawler(object):
 
     """
-    Creates a website crawler object
+    Creates a website crawler object.
     """
     def __init__(self):
         '''
@@ -29,7 +29,7 @@ class WebsiteCrawler(object):
     
     """
     Takes a url as a parameter and returns a list of strings that are links on a page that look like 
-    links to articles
+    links to articles.
     """    
     def get_links(self,base_url):
         try:
@@ -62,7 +62,7 @@ class WebsiteCrawler(object):
             pass
             
     """
-    Takes a url and strips it of all url encoded parameters
+    Takes a url and strips it of all url encoded parameters.
     """    
     def __normalize_url(self, url):
         res = ""
@@ -74,7 +74,7 @@ class WebsiteCrawler(object):
 
     """
     Given a list of strings that represent urls this method parses them and returns a list. This list contains summaries of 
-    articles which are themselfs list with the following structure ["title", "description", "keywords", "author", "date", "url"]
+    articles which are themselfs list with the following structure ["title", "description", "keywords", "author", "date", "url"].
     """
     def parse_articles(self, articles):
         for article in articles:
