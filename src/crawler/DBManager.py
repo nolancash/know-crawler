@@ -1,7 +1,7 @@
 '''
 Created on Apr 27, 2012
 
-@author: Nolan
+@author: Nolan, Tyler
 '''
 import MySQLdb
 
