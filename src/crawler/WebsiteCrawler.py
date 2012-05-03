@@ -12,20 +12,29 @@ from ArticleParser import ArticleParser
 from urllib2 import HTTPError
 import mechanize
 
-
+'''
+Created on Apr 23, 2012
+This class oversees all of the crawling of a news website. It collects all of the links on a page that 
+it thinks are news articles then it gathers all the information off of the pages that it thinks are 
+news articles saves it.
+'''
 class WebsiteCrawler(object):
-    '''
-    classdocs
-    '''
 
+    """
+    Creates a website crawler object
+    """
     def __init__(self):
         '''
         Constructor
         '''
         self.mech = mechanize.Browser()
-#        self.mech.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
+        self.mech.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
         self.__article_results = []
-        
+    
+    """
+    Takes a url as a parameter and returns a list of strings that are links on a page that look like 
+    links to articles
+    """    
     def get_links(self,base_url):
         try:
             print "opening"
@@ -56,7 +65,9 @@ class WebsiteCrawler(object):
             print "Empty url."
             pass
             
-            
+    """
+    Takes a url and strips it of all url encoded parameters
+    """    
     def __normalize_url(self, url):
         res = ""
         if url.find("?") != -1:
@@ -65,6 +76,10 @@ class WebsiteCrawler(object):
             res = res[0:res.find("#")]
         return res
 
+    """
+    Given a list of strings that represent urls this method parses them and returns a list. This list contains summaries of 
+    articles which are themselfs list with the following structure ["title", "description", "keywords", "author", "date", "url"]
+    """
     def parse_articles(self, articles):
         for article in articles:
 #            print "running"
@@ -92,8 +107,8 @@ class WebsiteCrawler(object):
 #            for tag in article:
 #                print tag
 #            print "====="
-        for l in self.__article_results:
-            print l
+#        for l in self.__article_results:
+#            print l
         return self.__article_results
             
 #
