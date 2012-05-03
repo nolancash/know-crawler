@@ -1,8 +1,8 @@
-'''
+"""
 Created on Apr 27, 2012
 
 @author: Nolan, Tyler, Harshad
-'''
+"""
 import MySQLdb
 
 """
@@ -11,9 +11,9 @@ to the database.
 """
 class DBManager(object):
 
-    '''
+    """
     Constructs the dbmanager and connects to the database.
-    '''
+    """
     def __init__(self):
         self.conn = MySQLdb.connect(host = "ovid.u.washington.edu",
                            user = "harshad",
@@ -44,9 +44,9 @@ class DBManager(object):
     the passed title, description and keywords have values that are != "null".
     """
     def add_article_info(self, title, description, keywords, author, date, url):
-        query = "insert into articles values(0, \"" + title + "\", \"" + description +"\", \"" + keywords + "\", \"" + author + "\", \"" + date + "\", \"" + url + "\")";
-        print query
         if title != "null" and description != "null" and url != "null":
+            query = "insert into articles values(0, \"" + title + "\", \"" + description +"\", \"" + keywords + "\", \"" + author + "\", \"" + date + "\", \"" + url + "\")";
+            print query
             self.conn.query(query)
             return True
         return False

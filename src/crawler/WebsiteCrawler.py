@@ -1,28 +1,28 @@
-'''
+"""
 Created on Apr 23, 2012
 
 @author: Nolan, Tyler
-'''
+"""
 
 from ArticleParser import ArticleParser
 from urllib2 import HTTPError
 import mechanize
 
-'''
+"""
 Created on Apr 23, 2012
 This class oversees all of the crawling of a news website. It collects all of the links on a page that 
 it thinks are news articles then it gathers all the information off of the pages that it thinks are 
 news articles saves it.
-'''
+"""
 class WebsiteCrawler(object):
 
     """
     Creates a website crawler object.
     """
     def __init__(self):
-        '''
+        """
         Constructor
-        '''
+        """
         self.mech = mechanize.Browser()
 #        self.mech.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
         self.__article_results = []
