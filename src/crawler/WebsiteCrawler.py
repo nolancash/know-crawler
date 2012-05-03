@@ -23,6 +23,7 @@ class WebsiteCrawler(object):
         Constructor
         '''
         self.mech = mechanize.Browser()
+        self.mech.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
         self.__article_results = []
         
     def get_links(self,base_url):
@@ -33,7 +34,7 @@ class WebsiteCrawler(object):
             print "loaded response"
     #        print response.info()
     #        print response.read()
-            links = self.mech.links(url_regex=base_url)
+#            links = self.mech.links(url_regex=base_url)
 #            for l in self.mech.links():
 #                print l
             articles = []
@@ -46,9 +47,14 @@ class WebsiteCrawler(object):
             articles = set(articles)
             return articles
         except HTTPError:
-            print "error"
+            print "Http error."
+            pass
         except mechanize._form.ParseError:
-            print "error"
+            print "Parser error."
+            pass
+        except mechanize._mechanize.BrowserStateError:
+            print "Empty url."
+            pass
             
             
     def __normalize_url(self, url):
@@ -93,9 +99,10 @@ class WebsiteCrawler(object):
     def get_article_results(self):
         return self.__article_results
             
-
-#crawler = WebsiteCrawler()
-#print crawler.get_links("http://www.nytimes.com/")
+#
+crawler = WebsiteCrawler()
+print crawler.get_links("")
+#print crawler.get_links("http://www.aljazeera.com/")
 #try:
 #    print crawler.get_links("http://www.nytimes.com/reuters/2012/04/30/sports/golf/30reuters-golf-european.html")
 #except Exception, e:

@@ -5,12 +5,7 @@
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">Default</pydev_property>
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">python 2.7</pydev_property>
 <pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
-<path>/know-crawler/know-crawler.tests</path>
 <path>/know-crawler/tests</path>
-<path>/know-crawler/tests</path>
-<path>/know-crawler/src.test</path>
-<path>/know-crawler/test</path>
-<path>/know-crawler/test</path>
 <path>/know-crawler/src</path>
 </pydev_pathproperty>
 <pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
@@ -18,5 +13,6 @@
 <path>C:\Python27\Lib\site-packages\mechanize-0.2.5\build\lib</path>
 <path>C:\Python27\Lib\site-packages\mechanize-0.2.5\mechanize</path>
 <path>C:\Python27\Lib\site-packages\mechanize-0.2.5</path>
+<path>C:\Python26\Lib\site-packages\mechanize-0.2.5-py2.6.egg</path>
 </pydev_pathproperty>
 </pydev_project>

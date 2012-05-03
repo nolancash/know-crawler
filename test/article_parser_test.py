@@ -211,7 +211,8 @@ we do not recommend it.
 
 '''
         actual = ArticleParser.ArticleParser().get_html("http://www.cs.washington.edu/education/courses/cse403/11sp/old-exams/")
-        self.assertEqual(expected, actual)
+        self.assertEqual(expected, actual)        
+        
 
 
 if __name__ == "__main__":
