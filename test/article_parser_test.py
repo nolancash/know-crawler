@@ -4,6 +4,7 @@ Created on Apr 29, 2012
 @author: Tyler
 '''
 import unittest
+import urllib2
 import sys
 sys.path.append("../src/crawler")
 import ArticleParser
@@ -68,7 +69,15 @@ class Test(unittest.TestCase):
 </html>'''
         self.assertEqual(expected, ArticleParser.ArticleParser.pre_parse(html, "h1"))
         
-    def test_get_html(self):
+    def test_get_html_empty_url(self):
+        result = ArticleParser.ArticleParser().get_html("")
+        self.assertEqual("", result)
+    
+    def test_get_html_invalid_url(self):
+        result = ArticleParser.ArticleParser().get_html("http://thisurldoesntexist.net/")
+        self.assertEqual("", result)
+        
+    def test_get_html_valid_url(self):
         # If this test fails check to make sure the page itself has not changed.
         parser = ArticleParser.ArticleParser()
         expected = '''<?xml version="1.0" encoding="iso-8859-1"?>

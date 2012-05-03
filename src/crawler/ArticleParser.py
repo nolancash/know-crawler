@@ -7,6 +7,7 @@ Created on Apr 23, 2012
 import sys
 import os, re
 import urlparse
+import urllib2
 from urllib2 import HTTPError
 from HTMLParser import HTMLParser
 import mechanize
@@ -48,9 +49,16 @@ class ArticleParser(HTMLParser):
         return html
 
     def get_html(self, url):
-        self.mech.open(url)
-        response = self.mech.response()
-        self.__html = response.read()
+        try:
+            self.mech.open(url)
+            response = self.mech.response()
+            self.__html = response.read()
+        except urllib2.URLError:
+#            print "Url not valid."
+            pass
+        except mechanize._mechanize.BrowserStateError:
+#            print "Empty url string."
+            pass
         return self.__html
 
     def get_tag_by_name(self, tag, attrs, result_index):
@@ -92,7 +100,8 @@ class ArticleParser(HTMLParser):
 #            print "done"
                 
         
-#parser = ArticleParser()
+parser = ArticleParser()
+print parser.get_html("")
 
 #parser.get_html("http://www.nytimes.com/2012/04/26/us/considering-arizona-immigration-law-justices-are-again-in-political-storm.__html")
 #__html = parser.get_html("http://www.nytimes.com/2012/04/26/us/considering-arizona-immigration-law-justices-are-again-in-political-storm.html")
