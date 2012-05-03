@@ -8,11 +8,11 @@ import DBManager
 import optparse
 
 """
-This script runs the web crawler. In future releases it will also manage the multiprocessing of the crawler
+This script runs the web crawler. In future releases it will also manage the multiprocessing of the crawler.
 """
 
 """
-Parses out the passed arguments for the url to be crawled
+Parses out the passed arguments for the url to be crawled.
 """
 def parse_arguments():
     parser = optparse.OptionParser(description="Process url.")
@@ -21,7 +21,7 @@ def parse_arguments():
     return parser.parse_args()
 
 """
-Crawls the passed arguments url and saves all data to the sql database
+Crawls the passed arguments url and saves all data to the sql database.
 """
 def main(args):
     db = DBManager.DBManager()
