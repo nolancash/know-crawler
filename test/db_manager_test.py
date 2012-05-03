@@ -13,7 +13,10 @@ This class runs our unit tests for DBManager.py.
 '''
 class Test(unittest.TestCase):
 
-
+    '''
+    Tests get_country_list to ensure it returns all of the
+    countries as intended.
+    '''
     def test_get_country_list(self):
         expected = ['Falkland Is.', 'French Guiana', 
                     'Guyana', 'Pitcairn Is.', 
@@ -80,14 +83,24 @@ class Test(unittest.TestCase):
                     'Montenegro', 'Netherlands', 'Hong Kong', 'Taiwan']
         self.assertEqual(expected, DBManager.DBManager().get_country_list())
 
+    '''
+    Tests add_article_info given an empty parameter.
+    '''
     def test_add_article_info_null(self):
         self.assertFalse(DBManager.DBManager().add_article_info(
                         "null", "desc", "words", "author", "date", "google.com"))
     
+    '''
+    Tests add_article_list given an empty parameter.
+    '''
     def test_add_article_list_null(self):
         self.assertFalse(DBManager.DBManager().add_article_list(
                         ["null", "desc", "words", "author", "date", "article", "google.com"]))
-        
+    
+    '''
+    Tests add_article_list given a list with less than the
+    required number of items.
+    '''    
     def test_add_article_list_fewer_args(self):
         self.assertFalse(DBManager.DBManager().add_article_list(
                         ["null", "desc", "words", "author", "date", "google.com"]))
