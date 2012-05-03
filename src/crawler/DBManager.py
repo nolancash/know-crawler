@@ -48,7 +48,7 @@ class DBManager(object):
             curs = self.conn.cursor()
             curs.execute(query)
             rows = curs.fetchall()
-            print len(rows)
+#            print len(rows)
             #print r.fetch_row(0)
             #for row in r.fetch_row(0):
             #    count += 1
