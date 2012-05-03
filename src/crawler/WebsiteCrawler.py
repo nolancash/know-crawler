@@ -3,11 +3,7 @@ Created on Apr 23, 2012
 
 @author: Nolan
 '''
-import sys
-import os, re
-import urlparse
-import time
-import MySQLdb
+
 from ArticleParser import ArticleParser
 from urllib2 import HTTPError
 import mechanize
@@ -28,7 +24,7 @@ class WebsiteCrawler(object):
         Constructor
         '''
         self.mech = mechanize.Browser()
-        self.mech.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
+#        self.mech.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
         self.__article_results = []
     
     """
@@ -107,20 +103,6 @@ class WebsiteCrawler(object):
 #            for tag in article:
 #                print tag
 #            print "====="
-#        for l in self.__article_results:
-#            print l
+        for l in self.__article_results:
+            print l
         return self.__article_results
-            
-#
-#crawler = WebsiteCrawler()
-#print crawler.get_links("")
-#print crawler.get_links("http://www.aljazeera.com/")
-#try:
-#    print crawler.get_links("http://www.nytimes.com/reuters/2012/04/30/sports/golf/30reuters-golf-european.html")
-#except Exception, e:
-#    print e
-#for article in crawler.get_links("http://www.washingtonpost.com/politics/"):
-#    print article
-#crawler.parse_articles(crawler.get_links("http://www.nytimes.com/"))
-#crawler.parse_articles(["http://www.nytimes.com/2012/05/03/fashion/at-the-renovated-ferragamo-flagship-a-transporting-trill-of-amore.html"])
-
