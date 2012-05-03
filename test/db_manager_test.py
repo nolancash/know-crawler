@@ -77,6 +77,17 @@ class Test(unittest.TestCase):
                     'Montenegro', 'Netherlands', 'Hong Kong', 'Taiwan']
         self.assertEqual(expected, DBManager.DBManager().get_country_list())
 
+    def test_add_article_info_null(self):
+        self.assertFalse(DBManager.DBManager().add_article_info(
+                        "null", "desc", "words", "author", "date", "google.com"))
+    
+    def test_add_article_list_null(self):
+        self.assertFalse(DBManager.DBManager().add_article_list(
+                        ["null", "desc", "words", "author", "date", "article", "google.com"]))
+        
+    def test_add_article_list_fewer_args(self):
+        self.assertFalse(DBManager.DBManager().add_article_list(
+                        ["null", "desc", "words", "author", "date", "google.com"]))
 
 
 if __name__ == "__main__":
