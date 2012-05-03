@@ -4,7 +4,6 @@ Created on Apr 30, 2012
 @author: Tyler
 '''
 import unittest
-import mechanize
 import sys
 sys.path.append("../src/crawler")
 import WebsiteCrawler
@@ -12,11 +11,18 @@ import WebsiteCrawler
 
 class Test(unittest.TestCase):
 
+    def setUp(self):
+        self.articles = WebsiteCrawler.WebsiteCrawler().get_links(
+                    "http://www.nytimes.com/")
+#    def test_get_links_empty(self):
+#        self.articles()
 
-    def test_get_links(self):
-        self.assertTrue(len(
-            WebsiteCrawler.WebsiteCrawler().get_links(
-            "http://www.nytimes.com/")) > 30);
+    def test_get_links_size(self):
+        self.assertTrue(len(self.articles) > 30);
+    
+    def test_get_links_quality(self):
+        for article in self.articles:
+            self.assertTrue(article.find("http://www.nytimes.com/") != -1)
     
 #    def test_get_links_disallow_robots(self):
 #        url = "http://www.nytimes.com/reuters/2012/04/30/sports/golf/30reuters-golf-european.html";
