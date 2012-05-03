@@ -92,11 +92,8 @@ class WebsiteCrawler(object):
 #            for tag in article:
 #                print tag
 #            print "====="
-        for l in self.__article_results:
-            print l
-        return self.__article_results
-    
-    def get_article_results(self):
+#        for l in self.__article_results:
+#            print l
         return self.__article_results
             
 #
