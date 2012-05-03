@@ -7,18 +7,10 @@ import WebsiteCrawler
 import DBManager
 import optparse
 
-#db = DBManager.DBManager()
-#
-#crawler = WebsiteCrawler.WebsiteCrawler()
-#results = crawler.parse_articles(crawler.get_links("http://www.nytimes.com/"))
-#
-#
-#
-#for article in results:
-#    db.add_article_list(article)
-#db.print_database()
-#db.close()
 
+"""
+Parses out the passed arguments for the url to be crawled
+"""
 def parse_arguments():
     parser = optparse.OptionParser(description="Process url.")
     parser.add_option("-u", dest="SOURCE_URL",
