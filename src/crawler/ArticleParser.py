@@ -1,23 +1,23 @@
-'''
+"""
 Created on Apr 23, 2012
 
 @author: Nolan, Tyler
-'''
+"""
 
 import urllib2
 from HTMLParser import HTMLParser
 import mechanize
 
-'''
+"""
 Article Parser extends the HTMLParser class and is used to parse a news article page for a summary of its meta information
 and then returns a list of strings that represents that summary in this format
 ["title", "description", "keywords", "author", "date", "url"].
-'''
+"""
 class ArticleParser(HTMLParser):
     def __init__(self):
-        '''
+        """
         Constructor for the Article parser
-        '''
+        """
         HTMLParser.__init__(self)
 #        self.__done = 0
         self.__ignore_line = -1
@@ -26,9 +26,9 @@ class ArticleParser(HTMLParser):
         self.mech = mechanize.Browser()
         self.results = ["null", "null", "null", "null", "null", "null"]
         
-    '''
+    """
     Removes script tags from __html so ArticleParser doesn't break on malformed html tags in embedded javascript.
-    '''
+    """
     @staticmethod
     def pre_parse(html, tag):
         start = html.find("<" + tag)

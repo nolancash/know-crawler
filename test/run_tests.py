@@ -1,17 +1,17 @@
-'''
+"""
 Created on May 2, 2012
 
 @author: Ned Batchelder
-'''
+"""
 import unittest
 
-'''
+"""
 This module runs all of our unit tests.
-'''
+"""
 
-'''
+"""
 Takes each unit test and runs them all as a single test.
-'''
+"""
 def main():
     testmodules = [
         "db_manager_test",

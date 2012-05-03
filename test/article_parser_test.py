@@ -1,28 +1,28 @@
-'''
+"""
 Created on Apr 29, 2012
 
 @author: Tyler
-'''
+"""
 import unittest
 import sys
 sys.path.append("../src/crawler")
 import ArticleParser
 
-'''
+"""
 This class runs our unit tests for ArticleParser.py.
-'''
+"""
 class Test(unittest.TestCase):
 
-    '''
+    """
     Tests pre_parse given an empty parameter.
-    '''
+    """
     def test_pre_parse_empty(self):
         self.assertEqual("", ArticleParser.ArticleParser.pre_parse("", "script"))
     
-    '''
+    """
     Tests pre_parse given that the tag given is not found
     in the xhtml.
-    '''    
+    """    
     def test_pre_parse_no_tag(self):
         html = '''<html>
 <body>
@@ -35,10 +35,10 @@ class Test(unittest.TestCase):
 </html>'''
         self.assertEqual(html, ArticleParser.ArticleParser.pre_parse(html, "script"))
     
-    '''
+    """
     Tests pre_parse to ensure that it removes a single tag
     as intended.
-    '''    
+    """    
     def test_pre_parse_one_tag(self):
         html = '''<html>
 <body>
@@ -60,10 +60,10 @@ class Test(unittest.TestCase):
 </html>'''
         self.assertEqual(expected, ArticleParser.ArticleParser.pre_parse(html, "h1"))
     
-    '''
+    """
     Tests pre_parse to ensure that it removes multiple
     tags as intended.
-    '''    
+    """    
     def test_pre_parse_multiple_tags(self):
         html = '''<html>
 <body>
@@ -83,26 +83,26 @@ class Test(unittest.TestCase):
 </html>'''
         self.assertEqual(expected, ArticleParser.ArticleParser.pre_parse(html, "h1"))
     
-    '''
+    """
     Tests get_html given an empty parameter.
-    '''    
+    """    
     def test_get_html_empty_url(self):
         result = ArticleParser.ArticleParser().get_html("")
         self.assertEqual("", result)
     
-    '''
+    """
     Tests get_html given an invalid, non-existent url.
-    '''
+    """
     def test_get_html_invalid_url(self):
         result = ArticleParser.ArticleParser().get_html("http://thisurldoesntexist.net/")
         self.assertEqual("", result)
     
-    '''
+    """
     Tests get_html given a valid url.
     Note: If this test fails check to make sure the page 
     itself has not changed. This tests checks the xhtml of
     http://www.cs.washington.edu/education/courses/cse403/11sp/old-exams/
-    '''    
+    """    
     def test_get_html_valid_url(self):
         expected = '''<?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE html 
