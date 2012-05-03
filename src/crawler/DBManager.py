@@ -34,7 +34,8 @@ class DBManager(object):
     def add_article_info(self, title, description, keywords, author, date, url):
         query = "insert into articles values(0, \"" + title + "\", \"" + description +"\", \"" + keywords + "\", \"" + author + "\", \"" + date + "\", \"" + url + "\")";
         print query
-        self.conn.query(query)
+        if title != "null" and description != "null" and url != "null":
+            self.conn.query(query)
         
     def add_article_list(self, article):
         count=0
