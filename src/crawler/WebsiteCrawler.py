@@ -1,7 +1,7 @@
 '''
 Created on Apr 23, 2012
 
-@author: Nolan
+@author: Nolan, Tyler
 '''
 
 from ArticleParser import ArticleParser
