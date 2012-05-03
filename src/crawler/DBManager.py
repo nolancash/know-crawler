@@ -5,6 +5,9 @@ Created on Apr 27, 2012
 '''
 import MySQLdb
 
+"""
+
+"""
 class DBManager(object):
     '''
     classdocs

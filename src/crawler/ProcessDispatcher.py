@@ -17,6 +17,9 @@ def parse_arguments():
         help="The url of the news source to be processed.")
     return parser.parse_args()
 
+"""
+Crawls the passed arguments url and saves all data to the sql database
+"""
 def main(args):
     db = DBManager.DBManager()
     crawler = WebsiteCrawler.WebsiteCrawler()
