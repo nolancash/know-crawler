@@ -8,6 +8,9 @@ import sys
 sys.path.append("../src/crawler")
 import DBManager
 
+'''
+This class runs our unit tests for DBManager.py.
+'''
 class Test(unittest.TestCase):
 
 

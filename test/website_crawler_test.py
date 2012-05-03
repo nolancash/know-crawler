@@ -8,7 +8,9 @@ import sys
 sys.path.append("../src/crawler")
 import WebsiteCrawler
 
-
+'''
+This class runs our unit tests for WebsiteCrawler.py.
+'''
 class Test(unittest.TestCase):
 
     def test_get_links_empty(self):
