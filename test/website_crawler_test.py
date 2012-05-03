@@ -11,19 +11,21 @@ import WebsiteCrawler
 
 class Test(unittest.TestCase):
 
-    def setUp(self):
+    def __get_links_setup():
         self.articles = WebsiteCrawler.WebsiteCrawler().get_links(
                     "http://www.nytimes.com/")
-#    def test_get_links_empty(self):
-#        self.articles()
+    def test_get_links_empty(self):
+        self.assertEqual(None, WebsiteCrawler.WebsiteCrawler().get_links(""))
 
     def test_get_links_size(self):
+        __get_links_setup()
         self.assertTrue(len(self.articles) > 30);
     
     def test_get_links_quality(self):
+        __get_links_setup()
         for article in self.articles:
             self.assertTrue(article.find("http://www.nytimes.com/") != -1)
-    
+#    
 #    def test_get_links_disallow_robots(self):
 #        url = "http://www.nytimes.com/reuters/2012/04/30/sports/golf/30reuters-golf-european.html";
 #        try:
