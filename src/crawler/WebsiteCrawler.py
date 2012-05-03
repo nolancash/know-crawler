@@ -100,8 +100,8 @@ class WebsiteCrawler(object):
         return self.__article_results
             
 #
-crawler = WebsiteCrawler()
-print crawler.get_links("")
+#crawler = WebsiteCrawler()
+#print crawler.get_links("")
 #print crawler.get_links("http://www.aljazeera.com/")
 #try:
 #    print crawler.get_links("http://www.nytimes.com/reuters/2012/04/30/sports/golf/30reuters-golf-european.html")
