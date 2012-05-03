@@ -93,19 +93,3 @@ class ArticleParser(HTMLParser):
 #            self.__done = 1
 #            print "done"
                 
-        
-#parser = ArticleParser()
-#print parser.get_html("http://www.nytimes.com/")
-
-#parser.get_html("http://www.nytimes.com/2012/04/26/us/considering-arizona-immigration-law-justices-are-again-in-political-storm.__html")
-#__html = parser.get_html("http://www.nytimes.com/2012/04/26/us/considering-arizona-immigration-law-justices-are-again-in-political-storm.html")
-##__html = parser.get_html("http://www.aljazeera.com/news/asia-pacific/2012/04/201242733733409278.__html")
-#while (parser.__done == 0):
-#    try:
-#print "running"
-#__html = ArticleParser.pre_parse(__html, "script")
-#print "finished"
-#parser.feed(__html)
-#    except:
-#        print "Unexpected error:", sys.exc_info()
-#        parser.skip_broken_line()
