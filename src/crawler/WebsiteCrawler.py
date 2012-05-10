@@ -28,13 +28,13 @@ class WebsiteCrawler(object):
         
         # Cookie Jar
         cj = cookielib.LWPCookieJar()
-       # self.mech.set_cookiejar(cj)
+        self.mech.set_cookiejar(cj)
         
         # Browser options
-#        self.mech.set_handle_equiv(True)
-#        self.mech.set_handle_gzip(True)
-#        self.mech.set_handle_redirect(True)
-#        self.mech.set_handle_referer(True)
+        self.mech.set_handle_equiv(True)
+        self.mech.set_handle_gzip(True)
+        self.mech.set_handle_redirect(True)
+        self.mech.set_handle_referer(True)
         #self.mech.set_handle_robots(False)
         
         # Follows refresh 0 but not hangs on refresh > 0
