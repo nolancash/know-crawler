@@ -27,14 +27,14 @@ class WebsiteCrawler(object):
         self.mech = mechanize.Browser()
         
         # Cookie Jar
-        cj = cookielib.LWPCookieJar()
-        self.mech.set_cookiejar(cj)
+#        cj = cookielib.LWPCookieJar()
+#        self.mech.set_cookiejar(cj)
         
         # Browser options
-        self.mech.set_handle_equiv(True)
-        self.mech.set_handle_gzip(True)
-        self.mech.set_handle_redirect(True)
-        self.mech.set_handle_referer(True)
+#        self.mech.set_handle_equiv(True)
+#        self.mech.set_handle_gzip(True)
+#        self.mech.set_handle_redirect(True)
+#        self.mech.set_handle_referer(True)
         #self.mech.set_handle_robots(False)
         
         # Follows refresh 0 but not hangs on refresh > 0
@@ -61,7 +61,7 @@ class WebsiteCrawler(object):
             response = self.mech.response()
             print "loaded response"
     #        print response.info()
-            print response.read()
+#            print response.read()
 #            links = self.mech.links(url_regex=base_url)
 #            for l in self.mech.links():
 #                print l
@@ -73,6 +73,7 @@ class WebsiteCrawler(object):
                     normal_url) > len(base_url):
                     articles.append(normal_url)
             articles = set(articles)
+            print "Retrieved articles."
             return articles
         except HTTPError:
             print "Http error."
@@ -100,7 +101,10 @@ class WebsiteCrawler(object):
     articles which are themselfs list with the following structure ["title", "description", "keywords", "author", "date", "url"].
     """
     def parse_articles(self, articles):
+        counter = 1
         for article in articles:
+            print counter
+            counter = counter + 1
 #            print "running"
 #            print article
             parser = ArticleParser()
