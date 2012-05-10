@@ -7,6 +7,7 @@ Created on Apr 23, 2012
 from ArticleParser import ArticleParser
 from urllib2 import HTTPError
 import mechanize
+import cookielib
 
 """
 Created on Apr 23, 2012
@@ -24,6 +25,28 @@ class WebsiteCrawler(object):
         Constructor
         """
         self.mech = mechanize.Browser()
+        
+        # Cookie Jar
+        cj = cookielib.LWPCookieJar()
+       # self.mech.set_cookiejar(cj)
+        
+        # Browser options
+#        self.mech.set_handle_equiv(True)
+#        self.mech.set_handle_gzip(True)
+#        self.mech.set_handle_redirect(True)
+#        self.mech.set_handle_referer(True)
+        #self.mech.set_handle_robots(False)
+        
+        # Follows refresh 0 but not hangs on refresh > 0
+        self.mech.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
+        
+        # Want debugging messages?
+        #br.set_debug_http(True)
+        #br.set_debug_redirects(True)
+        #br.set_debug_responses(True)
+        
+        # User-Agent (this is cheating, ok?)
+        self.mech.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
 #        self.mech.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
         self.__article_results = []
     
@@ -35,10 +58,10 @@ class WebsiteCrawler(object):
         try:
             print "opening"
             self.mech.open(base_url)
-#            response = self.mech.response()
+            response = self.mech.response()
             print "loaded response"
     #        print response.info()
-    #        print response.read()
+            print response.read()
 #            links = self.mech.links(url_regex=base_url)
 #            for l in self.mech.links():
 #                print l
