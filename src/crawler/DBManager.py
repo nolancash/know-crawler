@@ -10,7 +10,12 @@ This class handles all interaction with the mysql database including but not lim
 to the database.
 """
 class DBManager(object):
-
+    _instance = None
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(DBManager, cls).__new__(
+                                cls, *args, **kwargs)
+        return cls._instance
     """
     Constructs the dbmanager and connects to the database.
     """
