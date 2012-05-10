@@ -31,15 +31,14 @@ def main(options):
     if options.SOURCE_URL == None:
         print "knowcrawler.zip: try knowcrawler.zip -u http://www.nytimes.com/"
         
-    if options.SOURCE_URL == "http://www.nytimes.com/":
-        print options.SOURCE_URL
-        results = crawler.parse_articles(crawler.get_links(options.SOURCE_URL))
-        if options.DRY_RUN:
-            print "Regular run."
-            for article in results:
-                db.add_article_list(article)
-        else:
-            print "Dry Run."
+    print options.SOURCE_URL
+    results = crawler.parse_articles(crawler.get_links(options.SOURCE_URL))
+    if options.DRY_RUN:
+        print "Regular run."
+        for article in results:
+            db.add_article_list(article)
+    else:
+        print "Dry Run."
         #db.print_database()
     db.close()
   
