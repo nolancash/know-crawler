@@ -106,3 +106,5 @@ class WebsiteCrawler(object):
         for l in self.__article_results:
             print l
         return self.__article_results
+    
+

@@ -54,10 +54,10 @@ class ArticleParser(HTMLParser):
             response = self.mech.response()
             self.__html = response.read()
         except urllib2.URLError:
-#            print "Url not valid."
+            print "Url not valid."
             pass
         except mechanize._mechanize.BrowserStateError:
-#            print "Empty url string."
+            print "Empty url string."
             pass
         return self.__html
     
