@@ -6,6 +6,7 @@ Created on Apr 23, 2012
 
 from ArticleParser import ArticleParser
 from urllib2 import HTTPError
+from urlparse import urljoin
 import mechanize
 import cookielib
 
@@ -60,13 +61,14 @@ class WebsiteCrawler(object):
             self.mech.open(base_url)
             response = self.mech.response()
             print "loaded response"
+            print self.mech.geturl()
     #        print response.info()
 #            print response.read()
 #            links = self.mech.links(url_regex=base_url)
 #            for l in self.mech.links():
 #                print l
             articles = []
-            for link in self.mech.links(url_regex=base_url):
+            for link in self.mech.links(url_regex=base_url + "|^/"):
     #            print link.url        
                 normal_url = self.__normalize_url(link.url)
                 if len(normal_url) - normal_url.rfind("/") > 20 and len(
@@ -89,11 +91,16 @@ class WebsiteCrawler(object):
     Takes a url and strips it of all url encoded parameters.
     """    
     def __normalize_url(self, url):
-        res = ""
+        res = url
+        baseurl = self.mech.geturl()
+        if url.find(baseurl) == -1 and len(baseurl) > 3:
+            res = urljoin(baseurl[:len(baseurl)], url)
+            print res
         if url.find("?") != -1:
             res = url[0:url.find("?")]
         if res.find("#") != -1:
             res = res[0:res.find("#")]
+#        print res
         return res
 
     """
@@ -101,10 +108,10 @@ class WebsiteCrawler(object):
     articles which are themselfs list with the following structure ["title", "description", "keywords", "author", "date", "url"].
     """
     def parse_articles(self, articles):
-        counter = 1
+#        counter = 1
         for article in articles:
-            print counter
-            counter = counter + 1
+#            print counter
+#            counter = counter + 1
 #            print "running"
 #            print article
             parser = ArticleParser()

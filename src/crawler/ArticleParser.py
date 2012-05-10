@@ -69,7 +69,7 @@ class ArticleParser(HTMLParser):
         found_description = False
         if (self.results[result_index] == "null"):
             for attr in attrs:
-                if attr[0] != "content" and attr[1].find(tag) != -1:
+                if attr[0] != "content" and (attr[1] != None and attr[1].find(tag) != -1):
                     found_description = True
 #                    print attr[1]
                 if attr[0].find("content") != -1 and found_description:
