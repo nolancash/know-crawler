@@ -1,4 +1,7 @@
-# Create your views here.
+# This python module accepts HTTP POST request from the KNOW-Crawler webpage 
+# informing it of how the user wants to schedule the crawler, and then sets 
+# the crawling schedule accordingly using crontab.
+
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 
