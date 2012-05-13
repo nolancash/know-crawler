@@ -115,17 +115,19 @@ class ArticleParser(HTMLParser):
         if tag == "p":
             self.__got_text = False
         if tag == "html":
-            print self.__get_top_words()
+            self.results[2] += ", " + ", ".join(self.__get_top_words())
+            self.results[2] = self.results[2].lower()
+            print self.results[2]
     
     """
-    Helper function to get the top 5 uncommon words in the text.
+    Helper function to get the top 10 uncommon words in the text.
     """
     def __get_top_words(self):
         util = Utilities.Utilities()
         common_words = util.common_words
         word_counts = util.word_frequencies(", ".join(self.__text))
-        top_5_words = util.top_k_unique_words(word_counts, 5, common_words)
-        return top_5_words
+        top_10_words = util.top_k_unique_words(word_counts, 10, common_words)
+        return top_10_words
             
 parser = ArticleParser()
 html = parser.get_html("http://www.nytimes.com/2012/05/13/business/student-loans-weighing-down-a-generation-with-heavy-debt.html")
