@@ -18,9 +18,9 @@ class Utilities(object):
     Converts text input into a list of words.
     This function assume all text has already been converted to proper ASCII encoding.
     """
-    def word_list(self, text, ignoreCase = True):    
+    def word_list(self, text, ignore_case = True):    
         # Changes all text to lowercase.
-        if ignoreCase:
+        if ignore_case:
             text = text.lower()
     
         # Removes ASCII apostrophes from the text.
@@ -42,8 +42,8 @@ class Utilities(object):
     """
     def word_frequencies(self, text):
         words = self.word_list(text)
-        uniqueWords = set(words)
-        return sorted([(words.count(word), word) for word in uniqueWords])
+        unique_words = set(words)
+        return sorted([(words.count(word), word) for word in unique_words])
     
     """
     Takes a list of word frequencies and returns up to numWords of the most
@@ -51,18 +51,15 @@ class Utilities(object):
     an empty list if numWords <= 0 or if all of the words in wordCounts
     are found in commonWords.
     """
-    def top_k_unique_words(self, wordCounts, numWords, commonWords):
+    def top_k_unique_words(self, word_counts, num_words, common_words):
         result = []
-        if numWords > 0:
+        if num_words > 0:
             count = 0
-            while (count < numWords) and wordCounts:
-                word = wordCounts.pop()[1]
-                print wordCounts
-                if not (word in commonWords):
-                    print word
+            while (count < num_words) and word_counts:
+                word = word_counts.pop()[1]
+                if not (word in common_words):
                     result.append(word)
                     count += 1
-                    print count
         return result
 
 
