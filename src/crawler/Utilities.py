@@ -43,6 +43,15 @@ class Utilities(object):
         words = self.word_list(text)
         uniqueWords = set(words)
         return sorted([(words.count(word), word) for word in uniqueWords])
+    
+    def top_k_unique_words(self, wordCounts, numWords, commonWords):
+        count = 0
+        result = []
+        while (count < numWords):
+            word = wordCounts.pop()
+            if commonWords.find(word) == -1:
+                result.append(word)
+                count += 1
 
 
 if __name__ == '__main__':
