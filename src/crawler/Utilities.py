@@ -66,8 +66,3 @@ if __name__ == '__main__':
         print "Same"
     else:
         print "Different"
-        
-u = Utilities()
-a = "apple-dog +cat #$%^&*() 1920         42orange  banana dog\ndog's cat's apples, Tyler's dog's apple's cat.dsasdsa\nqwerty:asdfg;zxcv"
-b = u.word_frequencies(a)
-print b
