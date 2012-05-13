@@ -6,7 +6,7 @@ Created on Apr 30, 2012
 import unittest
 import sys
 sys.path.append("../src/crawler")
-import WebsiteCrawler
+from crawler import WebsiteCrawler
 
 """
 This class runs our unit tests for WebsiteCrawler.py.
