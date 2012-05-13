@@ -46,7 +46,7 @@ class Utilities(object):
         return sorted([(words.count(word), word) for word in uniqueWords])
     
     """
-    Takes a list of word frequencies and returns numWords of the most
+    Takes a list of word frequencies and returns up to numWords of the most
     frequently used words that do no belong to commonWords. Returns
     an empty list if numWords <= 0 or if all of the words in wordCounts
     are found in commonWords.
