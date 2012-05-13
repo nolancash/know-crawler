@@ -48,7 +48,7 @@ class DBManager(object):
     Adds the passed strings title, description, keywords, author date and url to the database but only if 
     the passed title, description and keywords have values that are != "null".
     """
-    def add_article_info(self, title, description, keywords, author, date, url):
+    def add_article_info(self, title, description, keywords, author, url):
         if title != "null" and description != "null" and url != "null":
             query = "insert into articles values(0, \"" + title + "\", \"" + description +"\", \"" 
             query += keywords + "\", \"" + author + "\", NOW(), \"" + url + "\", 'null', 'null')"
@@ -59,17 +59,17 @@ class DBManager(object):
     
     """
     Takes a list of article summaries and adds them into the database. each list element must be a list with this format 
-    ["title", "description", "keywords", "author", "date", "url"] and the first 3 elements must not equal "null". The
+    ["title", "description", "keywords", "author", "url"] and the first 3 elements must not equal "null". The
     Passed url of each article summary must not already exist in the database as well.
     """   
     def add_article_list(self, article):
-        if len(article) == 7:
-            query = "select * from articles a where a.url like \"%" + article[6] + "%\";"
+        if len(article) == 6:
+            query = "select * from articles a where a.url like \"%" + article[5] + "%\";"
             curs = self.conn.cursor()
             curs.execute(query)
             rows = curs.fetchall()
             if len(rows) == 0:
-                return self.add_article_info(article[0], article[1], article[2], article[3], article[4], article[6])
+                return self.add_article_info(article[0], article[1], article[2], article[3], article[5])
         return False
     
     """

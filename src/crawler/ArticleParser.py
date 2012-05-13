@@ -26,7 +26,7 @@ class ArticleParser(HTMLParser):
         self.__html = ""
         self.__text = []
         self.mech = mechanize.Browser()
-        self.results = ["null", "null", "null", "null", "null", "null"]
+        self.results = ["null", "null", "null", "null", "null"]
         
     """
     Removes script tags from __html so ArticleParser doesn't break on malformed html tags in embedded javascript.
@@ -93,8 +93,7 @@ class ArticleParser(HTMLParser):
                 self.__get_tag_by_name("description", attrs, 1)
                 self.__get_tag_by_name("keywords", attrs, 2)
                 self.__get_tag_by_name("author", attrs, 3)
-                self.__get_tag_by_name("date", attrs, 4)
-                self.__get_tag_by_name("type", attrs, 5)
+                self.__get_tag_by_name("type", attrs, 4)
             if tag == "p":
                 self.__got_text = True
     
