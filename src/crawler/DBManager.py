@@ -4,6 +4,7 @@ Created on Apr 27, 2012
 @author: Nolan, Tyler, Harshad
 """
 import MySQLdb
+import cgi
 
 """
 This class handles all interaction with the mysql database including but not limited to adding article summaries
@@ -50,8 +51,9 @@ class DBManager(object):
     """
     def add_article_info(self, title, description, keywords, author, url):
         if title != "null" and description != "null" and url != "null":
-            query = "insert into articles values(0, \"" + title + "\", \"" + description +"\", \"" 
-            query += keywords + "\", \"" + author + "\", NOW(), \"" + url + "\", 'null', 'null')"
+            query = "insert into articles values(0, \"" + cgi.escape(title, True) + "\", \""
+            query += cgi.escape(description, True) +"\", \"" + cgi.escape(keywords, True)
+            query += "\", \"" + cgi.escape(author, True) + "\", NOW(), \"" + cgi.escape(url, True) + "\", 'null', 'null')"
             print query
             self.conn.query(query)
             return True
@@ -62,8 +64,8 @@ class DBManager(object):
     ["title", "description", "keywords", "author", "url"] and the first 3 elements must not equal "null". The
     Passed url of each article summary must not already exist in the database as well.
     """   
-    def add_article_list(self, article):
-        if len(article) == 6:
+    def add_article_list(self, article):         
+        if len(article) == 6 and (article[4].lower() == "article" or article[4] == "null"):
             query = "select * from articles a where a.url like \"%" + article[5] + "%\";"
             curs = self.conn.cursor()
             curs.execute(query)
