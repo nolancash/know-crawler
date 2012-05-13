@@ -38,7 +38,7 @@ class Utilities(object):
         return text
     
     """
-    Takes a list of words and returns list of unique words and their frequencies.
+    Takes a string of text and returns list of unique words and their frequencies.
     """
     def word_frequencies(self, text):
         words = self.word_list(text)
