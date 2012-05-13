@@ -81,3 +81,9 @@ class DBManager(object):
         for row in r.fetch_row(0):
             res.append(row[0])
             print row
+            
+    def send_query(self, query = "select * from articles;"):
+        curs = self.conn.cursor()
+        curs.execute(query)
+        rows = curs.fetchall()
+        return rows
