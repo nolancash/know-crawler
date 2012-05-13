@@ -16,6 +16,7 @@ class Utilities(object):
     
     """
     Converts text input into a list of words.
+    This function assume all text has already been converted to proper ASCII encoding.
     """
     def word_list(self, text, ignoreCase = True):    
         # Changes all text to lowercase.
