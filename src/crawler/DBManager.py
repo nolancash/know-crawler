@@ -50,7 +50,8 @@ class DBManager(object):
     """
     def add_article_info(self, title, description, keywords, author, date, url):
         if title != "null" and description != "null" and url != "null":
-            query = "insert into articles values(0, \"" + title + "\", \"" + description +"\", \"" + keywords + "\", \"" + author + "\", \"" + date + "\", \"" + url + "\")";
+            query = "insert into articles values(0, \"" + title + "\", \"" + description +"\", \"" 
+            query += keywords + "\", \"" + author + "\", NOW(), \"" + url + "\", 'null', 'null')"
             print query
             self.conn.query(query)
             return True

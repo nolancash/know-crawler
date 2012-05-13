@@ -117,7 +117,7 @@ class ArticleParser(HTMLParser):
         if tag == "html":
             self.results[2] += ", " + ", ".join(self.__get_top_words())
             self.results[2] = self.results[2].lower()
-            print self.results[2]
+#            print self.results[2]
     
     """
     Helper function to get the top 10 uncommon words in the text.
@@ -129,7 +129,7 @@ class ArticleParser(HTMLParser):
         top_10_words = util.top_k_unique_words(word_counts, 10, common_words)
         return top_10_words
             
-parser = ArticleParser()
-html = parser.get_html("http://www.nytimes.com/2012/05/13/business/student-loans-weighing-down-a-generation-with-heavy-debt.html")
-parser.feed(html)
+#parser = ArticleParser()
+#html = parser.get_html("http://www.nytimes.com/2012/05/13/business/student-loans-weighing-down-a-generation-with-heavy-debt.html")
+#parser.feed(html)
                 
