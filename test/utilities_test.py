@@ -101,10 +101,10 @@ class Test(unittest.TestCase):
     """
     def test_top_k_unique_words_with_common(self):
         print "starting"
-        commonWords = ["the", "and", "dog", "cat"]
+        common_words = ["the", "and", "dog", "cat"]
         counts = [(1, "lazy"), (1, "over"), (1, "winner"), (2, "dog"), (2, "fox"), (2, "the")]
         expected = ["fox", "winner", "over", "lazy"]
-        self.assertEqual(expected, Utilities.Utilities().top_k_unique_words(counts, 5, commonWords))
+        self.assertEqual(expected, Utilities.Utilities().top_k_unique_words(counts, 5, common_words))
     
     """
     Tests top_k_unique_words with a list of common words such that the list of word
@@ -112,11 +112,11 @@ class Test(unittest.TestCase):
     """
     def test_top_k_unique_words_with_all_common(self):
         print "starting"
-        commonWords = ["the", "and", "dog", "cat", "ate", "brown", "jumped", "lazy", "over", "winner", "fox"]
+        common_words = ["the", "and", "dog", "cat", "ate", "brown", "jumped", "lazy", "over", "winner", "fox"]
         counts = [(1, "and"), (1, "ate"), (1, "brown"), (1, "cat"), (1, "jumped"),
                     (1, "lazy"), (1, "over"), (1, "winner"), (2, "dog"), (2, "fox"), (2, "the")]
         expected = []
-        self.assertEqual(expected, Utilities.Utilities().top_k_unique_words(counts, 5, commonWords))
+        self.assertEqual(expected, Utilities.Utilities().top_k_unique_words(counts, 5, common_words))
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
