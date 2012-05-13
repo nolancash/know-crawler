@@ -47,16 +47,23 @@ class Utilities(object):
     
     """
     Takes a list of word frequencies and returns numWords of the most
-    frequently used words that do no belong to commonWords.
+    frequently used words that do no belong to commonWords. Returns
+    an empty list if numWords <= 0 or if all of the words in wordCounts
+    are found in commonWords.
     """
     def top_k_unique_words(self, wordCounts, numWords, commonWords):
-        count = 0
         result = []
-        while (count < numWords):
-            word = wordCounts.pop()
-            if commonWords.find(word) == -1:
-                result.append(word)
-                count += 1
+        if numWords > 0:
+            count = 0
+            while (count < numWords) and wordCounts:
+                word = wordCounts.pop()[1]
+                print wordCounts
+                if not (word in commonWords):
+                    print word
+                    result.append(word)
+                    count += 1
+                    print count
+        return result
 
 
 if __name__ == '__main__':
