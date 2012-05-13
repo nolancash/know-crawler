@@ -16,7 +16,8 @@ def main():
     testmodules = [
         "db_manager_test",
         "article_parser_test",
-        "website_crawler_test"]
+        "website_crawler_test",
+        "utilities_test"]
     
     suite = unittest.TestSuite()
     
