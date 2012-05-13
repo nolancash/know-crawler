@@ -8,7 +8,7 @@ from ArticleParser import ArticleParser
 from urllib2 import HTTPError
 from urlparse import urljoin
 import mechanize
-import cookielib
+import HTMLParser
 
 """
 Created on Apr 23, 2012
@@ -129,6 +129,8 @@ class WebsiteCrawler(object):
                     self.__article_results.append(result)
                 except UnicodeDecodeError:
                     print "Bad character."
+                except HTMLParser.HTMLParseError:
+                    print "Bad html."
                 del parser
                 del html
             except HTTPError:
