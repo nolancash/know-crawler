@@ -44,6 +44,10 @@ class Utilities(object):
         uniqueWords = set(words)
         return sorted([(words.count(word), word) for word in uniqueWords])
     
+    """
+    Takes a list of word frequencies and returns numWords of the most
+    frequently used words that do no belong to commonWords.
+    """
     def top_k_unique_words(self, wordCounts, numWords, commonWords):
         count = 0
         result = []
