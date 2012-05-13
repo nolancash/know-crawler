@@ -33,6 +33,15 @@ class Test(unittest.TestCase):
         expected = ["the", "brown", "fox", "jumped", "over", "the",
                     "lazy", "dog", "dog", "ate", "cat", "and", "fox", "winner"]
         self.assertEqual(expected, Utilities.Utilities().word_list(s, True))
+        
+    """
+    Tests word_list with numbers formatted with commas.
+    """    
+    def test_word_list_numbers(self):
+        s = "The brown fox jumped over the lazy dog. Dog ate cat and fox, winner. 100,000 100,000"
+        expected = ["the", "brown", "fox", "jumped", "over", "the",
+                    "lazy", "dog", "dog", "ate", "cat", "and", "fox", "winner", "100000", "100000"]
+        self.assertEqual(expected, Utilities.Utilities().word_list(s, True))
     
     """
     Tests word_list with more ASCII characters.
