@@ -10,6 +10,7 @@ class Utilities(object):
     
     def __init__(self):
         self.common_words = []
+        # TODO: Refactor this into the database so it is not hardcoded.
         s = """a
 ability
 able
