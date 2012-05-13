@@ -7,6 +7,7 @@ Created on Apr 23, 2012
 import urllib2
 from HTMLParser import HTMLParser
 import mechanize
+import Utilities
 
 """
 Article Parser extends the HTMLParser class and is used to parse a news article page for a summary of its meta information
@@ -23,6 +24,7 @@ class ArticleParser(HTMLParser):
         self.__ignore_line = -1
         self.__got_text = False
         self.__html = ""
+        self.__text = []
         self.mech = mechanize.Browser()
         self.results = ["null", "null", "null", "null", "null", "null"]
         
@@ -97,17 +99,35 @@ class ArticleParser(HTMLParser):
                 self.__got_text = True
     
     """
-    This class gets called when an html tag has text inside of it. If the start tag was a p tag then it is processed.
+    This function gets called when an html tag has text inside of it. If the start tag was a p tag then it is processed.
     """
     def handle_data(self,data):
 #        TODO: process p tags
         if self.__got_text:
-#            print data
+            self.__text.append(data)
             pass
-        self.__got_text = False
-
-#    def handle_endtag(self, tag):
-#        if tag == "html":
-#            self.__done = 1
-#            print "done"
+        
+    """
+    This function gets called to signal the closing of a paragraph tag or the end of
+    the html.
+    """
+    def handle_endtag(self, tag):
+        if tag == "p":
+            self.__got_text = False
+        if tag == "html":
+            print self.__get_top_words()
+    
+    """
+    Helper function to get the top 5 uncommon words in the text.
+    """
+    def __get_top_words(self):
+        util = Utilities.Utilities()
+        common_words = util.common_words
+        word_counts = util.word_frequencies(", ".join(self.__text))
+        top_5_words = util.top_k_unique_words(word_counts, 5, common_words)
+        return top_5_words
+            
+parser = ArticleParser()
+html = parser.get_html("http://www.nytimes.com/2012/05/13/business/student-loans-weighing-down-a-generation-with-heavy-debt.html")
+parser.feed(html)
                 
