@@ -32,14 +32,27 @@ def main(options):
         print "knowcrawler.zip: try knowcrawler.zip -u http://www.nytimes.com/"
         
     print options.SOURCE_URL
-    results = crawler.parse_articles(crawler.get_links(options.SOURCE_URL))
-    if options.DRY_RUN:
-        print "Regular run."
-        for article in results:
-            db.add_article_list(article)
-    else:
-        print "Dry Run."
-        #db.print_database()
+    rows = db.send_query("select * from user_list")
+    for row in rows:
+#        print row[0]
+        results = crawler.parse_articles(crawler.get_links(row[0]))
+        if options.DRY_RUN:
+            print "Regular run."
+            for article in results:
+                db.add_article_list(article)
+            else:
+                print "Dry Run."
+                #db.print_database()
+                
+#    results = crawler.parse_articles(crawler.get_links(options.SOURCE_URL))
+#    if options.DRY_RUN:
+#            print "Regular run."
+#            for article in results:
+#                db.add_article_list(article)
+    
+#    else:
+#        print "Dry Run."
+#        #db.print_database()
     db.close()
   
 if __name__ == "__main__":
