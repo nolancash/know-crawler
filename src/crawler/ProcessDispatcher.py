@@ -16,8 +16,8 @@ Parses out the passed arguments for the url to be crawled.
 """
 def parse_arguments():
     parser = optparse.OptionParser(description="know-crawler-0.1.1")
-    parser.add_option("-u", dest="SOURCE_URL",
-        help="The url of the news source to be processed.")
+#    parser.add_option("-u", dest="SOURCE_URL",
+#        help="The url of the news source to be processed.")
     parser.add_option("-d", action="store_false", dest="DRY_RUN", default=True,
                       help="Does a dry run by not inserting articles into the database.")
     return parser.parse_args()
@@ -28,10 +28,10 @@ Crawls the passed arguments url and saves all data to the sql database.
 def main(options):
     db = DBManager.DBManager()
     crawler = WebsiteCrawler.WebsiteCrawler()
-    if options.SOURCE_URL == None:
-        print "knowcrawler.zip: try knowcrawler.zip -u http://www.nytimes.com/"
+#    if options.SOURCE_URL == None:
+#        print "knowcrawler.zip: try knowcrawler.zip -u http://www.nytimes.com/"
         
-    print options.SOURCE_URL
+#    print options.SOURCE_URL
     rows = db.send_query("select * from user_list")
     for row in rows:
 #        print row[0]
