@@ -6,8 +6,17 @@ Created on May 9, 2012
 
 import re
 
+"""
+This class contains all of the utility functions required for the webcrawler.
+These functions include calculating the most frequently used words in a piece
+of text and generating a list of common words.
+"""
+
 class Utilities(object):
     
+    """
+    Constructs a Utilities object and generates a list of common words.
+    """
     def __init__(self):
         self.common_words = []
         # TODO: Refactor this into the database so it is not hardcoded.
@@ -2013,6 +2022,9 @@ yourself
 youth"""
         self.common_words = s.split("\n")
     
+    """
+    Makes Utilities a singleton.
+    """
     _instance = None
     def __new__(cls, *args, **kwargs):
         if not cls._instance:

@@ -88,14 +88,14 @@ class Test(unittest.TestCase):
     """
     def test_add_article_info_null(self):
         self.assertFalse(DBManager.DBManager().add_article_info(
-                        "null", "desc", "words", "author", "date", "google.com"))
+                        "null", "desc", "words", "author", "google.com"))
     
     """
     Tests add_article_list given an empty parameter.
     """
     def test_add_article_list_null(self):
         self.assertFalse(DBManager.DBManager().add_article_list(
-                        ["null", "desc", "words", "author", "date", "article", "google.com"]))
+                        ["null", "desc", "words", "author", "article", "google.com"]))
     
     """
     Tests add_article_list given a list with less than the
@@ -103,7 +103,7 @@ class Test(unittest.TestCase):
     """    
     def test_add_article_list_fewer_args(self):
         self.assertFalse(DBManager.DBManager().add_article_list(
-                        ["null", "desc", "words", "author", "date", "google.com"]))
+                        ["null", "desc", "words", "author", "google.com"]))
 
 
 if __name__ == "__main__":
