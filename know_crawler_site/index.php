@@ -16,7 +16,7 @@
 
 	</head>
 	<body>
-		<form action="" method="post"> 
+		<form action="scheduler" method="post"> 
 			<fieldset>
 				<legend>Time Schedule:</legend>
 				<div>
@@ -41,22 +41,15 @@
 			</fieldset>
 		</form>
 		
-		<form action="" method="post"> 
+		<form action="index.php" method="post"> 
 			<fieldset>
 				<legend>Articles to Crawl:</legend>
 				<div>
 					<strong>Article List:</strong>
 					<!-- Get articles from database -->
-				</div>
-				<div>
-					<input type="submit" value="Submit" />
-				</div>
-			</fieldset>
-		</form>
-	</body>
-</html>
+					
 <?php
-const SERVER = "localhost";
+const SERVER = "localhost:32001";
 const USER_NAME = "root";
 const PASSWORD = "purple pony disco";
 const DB_NAME = "know_db";
@@ -64,6 +57,7 @@ const USER_TABLE = "user_list";
 const WHITE_TABLE = "white_list";
 const URL_COLUMN = "url";
 
+ini_set('mysql.default_socket', '/rc12/d04/knowcse2/mysql.sock');
 $connection = mysql_connect(SERVER, USER_NAME, PASSWORD);
 checkResultSuccessful($connection, "mysql_connect");
 
@@ -112,6 +106,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 mysql_close($connection);
 ?>
+
+				</div>
+				<div>
+					<input type="submit" value="Submit" />
+				</div>
+			</fieldset>
+		</form>
+	</body>
+</html>
+
 
 <?php
 
