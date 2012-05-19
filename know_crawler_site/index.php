@@ -46,10 +46,13 @@
 				<legend>Articles to Crawl:</legend>
 				<div>
 					<strong>Article List:</strong>
+				<div>
+				<div>
 					<!-- Get articles from database -->
 					
 <?php
-const SERVER = "localhost:32001";
+const SERVER = "ovid.u.washington.edu";
+const PORT_NUM = "32001";
 const USER_NAME = "root";
 const PASSWORD = "purple pony disco";
 const DB_NAME = "know_db";
@@ -58,11 +61,11 @@ const WHITE_TABLE = "white_list";
 const URL_COLUMN = "url";
 
 ini_set('mysql.default_socket', '/rc12/d04/knowcse2/mysql.sock');
-$connection = mysql_connect(SERVER, USER_NAME, PASSWORD);
+$connection = mysql_connect(SERVER . ":" . PORT_NUM, USER_NAME, PASSWORD);
 checkResultSuccessful($connection, "mysql_connect");
 
-$connection = mysql_select_db(DB_NAME);
-checkResultSuccessful($connection, "mysql_select_db");
+$select = mysql_select_db(DB_NAME);
+checkResultSuccessful($select, "mysql_select_db");
 
 $user_list = get_url_list(USER_TABLE);
 $white_list = get_url_list(WHITE_TABLE);
@@ -72,11 +75,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 	
 } else if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$new_user_list = $_POST["userList"];
-	
+		
 	if (!empty($new_user_list)) {
 		$new_size = count($new_user_list);
-	
-		for ($i = 0; i < $new_size; $i++) {
+				
+		for ($i = 0; $i < $new_size; $i++) {
 			$url = $new_user_list[$i];
 			
 			if (!in_array($url, $user_list)) {
@@ -89,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 		
 		$old_size = count($user_list);
 		
-		for ($i = 0; i < $old_size; $i++) {
+		for ($i = 0; $i < $old_size; $i++) {
 			$old_url = $user_list[$i];
 			
 			if (!in_array($old_url, $new_user_list)) {
@@ -130,7 +133,7 @@ function checkResultSuccessful($result, $info) {
 # Queries the url list of the given type (user or white list).
 # Returns the result array of the query.
 function get_url_list($list_type) {
-	$list_query = "SELECT " . URL_COLUMN . " FROM '$list_type' " . 
+	$list_query = "SELECT " . URL_COLUMN . " FROM $list_type " . 
 				"ORDER BY " . URL_COLUMN . " ASC;";
 	$list_result = mysql_query($list_query);
 	
