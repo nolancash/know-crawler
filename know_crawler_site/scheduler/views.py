@@ -3,7 +3,6 @@
 # the crawling schedule accordingly using crontab.
 
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
 
 from crontab import CronTab
 
@@ -23,7 +22,7 @@ def scheduler(request):
 		setCronTab(hour, minute)
 		
 		message = "Crawling time is set to " + hour + ":" + minute + " " + period + "."
-		return render_to_response('index.html', { "message" : message })
+		return HttpResponse(message)
 		
 	return HttpResponse('Schedule is not submitted.')
 
