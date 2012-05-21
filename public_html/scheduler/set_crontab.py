@@ -1,13 +1,15 @@
 import sys
 from crontab import CronTab
 
+CRAWLER_COMMAND = '/usr/bin/python ProcessDispatcher.py'
+
 def setCronTab(hour, minute):
 	tab = CronTab()
 	
 	# remove old crawler cron job(s)
-	tab.remove_all('crawler.py')
+	tab.remove_all(CRAWLER_COMMAND)
 	
-	cron = tab.new(command='crawler.py')
+	cron = tab.new(command=CRAWLER_COMMAND)
 	cron.minute().on(minute)
 	cron.hour().on(hour)
 	
