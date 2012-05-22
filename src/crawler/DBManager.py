@@ -55,7 +55,7 @@ class DBManager(object):
             query += cgi.escape(description, True) +"\", \"" + cgi.escape(keywords, True)
             query += "\", \"" + cgi.escape(author, True) + "\", NOW(), \"" + cgi.escape(url, True) + "\", 'null', 'null')"
             print query
-            if dry_run:
+            if not dry_run:
                 self.conn.query(query)
                 return True
         return False
