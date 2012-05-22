@@ -155,8 +155,8 @@ class WebsiteCrawler(object):
     #                print tag
     #            print "====="
         finally:
-            for l in self.__article_results:
-                print l
+#            for l in self.__article_results:
+#                print l
             return self.__article_results
     
 
