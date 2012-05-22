@@ -69,7 +69,7 @@ MONTH_ENUM = [
 ]
 WEEK_ENUM  = [
     'sun', 'mon', 'tue', 'wed', 'thu',
-    'fri', 'sat', 'sun',
+    'fri', 'sat',
 ]
 
 SPECIALS = {
@@ -88,7 +88,7 @@ S_INFO = [
     { 'name' : 'Hours',        'max_v' : 23, 'min_v' : 0 },
     { 'name' : 'Day of Month', 'max_v' : 31, 'min_v' : 1 },
     { 'name' : 'Month',        'max_v' : 12, 'min_v' : 1, 'enum' : MONTH_ENUM },
-    { 'name' : 'Day of Week',  'max_v' : 7,  'min_v' : 0, 'enum' : WEEK_ENUM },
+    { 'name' : 'Day of Week',  'max_v' : 6,  'min_v' : 0, 'enum' : WEEK_ENUM },
 ]
 
 class CronTab(object):
