@@ -4,7 +4,7 @@ from crontab import CronTab
 
 CRAWLER_COMMAND = '/usr/bin/python ProcessDispatcher.py'
 
-DAY_OF_WEEK = [ "Sunday", "Monday", "Tuesday", "Wednesday", 
+DAYS_OF_WEEK = [ "Sunday", "Monday", "Tuesday", "Wednesday", 
 	"Thursday", "Friday", "Saturday" ]
 
 def printTimeSetting():
@@ -15,9 +15,12 @@ def printTimeSetting():
 		return
 	crawler_job = crawler_jobs[0]
 	minute = crawler_job.minute().value()
+	if len(minute) < 2:
+		minute = '0' + minute
 	hour = crawler_job.hour().value()
-	dow = int(crawler_job.dow().value())
-	print 'The crawler job is scheduled at ' + hour + ':' + minute + ' on ' + DAY_OF_WEEK[dow]
+	dsow = crawler_job.dow().value().split(',')
+	days = ', '.join(map(lambda x : DAYS_OF_WEEK[int(x)], dsow))
+	print 'The crawler job is scheduled at ' + hour + ':' + minute + ' on ' + days + '.'
 
 def setCronTab(hour, minute, days):
 	tab = CronTab()
