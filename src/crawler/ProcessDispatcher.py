@@ -18,7 +18,7 @@ def parse_arguments():
     parser = optparse.OptionParser(description="know-crawler-0.1.1")
 #    parser.add_option("-u", dest="SOURCE_URL",
 #        help="The url of the news source to be processed.")
-    parser.add_option("-d", action="store_false", dest="DRY_RUN", default=True,
+    parser.add_option("-d", action="store_true", dest="DRY_RUN", default=False,
                       help="Does a dry run by not inserting articles into the database.")
     return parser.parse_args()
 
@@ -26,6 +26,7 @@ def parse_arguments():
 Crawls the passed arguments url and saves all data to the sql database.
 """
 def main(options):
+    print "Dry run: " + str(options.DRY_RUN)
     db = DBManager.DBManager()
     crawler = WebsiteCrawler.WebsiteCrawler()
 #    if options.SOURCE_URL == None:
@@ -42,12 +43,8 @@ def main(options):
         pagesCrawled += 1
         print row[0]
         results = crawler.parse_articles(crawler.get_links(row[0]))
-        if options.DRY_RUN:
-            print "Regular run."
-            for article in results:
-                db.add_article_list(article)
-            else:
-                print "Dry Run."
+        for article in results:
+            db.add_article_list(article, options.DRY_RUN)
                 #db.print_database()
                 
 #    results = crawler.parse_articles(crawler.get_links(options.SOURCE_URL))
