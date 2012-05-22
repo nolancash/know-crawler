@@ -20,7 +20,7 @@ def printTimeSetting():
 	hour = crawler_job.hour().value()
 	dsow = crawler_job.dow().value().split(',')
 	days = ', '.join(map(lambda x : DAYS_OF_WEEK[int(x)], dsow))
-	print 'The crawler job is scheduled at ' + hour + ':' + minute + ' on ' + days + '.'
+	print 'The crawler job is scheduled at ' + hour + ':' + minute + " o'clock on " + days + '.'
 
 def setCronTab(hour, minute, days):
 	tab = CronTab()
@@ -46,30 +46,34 @@ def getNumberInput(name, min_val, max_val):
 	while(True):
 		var = raw_input(prompt_msg)
 		if not var.isdigit():
-			print 'invalid ' + name
+			print 'invalid ' + name + ': not a digit'
 			continue
 		var = int(var)
 		if var < min_val or var > max_val:
-			print 'invalid ' + name
+			print 'invalid ' + name + ': out of range'
 			continue
 		return var
 		
 def getDaysInput():
 	days = []
 	print 'day(s) of week'
-	prompt_msg = 'day (-1 to exit): '
+	prompt_msg = 'day (-1 to finish): '
 	while(True):
 		var = raw_input(prompt_msg)
 		if var == '-1' and not days:
 			print 'enter at least 1 day of week'
 			continue
 		if var == '-1':
-			return days
-		day = var[:3].lower()
-		if day not in crontab.WEEK_ENUM:
+			return sorted(days)
+		day_enum = var[:3].lower()
+		if day_enum not in crontab.WEEK_ENUM:
 			print 'invalid day of week'
 			continue
-		days.append(crontab.WEEK_ENUM.index(day))
+		day = crontab.WEEK_ENUM.index(day_enum)
+		if day in days:
+			print var + ' is alreay entered'
+			continue
+		days.append(day)
 
 def main():
 	if len(sys.argv) != 2:
@@ -84,6 +88,7 @@ def main():
 		minute = getNumberInput('minute', 0, 59)
 		days = getDaysInput()
 		setCronTab(hour, minute, days)
+		printTimeSetting()
 	else:
 		usage(sys.argv[0])
 
