@@ -3,15 +3,15 @@ Created on Apr 23, 2012
 
 @author: Nolan, Tyler
 """
-
 from ArticleParser import ArticleParser
 from urllib2 import HTTPError
 from urlparse import urljoin
 import mechanize
 import HTMLParser
-
+import urllib2
+import TimeoutException
+ 
 """
-Created on Apr 23, 2012
 This class oversees all of the crawling of a news website. It collects all of the links on a page that 
 it thinks are news articles then it gathers all the information off of the pages that it thinks are 
 news articles saves it.
@@ -54,7 +54,8 @@ class WebsiteCrawler(object):
     """
     Takes a url as a parameter and returns a list of strings that are links on a page that look like 
     links to articles.
-    """    
+    """
+    @TimeoutException.timeout(45)    
     def get_links(self,base_url):
         try:
             print "opening"
@@ -86,6 +87,12 @@ class WebsiteCrawler(object):
         except mechanize._mechanize.BrowserStateError:
             print "Empty url."
             pass
+        except urllib2.URLError:
+            print "Url error."
+            pass
+        except TimeoutException:
+            print "Timeout Exception."
+            pass
             
     """
     Takes a url and strips it of all url encoded parameters.
@@ -107,42 +114,49 @@ class WebsiteCrawler(object):
     Given a list of strings that represent urls this method parses them and returns a list. This list contains summaries of 
     articles which are themselfs list with the following structure ["title", "description", "keywords", "author", "date", "url"].
     """
+    @TimeoutException.timeout(45)
     def parse_articles(self, articles):
-#        counter = 1
-        if articles:
-            for article in articles:
-    #            print counter
-    #            counter = counter + 1
-    #            print "running"
-    #            print article
-                parser = ArticleParser()
-                try:
-                    html = parser.get_html(article)
-    #                if len(html) > 10:
-    #                    print "full"
-                    html = ArticleParser.pre_parse(html, "script")
-    #                time.sleep(1)
-    #                print "finished"
+        try:
+    #        counter = 1
+            if articles:
+                for article in articles:
+    #                print counter
+    #                counter = counter + 1
+        #            print "running"
+        #            print article
+                    parser = ArticleParser()
                     try:
-                        parser.feed(html)
-                        result = parser.results
-                        result.append(article)
-                        self.__article_results.append(result)
-                    except UnicodeDecodeError:
-                        print "Bad character."
-                    except HTMLParser.HTMLParseError:
-                        print "Bad html."
-                    del parser
-                    del html
-                except HTTPError:
-                    print "HTTP error."
-                    pass
+                        html = parser.get_html(article)
+        #                if len(html) > 10:
+        #                    print "full"
+    #                    print "pre-processing"
+                        html = ArticleParser.pre_parse(html, "script")
+        #                time.sleep(1)
+    #                    print "finished"
+                        try:
+                            parser.feed(html)
+                            result = parser.results
+                            result.append(article)
+                            self.__article_results.append(result)
+                        except UnicodeDecodeError:
+                            print "Bad character."
+                        except HTMLParser.HTMLParseError:
+                            print "Bad html."
+                        del parser
+                        del html
+                    except HTTPError:
+                        print "HTTP error."
+                        pass
+        except TimeoutException:
+            print "Timeout Exception."
+            pass
     #        for article in self.__article_results:
     #            for tag in article:
     #                print tag
     #            print "====="
-        for l in self.__article_results:
-            print l
-        return self.__article_results
+        finally:
+            for l in self.__article_results:
+                print l
+            return self.__article_results
     
 
