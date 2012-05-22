@@ -5,9 +5,8 @@
 		<title>KNOW-Crawler Settings</title>
 		
 		<!-- CSS stylesheet -->
-		<!--
-		<link href="GALINA's FILE HERE" type="text/css" rel="stylesheet" />
-		-->
+		<link href="index.css" type="text/css" rel="stylesheet" />
+
 		
 		<!-- Linked JavaScript files -->
 		<!-- some JS libraries I used before, we can use them if we want later -->
