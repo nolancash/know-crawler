@@ -58,11 +58,11 @@ class WebsiteCrawler(object):
     @TimeoutException.timeout(45)    
     def get_links(self,base_url):
         try:
-            print "opening"
+#            print "opening"
             self.mech.open(base_url)
             response = self.mech.response()
-            print "loaded response"
-            print self.mech.geturl()
+#            print "loaded response"
+#            print self.mech.geturl()
     #        print response.info()
 #            print response.read()
 #            links = self.mech.links(url_regex=base_url)
@@ -76,7 +76,7 @@ class WebsiteCrawler(object):
                     normal_url) > len(base_url):
                     articles.append(normal_url)
             articles = set(articles)
-            print "Retrieved articles."
+#            print "Retrieved articles."
             return articles
         except HTTPError:
             print "Http error."
@@ -102,7 +102,7 @@ class WebsiteCrawler(object):
         baseurl = self.mech.geturl()
         if url.find(baseurl) == -1 and len(baseurl) > 3:
             res = urljoin(baseurl[:len(baseurl)], url)
-            print res
+#            print res
         if url.find("?") != -1:
             res = url[0:url.find("?")]
         if res.find("#") != -1:
