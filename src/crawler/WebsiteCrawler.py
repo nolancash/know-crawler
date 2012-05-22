@@ -109,36 +109,38 @@ class WebsiteCrawler(object):
     """
     def parse_articles(self, articles):
 #        counter = 1
-        for article in articles:
-#            print counter
-#            counter = counter + 1
-#            print "running"
-#            print article
-            parser = ArticleParser()
-            try:
-                html = parser.get_html(article)
-#                if len(html) > 10:
-#                    print "full"
-                html = ArticleParser.pre_parse(html, "script")
-#                time.sleep(1)
-#                print "finished"
+        if articles:
+            for article in articles:
+    #            print counter
+    #            counter = counter + 1
+    #            print "running"
+    #            print article
+                parser = ArticleParser()
                 try:
-                    parser.feed(html)
-                    result = parser.results
-                    result.append(article)
-                    self.__article_results.append(result)
-                except UnicodeDecodeError:
-                    print "Bad character."
-                except HTMLParser.HTMLParseError:
-                    print "Bad html."
-                del parser
-                del html
-            except HTTPError:
-                pass
-#        for article in self.__article_results:
-#            for tag in article:
-#                print tag
-#            print "====="
+                    html = parser.get_html(article)
+    #                if len(html) > 10:
+    #                    print "full"
+                    html = ArticleParser.pre_parse(html, "script")
+    #                time.sleep(1)
+    #                print "finished"
+                    try:
+                        parser.feed(html)
+                        result = parser.results
+                        result.append(article)
+                        self.__article_results.append(result)
+                    except UnicodeDecodeError:
+                        print "Bad character."
+                    except HTMLParser.HTMLParseError:
+                        print "Bad html."
+                    del parser
+                    del html
+                except HTTPError:
+                    print "HTTP error."
+                    pass
+    #        for article in self.__article_results:
+    #            for tag in article:
+    #                print tag
+    #            print "====="
         for l in self.__article_results:
             print l
         return self.__article_results

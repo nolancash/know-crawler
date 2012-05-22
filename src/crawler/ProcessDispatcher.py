@@ -32,9 +32,9 @@ def main(options):
 #        print "knowcrawler.zip: try knowcrawler.zip -u http://www.nytimes.com/"
         
 #    print options.SOURCE_URL
-    rows = db.send_query("select * from user_list")
+    rows = db.send_query("select nsource_url from news_sources")
     for row in rows:
-#        print row[0]
+        print row[0]
         results = crawler.parse_articles(crawler.get_links(row[0]))
         if options.DRY_RUN:
             print "Regular run."

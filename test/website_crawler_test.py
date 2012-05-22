@@ -50,6 +50,12 @@ class Test(unittest.TestCase):
         self.assertEqual([], WebsiteCrawler.WebsiteCrawler().parse_articles(""))
     
     """
+    Tests parse_articles given a None type object as a parameter.
+    """    
+    def test_parse_articles_none(self):
+        self.assertEqual([], WebsiteCrawler.WebsiteCrawler().parse_articles(None))
+    
+    """
     Tests parse_articles on the links given by the front
     page of http://www.nytimes.com/. We know for a fact
     that there should be at least 30 articles with proper

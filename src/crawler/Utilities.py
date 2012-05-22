@@ -21,6 +21,12 @@ class Utilities(object):
         self.common_words = []
         # TODO: Refactor this into the database so it is not hardcoded.
         s = """a
+was
+were
+has
+are
+said
+is
 ability
 able
 about

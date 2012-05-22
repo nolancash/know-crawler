@@ -23,6 +23,7 @@ class ArticleParser(HTMLParser):
 #        self.__done = 0
         self.__ignore_line = -1
         self.__got_text = False
+        self.__got_title = False
         self.__html = ""
         self.__text = []
         self.mech = mechanize.Browser()
@@ -94,17 +95,22 @@ class ArticleParser(HTMLParser):
                 self.__get_tag_by_name("keywords", attrs, 2)
                 self.__get_tag_by_name("author", attrs, 3)
                 self.__get_tag_by_name("type", attrs, 4)
-            if tag == "p":
+            elif tag == "p":
                 self.__got_text = True
+            elif tag == "title":
+                self.__got_title = True
     
     """
     This function gets called when an html tag has text inside of it. If the start tag was a p tag then it is processed.
+    If the title attribute has not been set, then we set the title with the title tag.
     """
     def handle_data(self,data):
 #        TODO: process p tags
         if self.__got_text:
             self.__text.append(data)
             pass
+        elif self.__got_title and self.results[0] == "null":
+            self.results[0] = data
         
     """
     This function gets called to signal the closing of a paragraph tag or the end of
@@ -114,6 +120,8 @@ class ArticleParser(HTMLParser):
         if tag == "p":
             self.__got_text = False
         if tag == "html":
+            if self.results[2] == "null":
+                self.results[2] == ""
             self.results[2] += ", " + ", ".join(self.__get_top_words())
             self.results[2] = self.results[2].lower()
 #            print self.results[2]
