@@ -129,6 +129,7 @@ class WebsiteCrawler(object):
         except TimeoutException:
             print "Timeout Exception."
             pass
-        return self.__article_results
+        finally:
+            return self.__article_results
     
 

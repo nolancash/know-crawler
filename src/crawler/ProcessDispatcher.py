@@ -6,6 +6,9 @@ Created on Apr 23, 2012
 import WebsiteCrawler
 import DBManager
 import optparse
+import sys
+import datetime
+import TimeoutException
 
 """
 This script runs the web crawler. In future releases it will also manage the multiprocessing of the crawler.
@@ -28,6 +31,7 @@ def parse_arguments():
 Crawls the passed arguments url and saves all data to the sql database.
 """
 def main(options):
+#    sys.stdout = open(__log_file_setup(), 'w')
     print "Dry run: " + str(options.DRY_RUN)
     if options.SOURCE_URL:
         print "Running on " + str(options.SOURCE_URL) + "."
@@ -58,10 +62,25 @@ def __run_from_list(websites):
     db = DBManager.DBManager()
     for site in websites:
         crawler = WebsiteCrawler.WebsiteCrawler()
-        results = crawler.parse_articles(crawler.get_links(site))
-        for article in results:
-            db.add_article_list(article, options.DRY_RUN)
+        links = crawler.get_links(site)
+        try:
+            results = crawler.parse_articles(links)
+        except TimeoutException.TimeoutException:
+            print "Timeout Exception."
+        if results:
+            for article in results:
+                db.add_article_list(article, options.DRY_RUN)
         del crawler
+
+"""
+Concatenates the file name for the log file in the format:
+log_yyyy-mm-dd_hh:mm:ss       
+"""
+def __log_file_setup():
+    date = str(datetime.datetime.now())
+    date = date.replace(" ", "_")
+    return "log_" + date
+    
   
 if __name__ == "__main__":
     (options, args) = parse_arguments()
