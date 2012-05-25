@@ -10,6 +10,7 @@ import sys
 import datetime
 import TimeoutException
 import os
+from multiprocessing import Pool
 
 """
 This script runs the web crawler. In future releases it will also manage the multiprocessing of the crawler.
@@ -51,17 +52,18 @@ def main(options):
         divisor = int(options.NUM_PROCESSES)
         process_lists = []
         db = DBManager.DBManager()
-        rows = db.send_query("select nsource_url from news_sources")
-#        rows = db.send_query("select * from user_list")
+#        rows = db.send_query("select nsource_url from news_sources")
+        rows = db.send_query("select * from user_list")
         counter = 0
         for i in range(0,divisor):
             process_lists.append([])
         for row in rows:
             process_lists[counter % divisor].append(row[0])
             counter += 1
-        for i in range(0, divisor):
-            __run_from_list(process_lists[i])
-            
+#        for i in range(0, divisor):
+#            __run_from_list(process_lists[i])
+        pool = Pool(processes=divisor)
+        pool.map(__run_from_list, process_lists)  
     print "Done."
     db.close()
 
