@@ -66,7 +66,7 @@ def __run_from_list(websites):
         try:
             results = crawler.parse_articles(links)
         except TimeoutException.TimeoutException:
-            print "Timeout Exception."
+            print "Timeout Exception (outer)."
         if results:
             for article in results:
                 db.add_article_list(article, options.DRY_RUN)
