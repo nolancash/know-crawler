@@ -101,7 +101,7 @@ class WebsiteCrawler(object):
 
     """
     Given a list of strings that represent urls this method parses them and returns a list. This list contains summaries of 
-    articles which are themselfs list with the following structure ["title", "description", "keywords", "author", "date", "url"].
+    articles which are themselves list with the following structure ["title", "description", "keywords", "author", "date", "url"].
     """
 #    @TimeoutException.timeout(45)
     def parse_articles(self, articles):
