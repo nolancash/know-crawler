@@ -48,7 +48,7 @@ for cron5 in tab:
 
 tab.remove_all('echo')
 
-t.write()
+tab.write()
 """
 
 import os, re, sys
