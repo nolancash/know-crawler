@@ -49,7 +49,7 @@ class DBManager(object):
     Adds the passed strings title, description, keywords, author date and url to the database but only if 
     the passed title, description and keywords have values that are != "null".
     """
-    def add_article_info(self, title, description, keywords, author, url, dry_run, location):
+    def add_article_info(self, title, description, keywords, author, url, dry_run, location = "none"):
         if title != "null" and description != "null" and url != "null":
             query = "insert into articles values(0, \"" + cgi.escape(title, True) + "\", \""
             query += cgi.escape(description, True) +"\", \"" + cgi.escape(keywords, True)
