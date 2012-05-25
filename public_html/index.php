@@ -1,68 +1,25 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-		<title>KNOW-Crawler Settings</title>
-		
-		<!-- CSS stylesheet -->
-		<link href="index.css" type="text/css" rel="stylesheet" />
-
-		
-		<!-- Linked JavaScript files -->
-		<!-- some JS libraries I used before, we can use them if we want later -->
-		<script src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js" type="text/javascript"></script>
-		<script src="http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.3/scriptaculous.js" type="text/javascript"></script>
-
-	</head>
-	<body>
-		<form action="scheduler" method="post"> 
-			<fieldset>
-				<legend>Time Schedule:</legend>
-				<div>
-					<strong>Time:</strong>
-					<input type="text" name="hour" size="8" maxlength="5" />
-					<input type="text" name="minute" size="8" maxlength="5" />
-					<select name="period">
-						<option value="am" selected="selected">am</option>
-						<option value="pm">pm</option>
-					</select>
-				</div>
-				<div>
-					<strong>Days:</strong>
-					<!-- We should do this part in php, querying the database
-						 to figure out if they are checked or not -->
-					<input type="checkbox" name="daysofweek" value="Sunday" /> Sunday 
-					<input type="checkbox" name="daysofweek" value="Monday" /> Monday 
-					<input type="checkbox" name="daysofweek" value="Tuesday" /> Tuesday 
-					<input type="checkbox" name="daysofweek" value="Wednesday" /> Wednesday
-					<input type="checkbox" name="daysofweek" value="Thursday" /> Thursday 
-					<input type="checkbox" name="daysofweek" value="Friday" /> Friday 
-					<input type="checkbox" name="daysofweek" value="Saturday" /> Saturday 
-				</div>
-				<div>
-					<input type="submit" value="Submit" />
-				</div>
-			</fieldset>
-		</form>
-		
-		<form action="index.php" method="post"> 
-			<fieldset>
-				<legend>Articles to Crawl:</legend>
-				<div>
-					<strong>Article List:</strong>
-				<div>
-				<div>
-					<!-- Get articles from database -->
-					
 <?php
+
+include("html_container.php");
+
+# Prints HTML header.
+html_doc_top();
+
 const SERVER = "ovid.u.washington.edu";
 const PORT_NUM = "32001";
 const USER_NAME = "root";
 const PASSWORD = "purple pony disco";
 const DB_NAME = "know_db";
+
+const SCHEDULE_TABLE = "schedule";
+const DAY_COLUMN = "day";
+const HOUR_COLUMN = "hour";
+
 const USER_TABLE = "user_list";
 const WHITE_TABLE = "white_list";
 const URL_COLUMN = "url";
+
+const MAX_HOUR = 12;
 
 ini_set('mysql.default_socket', '/rc12/d04/knowcse2/mysql.sock');
 $connection = mysql_connect(SERVER . ":" . PORT_NUM, USER_NAME, PASSWORD);
@@ -71,63 +28,77 @@ checkResultSuccessful($connection, "mysql_connect");
 $select = mysql_select_db(DB_NAME);
 checkResultSuccessful($select, "mysql_select_db");
 
-$user_list = get_url_list(USER_TABLE);
-	
+
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-	$white_list = get_url_list(WHITE_TABLE);
-	display_urls($user_list, $white_list);
+	display_settings();
 	
 } else if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	$new_user_list = $_POST["userList"];
-		
-	if (!empty($new_user_list)) {
-		$new_size = count($new_user_list);
+	if (isset($_POST["urls"])) {
+		// url setting
+		$new_user_urls = $_POST["urls"];
+		$user_urls = get_rows(USER_TABLE, URL_COLUMN, URL_COLUMN);
+			
+		if (!empty($new_user_urls)) {
+			
+			for ($i = 0; $i < count($new_user_urls); $i++) {
+				$url = $new_user_urls[$i];
 				
-		for ($i = 0; $i < $new_size; $i++) {
-			$url = $new_user_list[$i];
-			
-			if (!in_array($url, $user_list)) {
-				// new selected url
-				$add_url_query = "INSERT INTO " . USER_TABLE . " (" . URL_COLUMN . ") " . 
-								"VALUES ('$url');";
-				mysql_query($add_url_query);
+				if (!in_array($url, $user_urls)) {
+					// newly selected url
+					$add_url_query = "INSERT INTO " . USER_TABLE . " (" . URL_COLUMN . ") " . 
+													"VALUES ('$url');";
+					mysql_query($add_url_query);
+				}
 			}
+						
+			for ($i = 0; $i < count($user_urls); $i++) {
+				$old_url = $user_urls[$i];
+				
+				if (!in_array($old_url, $new_user_urls)) {
+					// deselected url
+					$remove_url_query = "DELETE FROM " . USER_TABLE . 
+															" WHERE " . URL_COLUMN . " = '$old_url';";
+					mysql_query($remove_url_query);
+				}
+			}
+		} else {
+			// no url selected
+			$remove_all_query = "DELETE FROM " . USER_TABLE . ";";
+			mysql_query($remove_all_query);
 		}
 		
-		$old_size = count($user_list);
+	} else if (isset($_POST["hour"])) {
+		// time setting
+		$hour = $_POST["hour"];
+		$period = $_POST["period"];
 		
-		for ($i = 0; $i < $old_size; $i++) {
-			$old_url = $user_list[$i];
+		if ($period != "am" and $hour != 12) {
+			$hour += 12;
+		} else if ($period == "am" and $hour == 12) {
+			$hour = 0;
+		}
+		
+		$daysOfWeek = $_POST["daysOfWeek"];
+		
+		// delete old time setting
+		$remove_all_query = "DELETE FROM " . SCHEDULE_TABLE . ";";
+		mysql_query($remove_all_query);
+		
+		if (!empty($daysOfWeek)) {
 			
-			if (!in_array($old_url, $new_user_list)) {
-				// deselected url
-				$remove_url_query = "DELETE FROM " . USER_TABLE . 
-									" WHERE " . URL_COLUMN . " = '$old_url';";
-				mysql_query($remove_url_query);
+			foreach ($daysOfWeek as $day) {
+				$set_time_query = "INSERT INTO schedule VALUES ('$day', '$hour');";
+				mysql_query($set_time_query);
 			}
 		}
-	} else {
-		// no url selected
 	}
 	
-	$user_list = get_url_list(USER_TABLE);
-	$white_list = get_url_list(WHITE_TABLE);
-	display_urls($user_list, $white_list);
+	display_settings();
 }
 
 mysql_close($connection);
-?>
 
-				</div>
-				<div>
-					<input type="submit" value="Submit" />
-				</div>
-			</fieldset>
-		</form>
-	</body>
-</html>
-
-<?php
+html_doc_bottom();
 
 # Checks whether the query result was successful.
 # If not, prints an error and exits.
@@ -135,6 +106,21 @@ function checkResultSuccessful($result, $info) {
 	if (!$result) {
 		die("SQL error during '$info': " . mysql_error());
 	}
+}
+
+# Queries and displays time and url settings.
+function display_settings() {
+	time_setting_top();
+	// query schedule table
+	display_time_setting();
+	time_setting_bottom();
+	
+	url_setting_top();
+	// query user_list and white_list tables
+	$user_urls = get_rows(USER_TABLE, URL_COLUMN, URL_COLUMN);
+	$white_urls = get_rows(WHITE_TABLE, URL_COLUMN, URL_COLUMN);
+	display_url_setting($user_urls, $white_urls);
+	url_setting_bottom();
 }
 
 # Queries the url list of the given type (user or white list).
@@ -155,16 +141,124 @@ function get_url_list($list_type) {
 	return $url_list;
 }
 
-# Creates HTML elements to display the urls.
-function display_urls($user_list, $white_list) {
-	foreach ($white_list as $white_url) {
-		if (in_array($white_url, $user_list)) {
+# Returns a list of all rows from a table, sorted by 
+# a specified column in ascending order.
+function get_rows($table, $order_by, $target_column = NULL) {
+	$query = "SELECT * FROM $table " . 
+					"ORDER BY $order_by ASC;";
+	$result = mysql_query($query);
+	
+	checkResultSuccessful($result, $query);
+	
+	$rows = array();
+	
+	while ($row = mysql_fetch_array($result)) {
+		if (isset($target_column)) {
+			array_push($rows, $row[$target_column]);
+		} else {
+			array_push($rows, $row);
+		}
+	}
+	
+	return $rows;
+}
+
+function display_time_setting() {
+	$rows = get_rows(SCHEDULE_TABLE, DAY_COLUMN);
+			
+	if (empty($rows)) {
+		die("The " . SCHEDULE_TABLE . " table is empty.");
+	}
+	
+	$hour = $rows[0][HOUR_COLUMN];
+		
+	if ($hour < MAX_HOUR) {
+		$period = "am";
+		
+		if ($hour == 0) {
+			# midnight
+			$hour = 12;
+		}
+	} else {
+		$period = "pm";
+		
+		if ($hour > MAX_HOUR) {
+			$hour = $hour - MAX_HOUR;
+		}
+	}
+	?>
+	<div>
+		<strong>Time:</strong>
+		<select name="hour">
+	<?php
+	for ($i = 1; $i <= MAX_HOUR; $i++) {
+		if ($i == $hour) {
 			?>
-			<input type="checkbox" name="userList[]" value=<?= "\"" . $white_url . "\"" ?> checked="checked" /> <?= $white_url ?> <br/>
+			<option value=<?= "\"" . $i . "\"" ?> selected="selected" /> <?= $i . ":00" ?> </option>
 			<?php
 		} else {
 			?>
-			<input type="checkbox" name="userList[]" value=<?= "\"" . $white_url . "\"" ?> /> <?= $white_url ?> <br/>
+			<option value=<?= "\"" . $i . "\"" ?> /> <?= $i . ":00" ?> </option>
+			<?php
+		}
+	}
+	?>
+		</select>
+		<select name="period">
+	<?php
+	
+	if ($period == "am") {
+		?>
+			<option value="am" selected="selected">am</option>
+			<option value="pm">pm</option>
+		<?php
+	} else {
+		?>
+			<option value="am">am</option>
+			<option value="pm" selected="selected">pm</option>
+		<?php
+	}
+	?>
+		</select>
+	</div>
+	<div>
+		<strong>Days:</strong>
+	<?php
+	$days = array();
+	
+	foreach ($rows as $row) {
+		array_push($days, $row[DAY_COLUMN]);
+	}
+	
+	$DAYS_OF_WEEK = array("Sunday", "Monday", "Tuesday", "Wednesday",
+											"Thursday", "Friday", "Saturday" );
+											
+	for ($i = 0; $i < count($DAYS_OF_WEEK); $i++) {
+		if (in_array($i, $days)) {
+			?>
+			<input type="checkbox" name="daysOfWeek[]" value=<?= "\"" . $i . "\"" ?> checked="checked" /> <?= $DAYS_OF_WEEK[$i] ?>
+			<?php
+		} else {
+			?>
+			<input type="checkbox" name="daysOfWeek[]" value=<?= "\"" . $i . "\"" ?> /> <?= $DAYS_OF_WEEK[$i] ?>
+			<?php
+		}
+	}
+	?>
+	</div>
+	<?php
+}
+
+# Creates HTML elements to display the url setting.
+function display_url_setting($user_urls, $white_urls) {
+	foreach ($white_urls as $white_url) {		
+		if (in_array($white_url, $user_urls)) {
+			?>
+			<input type="checkbox" name="urls[]" value=<?= "\"" . $white_url . "\"" ?> checked="checked" /> <?= $white_url ?> <br/>
+			<?php
+		} else {
+			?>
+			<input type="checkbox" name="urls[]" value=<?= "\"" . $white_url . "\"" ?> /> <?= $white_url ?> <br/>
 			<?php
 		}
 	}
