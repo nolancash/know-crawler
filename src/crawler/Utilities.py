@@ -85,12 +85,3 @@ class Utilities(object):
                     result.append(word)
                     count += 1
         return result
-
-
-#if __name__ == '__main__':
-#    s1=Utilities()
-#    s2=Utilities()
-#    if(id(s1)==id(s2)):
-#        print "Same"
-#    else:
-#        print "Different"
