@@ -16,13 +16,17 @@ of text and generating a list of common words.
 class Utilities(object):
     
     """
-    Constructs a Utilities object and generates a list of common words.
+    Constructs a Utilities object and generates a list of common words and common locations.
     """
     def __init__(self):
         self.common_words = []
+        self.common_locations = []
         rows = DBManager.DBManager().send_query("select * from common_words;")
         for row in rows:
             self.common_words.append(row[0])
+        rows = DBManager.DBManager().send_query("select cntry_name from world_countries;")
+        for row in rows:
+            self.common_locations.append(row[0])
     
     """
     Makes Utilities a singleton.
