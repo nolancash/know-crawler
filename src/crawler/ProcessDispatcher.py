@@ -9,6 +9,7 @@ import optparse
 import sys
 import datetime
 import TimeoutException
+import os
 
 """
 This script runs the web crawler. In future releases it will also manage the multiprocessing of the crawler.
@@ -31,7 +32,12 @@ def parse_arguments():
 Crawls the passed arguments url and saves all data to the sql database.
 """
 def main(options):
-#    sys.stdout = open(__log_file_setup(), 'w')
+    # Redirects standard output to a log file.
+    if not os.path.exists("crawler_logs"):
+        os.makedirs("crawler_logs")
+    os.chdir("./crawler_logs/")    
+    sys.stdout = open(__log_file_name(), "w")
+    
     print "Dry run: " + str(options.DRY_RUN)
     if options.SOURCE_URL:
         print "Running on " + str(options.SOURCE_URL) + "."
@@ -45,7 +51,8 @@ def main(options):
         divisor = int(options.NUM_PROCESSES)
         process_lists = []
         db = DBManager.DBManager()
-        rows = db.send_query("select * from user_list")
+        rows = db.send_query("select nsource_url from news_sources")
+#        rows = db.send_query("select * from user_list")
         counter = 0
         for i in range(0,divisor):
             process_lists.append([])
@@ -54,8 +61,8 @@ def main(options):
             counter += 1
         for i in range(0, divisor):
             __run_from_list(process_lists[i])
-    #    rows = db.send_query("select nsource_url from news_sources")
-
+            
+    print "Done."
     db.close()
 
 def __run_from_list(websites):
@@ -74,12 +81,14 @@ def __run_from_list(websites):
 
 """
 Concatenates the file name for the log file in the format:
-log_yyyy-mm-dd_hh:mm:ss       
+log_yyyy-mm-dd_hh.mm.ss.txt
 """
-def __log_file_setup():
-    date = str(datetime.datetime.now())
+def __log_file_name():
+    date = datetime.datetime.now().replace(microsecond = 0)
+    date = str(date)
     date = date.replace(" ", "_")
-    return "log_" + date
+    date = date.replace(":", ".")
+    return "log_" + date + ".txt"
     
   
 if __name__ == "__main__":

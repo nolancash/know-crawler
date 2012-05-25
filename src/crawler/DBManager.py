@@ -73,6 +73,8 @@ class DBManager(object):
             rows = curs.fetchall()
             if len(rows) == 0:
                 return self.add_article_info(article[0], article[1], article[2], article[3], article[5], dry_run)
+            else:
+                print "Article already in database: " + article[5]
         return False
     
     """
