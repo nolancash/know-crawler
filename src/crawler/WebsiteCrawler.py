@@ -129,18 +129,14 @@ class WebsiteCrawler(object):
                         html = parser.get_html(article)
         #                if len(html) > 10:
         #                    print "full"
-#                        print "pre-processing"
+    #                        print "pre-processing"
                         html = ArticleParser.pre_parse(html, "script")
         #                time.sleep(1)
-#                        print "finished"
+    #                        print "finished"
                         try:
-                            print "a"
                             parser.feed(html)
-                            print "b"
                             result = parser.results
-                            print "c"
                             result.append(article)
-                            print "d"
                             self.__article_results.append(result)
                         except UnicodeDecodeError:
                             print "Bad character."
@@ -158,9 +154,8 @@ class WebsiteCrawler(object):
     #            for tag in article:
     #                print tag
     #            print "====="
-        finally:
 #            for l in self.__article_results:
 #                print l
-            return self.__article_results
+        return self.__article_results
     
 
