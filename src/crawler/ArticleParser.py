@@ -24,6 +24,7 @@ class ArticleParser(HTMLParser):
         self.__ignore_line = -1
         self.__got_text = False
         self.__got_title = False
+        self.__title = ""
         self.__html = ""
         self.__text = []
         self.mech = mechanize.Browser()
@@ -108,10 +109,14 @@ class ArticleParser(HTMLParser):
 #        TODO: process p tags
         if self.__got_text:
             self.__text.append(data)
-            pass
-        elif self.__got_title and self.results[0] == "null":
-            self.results[0] = data
         
+        elif self.__got_title:
+            try:
+                self.__title += data.decode("utf-8").encode("ascii", "ignore")
+            except UnicodeDecodeError:
+                print "Decode error."
+                pass
+            
     """
     This function gets called to signal the closing of a paragraph tag or the end of
     the html.
@@ -124,6 +129,9 @@ class ArticleParser(HTMLParser):
                 self.results[2] == ""
             self.results[2] += ", " + ", ".join(self.__get_top_words())
             self.results[2] = self.results[2].lower()
+        if tag == "title":
+            self.__got_title = False
+            self.results[0] = self.__title
 #            print self.results[2]
     
     """
@@ -137,6 +145,7 @@ class ArticleParser(HTMLParser):
         return top_10_words
             
 #parser = ArticleParser()
-#html = parser.get_html("http://www.nytimes.com/2012/05/13/business/student-loans-weighing-down-a-generation-with-heavy-debt.html")
+#html = parser.get_html("http://www.nytimes.com/2012/05/25/us/texas-am-class-in-qatar-savors-college-station-connection.html?_r=1")
 #parser.feed(html)
+#print parser.results
                 
