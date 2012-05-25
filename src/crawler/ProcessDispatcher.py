@@ -34,10 +34,10 @@ Crawls the passed arguments url and saves all data to the sql database.
 """
 def main(options):
     # Redirects standard output to a log file.
-    if not os.path.exists("crawler_logs"):
-        os.makedirs("crawler_logs")
-    os.chdir("./crawler_logs/")    
-    sys.stdout = open(__log_file_name(), "w")
+#    if not os.path.exists("crawler_logs"):
+#        os.makedirs("crawler_logs")
+#    os.chdir("./crawler_logs/")    
+#    sys.stdout = open(__log_file_name(), "w")
     
     print "Dry run: " + str(options.DRY_RUN)
     if options.SOURCE_URL:
@@ -64,12 +64,13 @@ def main(options):
 #            __run_from_list(process_lists[i])
         pool = Pool(processes=divisor)
         pool.map(__run_from_list, process_lists)  
-    print "Done."
+    print "\nDone."
     db.close()
 
 def __run_from_list(websites):
     db = DBManager.DBManager()
     for site in websites:
+        print site
         crawler = WebsiteCrawler.WebsiteCrawler()
         links = crawler.get_links(site)
         try:
@@ -78,7 +79,7 @@ def __run_from_list(websites):
             print "Timeout Exception (outer)."
         if results:
             for article in results:
-                db.add_article_list(article, options.DRY_RUN)
+                db.add_article_list(article, True)
         del crawler
 
 """
