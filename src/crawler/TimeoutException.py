@@ -7,7 +7,8 @@ import signal
 
 """
 This class provides the functionality that we need to timeout certain
-functions in our web crawler.
+functions in our web crawler. This only works on Linux systems due to
+limitation on the signal library.
 """
 class TimeoutException(Exception): 
     pass 
