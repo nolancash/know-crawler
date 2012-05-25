@@ -45,12 +45,14 @@ class Test(unittest.TestCase):
         self.assertEqual(len(rows), 0, "no null urls")
         pass
 
-#    def test_add_common_words(self):
+#    def test_add_common_things(self):
 #        util = Utilities.Utilities()
-#        for s in util.common_words:
-#            rows = DBManager.DBManager().send_query("select * from common_words where word like '" + s + "';");
-#            if len(rows) == 0:
-#                query = "insert into common_words values('" + s + "');"
+#        for s in util.common_locations:
+#            print s
+#            if "Iviore" not in s:
+##                rows = DBManager.DBManager().send_query("select * from locations where location like '" + s + "';");
+##                if len(rows) == 0:
+#                query = "insert into locations values(\"" + s + "\");"
 #                DBManager.DBManager().send_query(query)
 #        pass
         
