@@ -36,7 +36,7 @@ class WebsiteCrawler(object):
 #        self.mech.set_handle_gzip(True)
 #        self.mech.set_handle_redirect(True)
 #        self.mech.set_handle_referer(True)
-        #self.mech.set_handle_robots(False)
+#        self.mech.set_handle_robots(False)
         
         # Follows refresh 0 but not hangs on refresh > 0
         self.mech.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
@@ -46,9 +46,7 @@ class WebsiteCrawler(object):
         #br.set_debug_redirects(True)
         #br.set_debug_responses(True)
         
-        # User-Agent (this is cheating, ok?)
         self.mech.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
-#        self.mech.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
         self.__article_results = []
     
     """
@@ -58,25 +56,16 @@ class WebsiteCrawler(object):
 #    @TimeoutException.timeout(45)    
     def get_links(self,base_url):
         try:
-#            print "opening"
             self.mech.open(base_url)
             response = self.mech.response()
-#            print "loaded response"
 #            print self.mech.geturl()
-    #        print response.info()
-#            print response.read()
-#            links = self.mech.links(url_regex=base_url)
-#            for l in self.mech.links():
-#                print l
             articles = []
-            for link in self.mech.links(url_regex=base_url + "|^/"):
-    #            print link.url        
+            for link in self.mech.links(url_regex=base_url + "|^/"):       
                 normal_url = self.__normalize_url(link.url)
                 if len(normal_url) - normal_url.rfind("/") > 20 and len(
                     normal_url) > len(base_url):
                     articles.append(normal_url)
             articles = set(articles)
-#            print "Retrieved articles."
             return articles
         except HTTPError:
             print "Http error."
@@ -117,22 +106,12 @@ class WebsiteCrawler(object):
 #    @TimeoutException.timeout(45)
     def parse_articles(self, articles):
         try:
-    #        counter = 1
             if articles:
                 for article in articles:
-    #                print counter
-    #                counter = counter + 1
-        #            print "running"
-        #            print article
                     parser = ArticleParser()
                     try:
                         html = parser.get_html(article)
-        #                if len(html) > 10:
-        #                    print "full"
-    #                        print "pre-processing"
                         html = ArticleParser.pre_parse(html, "script")
-        #                time.sleep(1)
-    #                        print "finished"
                         try:
                             parser.feed(html)
                             result = parser.results
@@ -150,12 +129,6 @@ class WebsiteCrawler(object):
         except TimeoutException:
             print "Timeout Exception."
             pass
-    #        for article in self.__article_results:
-    #            for tag in article:
-    #                print tag
-    #            print "====="
-#            for l in self.__article_results:
-#                print l
         return self.__article_results
     
 
