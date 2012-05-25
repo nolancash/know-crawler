@@ -55,7 +55,7 @@ class WebsiteCrawler(object):
     Takes a url as a parameter and returns a list of strings that are links on a page that look like 
     links to articles.
     """
-    @TimeoutException.timeout(45)    
+#    @TimeoutException.timeout(45)    
     def get_links(self,base_url):
         try:
 #            print "opening"
@@ -114,7 +114,7 @@ class WebsiteCrawler(object):
     Given a list of strings that represent urls this method parses them and returns a list. This list contains summaries of 
     articles which are themselfs list with the following structure ["title", "description", "keywords", "author", "date", "url"].
     """
-    @TimeoutException.timeout(45)
+#    @TimeoutException.timeout(45)
     def parse_articles(self, articles):
         try:
     #        counter = 1
@@ -129,14 +129,18 @@ class WebsiteCrawler(object):
                         html = parser.get_html(article)
         #                if len(html) > 10:
         #                    print "full"
-    #                    print "pre-processing"
+#                        print "pre-processing"
                         html = ArticleParser.pre_parse(html, "script")
         #                time.sleep(1)
-    #                    print "finished"
+#                        print "finished"
                         try:
+                            print "a"
                             parser.feed(html)
+                            print "b"
                             result = parser.results
+                            print "c"
                             result.append(article)
+                            print "d"
                             self.__article_results.append(result)
                         except UnicodeDecodeError:
                             print "Bad character."

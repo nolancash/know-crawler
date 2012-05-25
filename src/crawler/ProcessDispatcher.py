@@ -34,18 +34,23 @@ def main(options):
         
 #    print options.SOURCE_URL
     divisor = 1
-    rows = db.send_query("select nsource_url from news_sources")
-    pages2crawl = len(rows) / divisor
-    pagesCrawled = 0
-    for row in rows:
-        if pagesCrawled == pages2crawl:
-            break
-        pagesCrawled += 1
-        print row[0]
-        results = crawler.parse_articles(crawler.get_links(row[0]))
-        for article in results:
-            db.add_article_list(article, options.DRY_RUN)
+#    rows = db.send_query("select nsource_url from news_sources")
+#    rows = db.send_query("select * from user_list")
+#    pages2crawl = len(rows) / divisor
+#    pagesCrawled = 0
+#    for row in rows:
+#        if pagesCrawled == pages2crawl:
+#            break
+#        pagesCrawled += 1
+#        print row[0]
+#        results = crawler.parse_articles(crawler.get_links(row[0]))
+#        for article in results:
+#            db.add_article_list(article, options.DRY_RUN)
                 #db.print_database()
+                
+    results = crawler.parse_articles(crawler.get_links("http://www.nytimes.com/"))
+    for article in results:
+        db.add_article_list(article, options.DRY_RUN)
                 
 #    results = crawler.parse_articles(crawler.get_links(options.SOURCE_URL))
 #    if options.DRY_RUN:
