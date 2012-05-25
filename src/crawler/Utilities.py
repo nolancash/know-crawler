@@ -22,7 +22,7 @@ class Utilities(object):
         self.common_words = []
         rows = DBManager.DBManager().send_query("select * from common_words;")
         for row in rows:
-            self.common_word.append(row[0])
+            self.common_words.append(row[0])
     
     """
     Makes Utilities a singleton.
