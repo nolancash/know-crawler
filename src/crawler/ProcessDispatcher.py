@@ -34,12 +34,14 @@ Crawls the passed arguments url and saves all data to the sql database.
 """
 def main(options):
     # Redirects standard output to a log file.
-#    if not os.path.exists("crawler_logs"):
-#        os.makedirs("crawler_logs")
-#    os.chdir("./crawler_logs/")    
-#    sys.stdout = open(__log_file_name(), "w")
+    log_dir = "crawler_logs"
+    log_name = __log_file_name()
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+    os.chdir("./" + log_dir + "/")
+    os.makedirs(log_name)
+    os.chdir("./" + log_name + "/")
     
-    print "Dry run: " + str(options.DRY_RUN)
     if options.SOURCE_URL:
         print "Running on " + str(options.SOURCE_URL) + "."
         db = DBManager.DBManager()
@@ -47,8 +49,7 @@ def main(options):
         results = crawler.parse_articles(crawler.get_links(options.SOURCE_URL))
         for article in results:
             db.add_article_list(article, options.DRY_RUN)
-    else:
-        print "Running on list of news sources."        
+    else:     
         divisor = int(options.NUM_PROCESSES)
         process_lists = []
         db = DBManager.DBManager()
@@ -56,7 +57,7 @@ def main(options):
         rows = db.send_query("select * from user_list")
         counter = 0
         for i in range(0,divisor):
-            process_lists.append([])
+            process_lists.append([options.DRY_RUN, i])
         for row in rows:
             process_lists[counter % divisor].append(row[0])
             counter += 1
@@ -64,23 +65,35 @@ def main(options):
 #            __run_from_list(process_lists[i])
         pool = Pool(processes=divisor)
         pool.map(__run_from_list, process_lists)  
-    print "\nDone."
-    db.close()
+        db.close()
 
 def __run_from_list(websites):
-    db = DBManager.DBManager()
-    for site in websites:
-        print site
-        crawler = WebsiteCrawler.WebsiteCrawler()
-        links = crawler.get_links(site)
-        try:
-            results = crawler.parse_articles(links)
-        except TimeoutException.TimeoutException:
-            print "Timeout Exception (outer)."
-        if results:
-            for article in results:
-                db.add_article_list(article, True)
-        del crawler
+    dry_run = websites.pop(0)
+    log_id = str(websites.pop(0))
+    
+    if len(websites) > 0:
+            
+        sys.stdout = open("log_" + log_id + ".txt" , "w")
+    
+        print "Dry run: " + str(dry_run)
+        print "Running on list of news sources."   
+        
+        db = DBManager.DBManager()
+        for site in websites:
+            print site
+            crawler = WebsiteCrawler.WebsiteCrawler()
+            links = crawler.get_links(site)
+            try:
+                results = crawler.parse_articles(links)
+            except TimeoutException.TimeoutException:
+                print "Timeout Exception (outer)."
+            if results:
+                for article in results:
+                    db.add_article_list(article, dry_run)
+            del crawler
+        
+        db.close()
+        print "\nDone."
 
 """
 Concatenates the file name for the log file in the format:
@@ -91,7 +104,7 @@ def __log_file_name():
     date = str(date)
     date = date.replace(" ", "_")
     date = date.replace(":", ".")
-    return "log_" + date + ".txt"
+    return "log_" + date
     
   
 if __name__ == "__main__":
