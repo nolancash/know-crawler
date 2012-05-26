@@ -23,51 +23,17 @@ const MAX_HOUR = 12;
 
 ini_set('mysql.default_socket', '/rc12/d04/knowcse2/mysql.sock');
 $connection = mysql_connect(SERVER . ":" . PORT_NUM, USER_NAME, PASSWORD);
-checkResultSuccessful($connection, "mysql_connect");
+check_result_successful($connection, "mysql_connect");
 
 $select = mysql_select_db(DB_NAME);
-checkResultSuccessful($select, "mysql_select_db");
+check_result_successful($select, "mysql_select_db");
 
-
+// handle HTTP requests
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
 	display_settings();
 	
 } else if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	if (isset($_POST["urls"])) {
-		// url setting
-		$new_user_urls = $_POST["urls"];
-		$user_urls = get_rows(USER_TABLE, URL_COLUMN, URL_COLUMN);
-			
-		if (!empty($new_user_urls)) {
-			
-			for ($i = 0; $i < count($new_user_urls); $i++) {
-				$url = $new_user_urls[$i];
-				
-				if (!in_array($url, $user_urls)) {
-					// newly selected url
-					$add_url_query = "INSERT INTO " . USER_TABLE . " (" . URL_COLUMN . ") " . 
-													"VALUES ('$url');";
-					mysql_query($add_url_query);
-				}
-			}
-						
-			for ($i = 0; $i < count($user_urls); $i++) {
-				$old_url = $user_urls[$i];
-				
-				if (!in_array($old_url, $new_user_urls)) {
-					// deselected url
-					$remove_url_query = "DELETE FROM " . USER_TABLE . 
-															" WHERE " . URL_COLUMN . " = '$old_url';";
-					mysql_query($remove_url_query);
-				}
-			}
-		} else {
-			// no url selected
-			$remove_all_query = "DELETE FROM " . USER_TABLE . ";";
-			mysql_query($remove_all_query);
-		}
-		
-	} else if (isset($_POST["hour"])) {
+	if (isset($_POST["hour"]) and isset($_POST["period"])) {
 		// time setting
 		$hour = $_POST["hour"];
 		$period = $_POST["period"];
@@ -78,19 +44,53 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 			$hour = 0;
 		}
 		
-		$daysOfWeek = $_POST["daysOfWeek"];
-		
 		// delete old time setting
 		$remove_all_query = "DELETE FROM " . SCHEDULE_TABLE . ";";
-		mysql_query($remove_all_query);
+		do_query($remove_all_query);
 		
-		if (!empty($daysOfWeek)) {
+		if (isset($_POST["daysOfWeek"])) {
+			$daysOfWeek = $_POST["daysOfWeek"];
 			
 			foreach ($daysOfWeek as $day) {
 				$set_time_query = "INSERT INTO schedule VALUES ('$day', '$hour');";
-				mysql_query($set_time_query);
+				do_query($set_time_query);
+			}
+		} else {
+			// no day selected
+			$set_time_query = "INSERT INTO schedule VALUES (0, '$hour');";
+			do_query($set_time_query);
+		}
+	} else if (isset($_POST["urls"])) {
+		// url setting: at least 1 url is selected
+		$new_user_urls = $_POST["urls"];
+		$user_urls = get_rows(USER_TABLE, URL_COLUMN, URL_COLUMN);
+		
+		for ($i = 0; $i < count($new_user_urls); $i++) {
+			$url = $new_user_urls[$i];
+			
+			if (!in_array($url, $user_urls)) {
+				// newly selected url
+				$add_url_query = "INSERT INTO " . USER_TABLE . " (" . URL_COLUMN . ") " . 
+												"VALUES ('$url');";
+				do_query($add_url_query);
 			}
 		}
+					
+		for ($i = 0; $i < count($user_urls); $i++) {
+			$old_url = $user_urls[$i];
+			
+			if (!in_array($old_url, $new_user_urls)) {
+				// deselected url
+				$remove_url_query = "DELETE FROM " . USER_TABLE . 
+														" WHERE " . URL_COLUMN . " = '$old_url';";
+				do_query($remove_url_query);
+			}
+		}
+		
+	} else {
+		// url setting: no url selected
+		$remove_all_query = "DELETE FROM " . USER_TABLE . ";";
+		do_query($remove_all_query);
 	}
 	
 	display_settings();
@@ -100,9 +100,18 @@ mysql_close($connection);
 
 html_doc_bottom();
 
+# Calls mysql_query on the query, checks if the call 
+# is successful, and return the query result.
+function do_query($query) {
+	$result = mysql_query($query);
+	check_result_successful($result, "mysql_query of " . $query);
+	
+	return $result;
+}
+
 # Checks whether the query result was successful.
 # If not, prints an error and exits.
-function checkResultSuccessful($result, $info) {
+function check_result_successful($result, $info) {
 	if (!$result) {
 		die("SQL error during '$info': " . mysql_error());
 	}
@@ -123,32 +132,12 @@ function display_settings() {
 	url_setting_bottom();
 }
 
-# Queries the url list of the given type (user or white list).
-# Returns the result array of the query.
-function get_url_list($list_type) {
-	$list_query = "SELECT " . URL_COLUMN . " FROM $list_type " . 
-				"ORDER BY " . URL_COLUMN . " ASC;";
-	$list_result = mysql_query($list_query);
-	
-	checkResultSuccessful($list_result, $list_query);
-	
-	$url_list = array();
-	
-	while ($row = mysql_fetch_array($list_result)) {
-		array_push($url_list, $row[URL_COLUMN]);
-	}
-	
-	return $url_list;
-}
-
 # Returns a list of all rows from a table, sorted by 
 # a specified column in ascending order.
 function get_rows($table, $order_by, $target_column = NULL) {
 	$query = "SELECT * FROM $table " . 
 					"ORDER BY $order_by ASC;";
-	$result = mysql_query($query);
-	
-	checkResultSuccessful($result, $query);
+	$result = do_query($query);
 	
 	$rows = array();
 	
@@ -163,6 +152,7 @@ function get_rows($table, $order_by, $target_column = NULL) {
 	return $rows;
 }
 
+# Creates HTML elements to display the time setting.
 function display_time_setting() {
 	$rows = get_rows(SCHEDULE_TABLE, DAY_COLUMN);
 			
