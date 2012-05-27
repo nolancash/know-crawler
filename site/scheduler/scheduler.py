@@ -1,4 +1,5 @@
 import MySQLdb
+from crontab import CronTab
 
 CRAWLER_COMMAND = '/usr/bin/python ProcessDispatcher.py'
 
@@ -17,11 +18,11 @@ class Scheduler:
 		rows = curs.fetchall()
 		
 		if rows:
-			hour = rows[0]["hour"]
+			hour = rows[0][1]
 			days = []
 			
 			for row in rows:
-				day = row["day"]
+				day = row[0]
 				days.append(day)
 				
 			return hour, days
