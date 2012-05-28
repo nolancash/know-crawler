@@ -27,10 +27,9 @@ class ArticleParser(HTMLParser):
         self.__title = ""
         self.__html = ""
         self.__text = []
-        self.__word_counts = []
-        self.util = Utilities.Utilities()
+        self.__util = Utilities.Utilities()
         self.mech = mechanize.Browser()
-        self.results = ["null", "null", "null", "null", "null"]
+        self.results = ["null", "null", "null", "null", "null", "null", "null"]
         
     """
     Removes script tags from __html so ArticleParser doesn't break on malformed html tags in embedded javascript.
@@ -129,9 +128,13 @@ class ArticleParser(HTMLParser):
         if tag == "html":
             if self.results[2] == "null":
                 self.results[2] == ""
-            self.get_word_frequencies()######
             self.results[2] += ", " + ", ".join(self.__get_top_words())
             self.results[2] = self.results[2].lower()
+            locations = self.__get_related_locations()
+            if len(locations) > 0:
+                self.results[5] = locations.pop()
+            if len(locations) > 0:
+                self.results[6] = ", ".join(locations)
         if tag == "title":
             self.__got_title = False
             self.results[0] = self.__title
@@ -141,21 +144,16 @@ class ArticleParser(HTMLParser):
     Helper function to get the top 10 uncommon words in the text.
     """
     def __get_top_words(self):
-        common_words = self.util.common_words
-        top_10_words = self.util.top_k_words(self.__word_counts, 10, common_words)
+        common_words = self.__util.common_words
+        word_counts = self.__util.word_frequencies(", ".join(self.__text))
+        top_10_words = self.__util.top_k_words(word_counts, 10, common_words)
         return top_10_words
     
-    """
-    Helper function to get the top 10 locations in the text.
-    """
     def __get_related_locations(self):
-        locations = self.util.common_locations
-        related_locations = self.util.top_k_locations(self.__word_counts, 10, locations)
-        return related_locations
-    
-    def __get_word_frequencies(self):
-        word_counts = self.util.word_frequencies(", ".join(self.__text))
-        self.__word_counts = word_counts
+        common_locations = self.__util.common_locations
+        locations = self.__util.get_locations(", ".join(self.__text), common_locations)
+        top_4_locations = self.__util.top_k_locations(locations, 4)
+        return top_4_locations
             
 #parser = ArticleParser()
 #html = parser.get_html("http://www.nytimes.com/2012/05/25/us/texas-am-class-in-qatar-savors-college-station-connection.html?_r=1")

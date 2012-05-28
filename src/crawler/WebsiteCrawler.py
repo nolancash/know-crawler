@@ -60,7 +60,7 @@ class WebsiteCrawler(object):
             response = self.mech.response()
 #            print self.mech.geturl()
             articles = []
-            for link in self.mech.links(url_regex=base_url + "|^/"):       
+            for link in self.mech.links(url_regex=base_url + "|^/"):
                 normal_url = self.__normalize_url(link.url)
                 if len(normal_url) - normal_url.rfind("/") > 20 and len(
                     normal_url) > len(base_url):

@@ -39,7 +39,7 @@ def main(options):
     db1 = DBManager.DBManager()
     
     if options.SOURCE_URL:
-        sys.stdout = open("log_0.txt" , "w")
+#        sys.stdout = open("log_0.txt" , "w")
         print "Running on " + str(options.SOURCE_URL) + "."
         
         crawler = WebsiteCrawler.WebsiteCrawler()
