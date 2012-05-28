@@ -27,6 +27,8 @@ class ArticleParser(HTMLParser):
         self.__title = ""
         self.__html = ""
         self.__text = []
+        self.__word_counts = []
+        self.util = Utilities.Utilities()
         self.mech = mechanize.Browser()
         self.results = ["null", "null", "null", "null", "null"]
         
@@ -127,6 +129,7 @@ class ArticleParser(HTMLParser):
         if tag == "html":
             if self.results[2] == "null":
                 self.results[2] == ""
+            self.get_word_frequencies()######
             self.results[2] += ", " + ", ".join(self.__get_top_words())
             self.results[2] = self.results[2].lower()
         if tag == "title":
@@ -138,11 +141,21 @@ class ArticleParser(HTMLParser):
     Helper function to get the top 10 uncommon words in the text.
     """
     def __get_top_words(self):
-        util = Utilities.Utilities()
-        common_words = util.common_words
-        word_counts = util.word_frequencies(", ".join(self.__text))
-        top_10_words = util.top_k_unique_words(word_counts, 10, common_words)
+        common_words = self.util.common_words
+        top_10_words = self.util.top_k_words(self.__word_counts, 10, common_words)
         return top_10_words
+    
+    """
+    Helper function to get the top 10 locations in the text.
+    """
+    def __get_related_locations(self):
+        locations = self.util.common_locations
+        related_locations = self.util.top_k_locations(self.__word_counts, 10, locations)
+        return related_locations
+    
+    def __get_word_frequencies(self):
+        word_counts = self.util.word_frequencies(", ".join(self.__text))
+        self.__word_counts = word_counts
             
 #parser = ArticleParser()
 #html = parser.get_html("http://www.nytimes.com/2012/05/25/us/texas-am-class-in-qatar-savors-college-station-connection.html?_r=1")

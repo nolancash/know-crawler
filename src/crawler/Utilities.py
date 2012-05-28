@@ -74,18 +74,55 @@ class Utilities(object):
         return sorted([(words.count(word), word) for word in unique_words])
     
     """
-    Takes a list of word frequencies and returns up to numWords of the most
-    frequently used words that do no belong to commonWords. Returns
-    an empty list if numWords <= 0 or if all of the words in wordCounts
-    are found in commonWords.
+    Takes a list of word frequencies and returns up to max_num of the most
+    frequently used words that do no belong to common_words. Returns
+    an empty list if max_num <= 0 or if all of the words in word_counts
+    are found in common_words.
     """
-    def top_k_unique_words(self, word_counts, num_words, common_words):
+    def top_k_words(self, word_counts, max_num, common_words):
         result = []
-        if num_words > 0:
+        if max_num > 0:
             count = 0
-            while (count < num_words) and word_counts:
+            while (count < max_num) and word_counts:
                 word = word_counts.pop()[1]
                 if not (word in common_words):
                     result.append(word)
                     count += 1
         return result
+    
+    """
+    Takes a string and a list of common locations and returns a dictionary
+    mapping any found locations in the text to their number of occurrences.
+    """
+    def get_locations(self, text, common_locations):
+        results = {}
+        text = text.lower()
+        for word in common_locations:
+            word = word.lower()
+            if word in text:
+                results[word] = -1
+                pos = 0
+                while pos < len(text) and pos != -1:
+                    results[word] += 1
+                    if text[pos+len(word):].find(word) != -1:
+                        pos += text[pos+len(word):].find(word) + len(word)
+                    else:
+                        pos = -1
+        return results
+    
+    """
+    Takes a dictionary of locations and frequencies and returns up to 
+    max_num of the most frequently used locations. Returns
+    an empty list if max_num <= 0.
+    """
+    def top_k_locations(self, locations_dict, max_num):
+        result = []
+        if max_num > 0:
+            count = 0
+            sorted_locs = sorted(locations_dict.iteritems(), key=lambda (k,v): (v,k))
+            while (count < max_num) and sorted_locs:
+                loc = sorted_locs.pop()[0]
+                result.append(loc)
+                count += 1
+        return result
+                
