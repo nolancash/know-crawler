@@ -1,15 +1,15 @@
 import MySQLdb
 from crontab import CronTab
 
-CRAWLER_COMMAND = '/usr/bin/python ProcessDispatcher.py'
+CRAWLER_COMMAND = 'python know-crawler-0.3.2.zip'
 
 class Scheduler:
 	def __init__(self):
-		self.conn = MySQLdb.connect(host = "ovid.u.washington.edu",
+		self.conn = MySQLdb.connect(host = "ovid01.u.washington.edu",
 																user = "root",
 																passwd = "purple pony disco",
 																db = "know_db",
-																port = 32001)
+																port = 32002)
 																
 	def querySchedule(self):
 		curs = self.conn.cursor()
