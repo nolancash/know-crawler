@@ -4,6 +4,8 @@ Created on Apr 27, 2012
 @author: Nolan, Tyler, Harshad
 """
 import MySQLdb
+import _mysql_exceptions
+import sys
 import cgi
 
 """
@@ -26,11 +28,15 @@ class DBManager(object):
     Constructs the dbmanager and connects to the database.
     """
     def __init__(self):
-        self.conn = MySQLdb.connect(host = "ovid01.u.washington.edu",
-                           user = "harshad",
-                           passwd = "purple pony disco",
-                           db = "know_db"
-                           , port= 32001)
+        try:
+            self.conn = MySQLdb.connect(host = "ovid01.u.washington.edu",
+                               user = "harshad",
+                               passwd = "purple pony disco",
+                               db = "know_db"
+                               , port= 32002)
+        except _mysql_exceptions.OperationalError:
+            print "Timeout on connection to the database."
+            sys.exit(1)
         
     """
     Retrieves a list of all countries in the world from the database and returns them as a list 
