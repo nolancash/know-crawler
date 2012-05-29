@@ -5,8 +5,8 @@ include("html_container.php");
 # Prints HTML header.
 html_doc_top();
 
-const SERVER = "ovid.u.washington.edu";
-const PORT_NUM = "32001";
+const SERVER = "ovid01.u.washington.edu";
+const PORT_NUM = "32002";
 const USER_NAME = "root";
 const PASSWORD = "purple pony disco";
 const DB_NAME = "know_db";
