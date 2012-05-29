@@ -11,17 +11,22 @@ This class handles all interaction with the mysql database including but not lim
 to the database.
 """
 class DBManager(object):
+    
+    """
+    Makes DBManager a singleton.
+    """
     _instance = None
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
             cls._instance = super(DBManager, cls).__new__(
                                 cls, *args, **kwargs)
         return cls._instance
+    
     """
     Constructs the dbmanager and connects to the database.
     """
     def __init__(self):
-        self.conn = MySQLdb.connect(host = "ovid.u.washington.edu",
+        self.conn = MySQLdb.connect(host = "ovid01.u.washington.edu",
                            user = "harshad",
                            passwd = "purple pony disco",
                            db = "know_db"

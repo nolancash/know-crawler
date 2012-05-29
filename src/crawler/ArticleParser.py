@@ -149,14 +149,13 @@ class ArticleParser(HTMLParser):
         top_10_words = self.__util.top_k_words(word_counts, 10, common_words)
         return top_10_words
     
+    """
+    Helper function to get the top 4 locations in the text.
+    """
     def __get_related_locations(self):
         common_locations = self.__util.common_locations
         locations = self.__util.get_locations(", ".join(self.__text), common_locations)
         top_4_locations = self.__util.top_k_locations(locations, 4)
         return top_4_locations
             
-#parser = ArticleParser()
-#html = parser.get_html("http://www.nytimes.com/2012/05/25/us/texas-am-class-in-qatar-savors-college-station-connection.html?_r=1")
-#parser.feed(html)
-#print parser.results
                 
