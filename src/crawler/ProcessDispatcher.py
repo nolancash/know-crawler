@@ -20,7 +20,7 @@ This script runs the web crawler.
 Parses out the passed arguments.
 """
 def parse_arguments():
-    parser = optparse.OptionParser(description="know-crawler-0.1.1")
+    parser = optparse.OptionParser(description="know-crawler-0.3.1")
     parser.add_option("-u", dest="SOURCE_URL",
         help="The url of the news source to be processed.")
     parser.add_option("-d", action="store_true", dest="DRY_RUN", default=False,

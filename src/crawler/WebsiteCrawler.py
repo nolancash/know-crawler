@@ -53,14 +53,14 @@ class WebsiteCrawler(object):
     Takes a url as a parameter and returns a list of strings that are links on a page that look like 
     links to articles.
     """
-#    @TimeoutException.timeout(45)    
+    @TimeoutException.timeout(45)    
     def get_links(self,base_url):
         try:
             self.mech.open(base_url)
             response = self.mech.response()
 #            print self.mech.geturl()
             articles = []
-            for link in self.mech.links(url_regex=base_url + "|^/"):       
+            for link in self.mech.links(url_regex=base_url + "|^/"):
                 normal_url = self.__normalize_url(link.url)
                 if len(normal_url) - normal_url.rfind("/") > 20 and len(
                     normal_url) > len(base_url):
@@ -103,7 +103,7 @@ class WebsiteCrawler(object):
     Given a list of strings that represent urls this method parses them and returns a list. This list contains summaries of 
     articles which are themselves list with the following structure ["title", "description", "keywords", "author", "date", "url"].
     """
-#    @TimeoutException.timeout(45)
+    @TimeoutException.timeout(45)
     def parse_articles(self, articles):
         try:
             if articles:
