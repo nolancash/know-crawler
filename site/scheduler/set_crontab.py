@@ -2,7 +2,7 @@ import sys
 import crontab
 from crontab import CronTab
 
-CRAWLER_COMMAND = '/usr/bin/python ProcessDispatcher.py'
+CRAWLER_COMMAND = 'python know-crawler-0.3.2.zip'
 
 DAYS_OF_WEEK = [ "Sunday", "Monday", "Tuesday", "Wednesday", 
 	"Thursday", "Friday", "Saturday" ]
