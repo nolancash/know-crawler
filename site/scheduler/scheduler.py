@@ -16,25 +16,34 @@ class Scheduler:
 																db = "know_db",
 																port = 32002)
 																
+	def queryCrawlerSwitch(self):
+		curs = self.conn.cursor()
+		query = "select * from crawler_switch;"
+		curs.execute(query)
+		rows = curs.fetchall()
+		
+		assert !rows, "'crawler_switch' table is empty"
+			
+		state = rows[0][0];
+		return state;			
+	
 	def querySchedule(self):
 		curs = self.conn.cursor()
 		query = "select * from schedule;"
 		curs.execute(query)
 		rows = curs.fetchall()
 		
-		if rows:
-			hour = rows[0][HOUR_COLUMN_INDEX]
-			days = []
-			
-			for row in rows:
-				day = row[DAY_COLUMN_INDEX]
-				days.append(day)
-				
-			return hour, days
+		assert !rows, "'schedule' table is empty"
 		
-		# schedule table is empty: no time set
-		return None
+		hour = rows[0][HOUR_COLUMN_INDEX]
+		days = []
+		
+		for row in rows:
+			day = row[DAY_COLUMN_INDEX]
+			days.append(day)
 			
+		return hour, days
+		
 	def setCronTab(self, hour, minute, days):
 		tab = CronTab()
 		
@@ -54,8 +63,15 @@ class Scheduler:
 		
 def main():
 	scheduler = Scheduler()
-	hour, days = scheduler.querySchedule()
-	scheduler.setCronTab(hour, 0, days)
+	state = scheduler.queryCrawlerSwitch()
+	
+	if state:
+		hour, days = scheduler.querySchedule()
+		scheduler.setCronTab(hour, 0, days)
+	else:
+		tab = CronTab()
+		# remove crawler cron job(s)
+		tab.remove_all(CRAWLER_COMMAND)
 
 if __name__ == "__main__":
 	main()
