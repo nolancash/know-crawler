@@ -122,10 +122,13 @@ class DBManager(object):
         curs.execute(query)
         rows = curs.fetchall()
         if len(rows) > 0:
-#            query1 = "delete from white_list where url like \"%" + url +"%\";"
-            query2 = "delete from user_list where url like \"%" + url +"%\";"
-#            self.conn.query(query1)
-            self.conn.query(query2)
-            query3 = "insert into black_list values(\"" + url + "\");"
-            self.conn.query(query3)
-            print "Blacklisting successful."
+            try:
+    #            query1 = "delete from white_list where url like \"%" + url +"%\";"
+                query2 = "delete from user_list where url like \"%" + url +"%\";"
+    #            self.conn.query(query1)
+                self.conn.query(query2)
+                query3 = "insert into black_list values(\"" + url + "\");"
+                self.conn.query(query3)
+                print "Blacklisting successful."
+            except _mysql_exceptions.IntegrityError:
+                print "Already removed from user_list: " + url
