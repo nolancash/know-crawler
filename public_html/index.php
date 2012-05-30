@@ -5,13 +5,14 @@ include("html_container.php");
 # Prints HTML header.
 html_doc_top();
 
-crawler_switch();
-
 const SERVER = "ovid01.u.washington.edu";
 const PORT_NUM = "32002";
 const USER_NAME = "root";
 const PASSWORD = "purple pony disco";
 const DB_NAME = "know_db";
+
+const SWITCH_TABLE = "crawler_switch";
+const STATE_COLUMN = "state";
 
 const SCHEDULE_TABLE = "schedule";
 const DAY_COLUMN = "day";
@@ -35,7 +36,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 	display_settings();
 	
 } else if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	if (isset($_POST["hour"]) and isset($_POST["period"])) {
+	if (isset($_POST["state"])) {
+		echo "state";
+		// crawler on/off
+		$state = $_POST["state"];
+		
+		do_query("DELETE FROM " . SWITCH_TABLE . ";");
+		do_query("INSERT INTO " . SWITCH_TABLE . " VALUES ('$state');");
+		
+	} else if (isset($_POST["hour"]) and isset($_POST["period"])) {
 		// time setting
 		$hour = $_POST["hour"];
 		$period = $_POST["period"];
@@ -54,14 +63,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 			$daysOfWeek = $_POST["daysOfWeek"];
 			
 			foreach ($daysOfWeek as $day) {
-				$set_time_query = "INSERT INTO schedule VALUES ('$day', '$hour');";
+				$set_time_query = "INSERT INTO " . SCHEDULE_TABLE . " VALUES ('$day', '$hour');";
 				do_query($set_time_query);
 			}
-		} else {
-			// no day selected
-			$set_time_query = "INSERT INTO schedule VALUES (0, '$hour');";
-			do_query($set_time_query);
 		}
+		
 	} else if (isset($_POST["urls"])) {
 		// url setting: at least 1 url is selected
 		$new_user_urls = $_POST["urls"];
@@ -121,6 +127,8 @@ function check_result_successful($result, $info) {
 
 # Queries and displays time and url settings.
 function display_settings() {
+	display_crawler_switch();
+	
 	time_setting_top();
 	// query schedule table
 	display_time_setting();
@@ -152,6 +160,36 @@ function get_rows($table, $order_by, $target_column = NULL) {
 	}
 	
 	return $rows;
+}
+
+# Creates HTML elements to display the crawler on/off switch.
+function display_crawler_switch() {
+	?>
+	<fieldset>
+		<legend>Crawler:</legend>
+	<?php
+	$rows = get_rows(SWITCH_TABLE, STATE_COLUMN, STATE_COLUMN);
+			
+	if (empty($rows)) {
+		die("The " . SWITCH_TABLE . " table is empty.");
+	}
+	
+	$state = $rows[0];
+	
+	if ($state) {
+		?>
+		<label><input type="radio" name="state" id="crawlerOn" value="1" checked="true" />On</label>
+		<label><input type="radio" name="state" id="crawlerOff" value="0" />Off</label>
+		<?php
+	} else {
+		?>
+		<label><input type="radio" name="state" id="crawlerOn" value="1" />On</label>
+		<label><input type="radio" name="state" id="crawlerOff" value="0" checked="true" />Off</label>
+		<?php
+	}
+	?>
+	</fieldset>
+	<?php
 }
 
 # Creates HTML elements to display the time setting.
