@@ -29,7 +29,8 @@ class Utilities(object):
         for row in rows:
             try:
                 r = row[0].decode("utf-8").encode("ascii", "ignore").strip()
-                self.common_locations.append(r)
+                if r:
+                    self.common_locations.append(r)
             except UnicodeDecodeError:
                 print "Decode error: locations."
     
