@@ -20,7 +20,6 @@ class ArticleParser(HTMLParser):
         Constructor for the Article parser
         """
         HTMLParser.__init__(self)
-#        self.__done = 0
         self.__ignore_line = -1
         self.__got_text = False
         self.__got_title = False

@@ -43,11 +43,11 @@ class WebsiteCrawler(object):
     @TimeoutException.timeout(45)    
     def get_links(self,base_url):
         try:
+            articles = []
             self.mech.open(base_url)
 #            response = self.mech.response()
 #            print response.read()
 #            print self.mech.geturl()
-            articles = []
             for link in self.mech.links():
 #                print link
                 normal_url = self.__normalize_url(link.url)
@@ -56,7 +56,7 @@ class WebsiteCrawler(object):
                     index = normal_url[:index].rfind("/")
                 if index != -1:
                     file_name = normal_url[index:]
-                    print "file: " + file_name
+#                    print "file: " + file_name
                     if (len(file_name) > 18 or len(re.sub("[^0-9]", "", file_name)) > 7) and len(
                         normal_url) > len(base_url):
     #                if len(normal_url) - normal_url.rfind("/") > 17 and len(
@@ -106,7 +106,9 @@ class WebsiteCrawler(object):
     def parse_articles(self, articles):
         try:
             if articles:
+                print "Parsing articles: " + str(len(articles))
                 for article in articles:
+#                    print article
                     parser = ArticleParser()
                     try:
                         html = parser.get_html(article)
@@ -126,6 +128,7 @@ class WebsiteCrawler(object):
                     except HTTPError:
                         print "HTTP error."
                         pass
+                    sys.stdout.flush()
         except TimeoutException.TimeoutException:
             self.__blacklist_source(self.mech.geturl(), self.__article_results)
             pass
@@ -144,7 +147,7 @@ class WebsiteCrawler(object):
             db.blacklist(url)
 
 #a = WebsiteCrawler()
-#link = a.get_links("http://www.baltic-review.com/")
+#link = a.get_links("http://guardian.co.tt/")
 #for l in link:
 #    print l
 #print len(link)
