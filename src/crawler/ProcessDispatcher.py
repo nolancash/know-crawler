@@ -92,8 +92,8 @@ def __run_from_list(websites):
     for site in websites:
         print site
         crawler = WebsiteCrawler.WebsiteCrawler()
-        links = crawler.get_links(site)
         try:
+            links = crawler.get_links(site)
             results = crawler.parse_articles(links)
         except TimeoutException.TimeoutException:
             print "Timeout Exception (outer)."
@@ -103,14 +103,13 @@ def __run_from_list(websites):
                 if db.add_article_list(article, dry_run):
                     count += 1
             PERCENT_GOOD = 0.1
-            try:
-                valid_articles = (count * 1.0)/ len(results)
-                print "Percentage of valid articles: " + str(count) + "/" + str(len(results)) + " : " + str(valid_articles)
-                if (valid_articles < PERCENT_GOOD) and not dry_run:
-                    db.blacklist(site)
-            except ZeroDivisionError:
-                print "No articles found for: " + str(site)
+            valid_articles = (count * 1.0)/ len(results)
+            print "Percentage of valid articles: " + str(count) + "/" + str(len(results)) + " : " + str(valid_articles)
+            if (valid_articles < PERCENT_GOOD) and not dry_run:
                 db.blacklist(site)
+        else:
+            print "No articles found for :" + str(site)
+            db.blacklist(site)
         del crawler
     
     db.close()
