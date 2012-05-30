@@ -18,7 +18,6 @@ def main():
         "article_parser_test",
         "website_crawler_test",
         "utilities_test",
-        "db_manager_test",
         "database_test"]
     
     suite = unittest.TestSuite()

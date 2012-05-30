@@ -6,8 +6,8 @@ Created on May 12, 2012
 import unittest
 import sys
 sys.path.append("../src/crawler")
-from crawler import DBManager
-from crawler import Utilities
+import DBManager
+import Utilities
 
 
 class Test(unittest.TestCase):
