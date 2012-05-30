@@ -12,6 +12,7 @@ import urllib2
 import TimeoutException
 import DBManager
 import sys
+import re
  
 """
 This class oversees all of the crawling of a news website. It collects all of the links on a page that 
@@ -29,24 +30,8 @@ class WebsiteCrawler(object):
         """
         self.mech = mechanize.Browser()
         
-        # Cookie Jar
-#        cj = cookielib.LWPCookieJar()
-#        self.mech.set_cookiejar(cj)
-        
-        # Browser options
-#        self.mech.set_handle_equiv(True)
-#        self.mech.set_handle_gzip(True)
-#        self.mech.set_handle_redirect(True)
-#        self.mech.set_handle_referer(True)
-#        self.mech.set_handle_robots(False)
-        
         # Follows refresh 0 but not hangs on refresh > 0
         self.mech.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
-        
-        # Want debugging messages?
-        #br.set_debug_http(True)
-        #br.set_debug_redirects(True)
-        #br.set_debug_responses(True)
         
         self.mech.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
         self.__article_results = []
@@ -59,14 +44,26 @@ class WebsiteCrawler(object):
     def get_links(self,base_url):
         try:
             self.mech.open(base_url)
-            response = self.mech.response()
+#            response = self.mech.response()
+#            print response.read()
 #            print self.mech.geturl()
             articles = []
-            for link in self.mech.links(url_regex=base_url + "|^/"):
+            for link in self.mech.links():
+#                print link
                 normal_url = self.__normalize_url(link.url)
-                if len(normal_url) - normal_url.rfind("/") > 20 and len(
-                    normal_url) > len(base_url):
-                    articles.append(normal_url)
+                index = normal_url.rfind("/")
+                if index == (len(normal_url) - 1):
+                    index = normal_url[:index].rfind("/")
+                if index != -1:
+                    file_name = normal_url[index:]
+                    print "file: " + file_name
+                    if (len(file_name) > 18 or len(re.sub("[^0-9]", "", file_name)) > 7) and len(
+                        normal_url) > len(base_url):
+    #                if len(normal_url) - normal_url.rfind("/") > 17 and len(
+    #                    normal_url) > len(base_url):
+#                        print normal_url
+                        if normal_url.find(self.mech.geturl()) != -1:
+                            articles.append(normal_url)
             articles = set(articles)
             return articles
         except HTTPError:
@@ -81,7 +78,7 @@ class WebsiteCrawler(object):
         except urllib2.URLError:
             print "Url error."
             pass
-        except TimeoutException:
+        except TimeoutException.TimeoutException:
             self.__blacklist_source(base_url, articles)
             pass
             
@@ -105,7 +102,7 @@ class WebsiteCrawler(object):
     Given a list of strings that represent urls this method parses them and returns a list. This list contains summaries of 
     articles which are themselves list with the following structure ["title", "description", "keywords", "author", "date", "url"].
     """
-    @TimeoutException.timeout(60)
+    @TimeoutException.timeout(90)
     def parse_articles(self, articles):
         try:
             if articles:
@@ -113,22 +110,23 @@ class WebsiteCrawler(object):
                     parser = ArticleParser()
                     try:
                         html = parser.get_html(article)
-                        html = ArticleParser.pre_parse(html, "script")
-                        try:
-                            parser.feed(html)
-                            result = parser.results
-                            result.append(article)
-                            self.__article_results.append(result)
-                        except UnicodeDecodeError:
-                            print "Bad character."
-                        except HTMLParser.HTMLParseError:
-                            print "Bad html."
-                        del parser
-                        del html
+                        if html:
+                            html = ArticleParser.pre_parse(html, "script")
+                            try:
+                                parser.feed(html)
+                                result = parser.results
+                                result.append(article)
+                                self.__article_results.append(result)
+                            except UnicodeDecodeError:
+                                print "Bad character."
+                            except HTMLParser.HTMLParseError:
+                                print "Bad html."
+                            del parser
+                            del html
                     except HTTPError:
                         print "HTTP error."
                         pass
-        except TimeoutException:
+        except TimeoutException.TimeoutException:
             self.__blacklist_source(self.mech.geturl(), self.__article_results)
             pass
         finally:
@@ -145,3 +143,11 @@ class WebsiteCrawler(object):
             db = DBManager.DBManager()
             db.blacklist(url)
 
+#a = WebsiteCrawler()
+#link = a.get_links("http://www.baltic-review.com/")
+#for l in link:
+#    print l
+#print len(link)
+#q = a.parse_articles(link)
+#for z in q:
+#    print z
