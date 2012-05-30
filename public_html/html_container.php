@@ -15,6 +15,7 @@ function html_doc_top() {
 		<!-- some JS libraries I used before, we can use them if we want later -->
 		<script src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js" type="text/javascript"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.3/scriptaculous.js" type="text/javascript"></script>
+		<script src="interact.js" type="text/javascript"></script>
 
 	</head>
 	<body>
@@ -23,7 +24,7 @@ function html_doc_top() {
 
 function time_setting_top() {
 	?>
-		<form action="index.php" method="post"> 
+		<form id="schedule" action="index.php" method="post"> 
 			<fieldset>
 				<legend>Time Schedule:</legend>
 				<!-- Get time setting from database -->
@@ -42,12 +43,16 @@ function time_setting_bottom() {
 
 function url_setting_top() {
 	?>
-	<form action="index.php" method="post"> 
+	<form id="sources" action="index.php" method="post"> 
 		<fieldset>
 			<legend>Articles to Crawl:</legend>
 			<div>
 				<strong>Article List:</strong>
 			<div>
+			<div>
+				<input type="button" id="selectAllUrls" value="Select All" />
+				<input type="button" id="deselectAllUrls" value="Deselect All" />
+			</div>
 			<div>
 				<!-- Get articles from database -->
 	<?php
