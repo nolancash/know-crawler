@@ -67,7 +67,8 @@ class DBManager(object):
             query += cgi.escape(description, True) +"\", \"" + cgi.escape(keywords, True)
             query += "\", \"" + cgi.escape(author, True) + "\", NOW(), \"" + cgi.escape(url, True)
             query += "\", \"" + cgi.escape(primary_loc, True) + "\", \"" + cgi.escape(secondary_locs, True) + "\")"
-            print query
+#            print query
+            print "Inserting article: " + url
             if not dry_run:
                 self.conn.query(query)
                 return True
