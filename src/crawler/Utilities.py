@@ -28,7 +28,8 @@ class Utilities(object):
         rows = db.send_query("select location from locations;")
         for row in rows:
             try:
-                self.common_locations.append(row[0].decode("utf-8").encode("ascii", "ignore"))
+                r = row[0].decode("utf-8").encode("ascii", "ignore").strip()
+                self.common_locations.append(r)
             except UnicodeDecodeError:
                 print "Decode error: locations."
     
