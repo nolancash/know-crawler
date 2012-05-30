@@ -102,7 +102,7 @@ class WebsiteCrawler(object):
     Given a list of strings that represent urls this method parses them and returns a list. This list contains summaries of 
     articles which are themselves list with the following structure ["title", "description", "keywords", "author", "date", "url"].
     """
-    @TimeoutException.timeout(90)
+    @TimeoutException.timeout(120)
     def parse_articles(self, articles):
         try:
             if articles:
@@ -128,7 +128,6 @@ class WebsiteCrawler(object):
                     except HTTPError:
                         print "HTTP error."
                         pass
-                    sys.stdout.flush()
         except TimeoutException.TimeoutException:
             self.__blacklist_source(self.mech.geturl(), self.__article_results)
             pass
