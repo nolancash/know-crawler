@@ -1,15 +1,14 @@
 import sys
 import crontab
 from crontab import CronTab
-
-CRAWLER_COMMAND = 'python know-crawler-0.3.2.zip'
+from scheduler import Scheduler
 
 DAYS_OF_WEEK = [ "Sunday", "Monday", "Tuesday", "Wednesday", 
 	"Thursday", "Friday", "Saturday" ]
 
 def printTimeSetting():
 	tab = CronTab()
-	crawler_jobs = tab.find_command(CRAWLER_COMMAND)
+	crawler_jobs = tab.find_command(scheduler.CRAWLER_COMMAND)
 	if not crawler_jobs:
 		print 'There is no crawler job scheduled.'
 		return
@@ -21,20 +20,6 @@ def printTimeSetting():
 	dsow = crawler_job.dow().value().split(',')
 	days = ', '.join(map(lambda x : DAYS_OF_WEEK[int(x)], dsow))
 	print 'The crawler job is scheduled at ' + hour + ':' + minute + " o'clock on " + days + '.'
-
-def setCronTab(hour, minute, days):
-	tab = CronTab()
-	
-	# remove old crawler cron job(s)
-	tab.remove_all(CRAWLER_COMMAND)
-	
-	cron = tab.new(command=CRAWLER_COMMAND)
-	cron.minute().on(minute)
-	cron.hour().on(hour)
-	dsow = ','.join(map(str, days))
-	cron.dow().on(dsow)
-	
-	tab.write()
 	
 def usage(prog_name):
 	print "usage:\tpython " + prog_name
@@ -87,7 +72,8 @@ def main():
 		hour = getNumberInput('hour', 0, 23)
 		minute = getNumberInput('minute', 0, 59)
 		days = getDaysInput()
-		setCronTab(hour, minute, days)
+		scheduler = Scheduler()
+		scheduler.setCronTab(hour, minute, days)
 		printTimeSetting()
 	else:
 		usage(sys.argv[0])

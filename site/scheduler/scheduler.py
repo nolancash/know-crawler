@@ -1,7 +1,12 @@
+# Scheduler handles KNOW-Crawler's time setting. It queries the time setting 
+# from the database and schedules a cron job to run the crawler accordingly.
+
 import MySQLdb
 from crontab import CronTab
 
-CRAWLER_COMMAND = 'python know-crawler-0.3.2.zip'
+CRAWLER_COMMAND = "/rc12/d04/knowcse2/site/scheduler/run_crawler.sh"
+DAY_COLUMN_INDEX = 0
+HOUR_COLUMN_INDEX = 1
 
 class Scheduler:
 	def __init__(self):
@@ -18,17 +23,17 @@ class Scheduler:
 		rows = curs.fetchall()
 		
 		if rows:
-			hour = rows[0][1]
+			hour = rows[0][HOUR_COLUMN_INDEX]
 			days = []
 			
 			for row in rows:
-				day = row[0]
+				day = row[DAY_COLUMN_INDEX]
 				days.append(day)
 				
 			return hour, days
 		
-		# default schedule: 3 am daily
-		return 3, []
+		# schedule table is empty: no time set
+		return None
 			
 	def setCronTab(self, hour, minute, days):
 		tab = CronTab()
