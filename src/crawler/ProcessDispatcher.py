@@ -109,7 +109,9 @@ def __run_from_list(websites):
                 db.blacklist(site)
         else:
             print "No articles found for :" + str(site)
-            db.blacklist(site)
+            if not dry_run:
+                db.blacklist(site)
+            
         del crawler
     
     db.close()
