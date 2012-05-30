@@ -117,15 +117,15 @@ class DBManager(object):
     """
     def blacklist(self, url):
         print "Attempting to blacklist: " + str(url)
-#        query = "select * from white_list where url like \"" + url + "\";"
-#        curs = self.conn.cursor()
-#        curs.execute(query)
-#        rows = curs.fetchall()
-#        if len(rows) > 0:
+        query = "select * from white_list where url like \"" + url + "\";"
+        curs = self.conn.cursor()
+        curs.execute(query)
+        rows = curs.fetchall()
+        if len(rows) > 0:
 #            query1 = "delete from white_list where url like \"%" + url +"%\";"
-#            query2 = "delete from user_list where url like \"%" + url +"%\";"
+            query2 = "delete from user_list where url like \"%" + url +"%\";"
 #            self.conn.query(query1)
-#            self.conn.query(query2)
-#            query3 = "insert into black_list values(\"" + url + "\");"
-#            self.conn.query(query3)
-#            print "Blacklisting successful."
+            self.conn.query(query2)
+            query3 = "insert into black_list values(\"" + url + "\");"
+            self.conn.query(query3)
+            print "Blacklisting successful."
