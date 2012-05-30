@@ -1,3 +1,7 @@
+<!--
+db_manager.php handles interaction with MySQL database.
+-->
+
 <?php
 
 const SERVER = "ovid01.u.washington.edu";
@@ -23,7 +27,7 @@ ini_set('mysql.default_socket', '/rc12/d04/knowcse2/mysql.sock');
 
 
 # Calls mysql_query on the query, checks if the call 
-# is successful, and return the query result.
+# is successful, and returns the query result.
 function do_query($query) {
 	$result = mysql_query($query);
 	check_result_successful($result, "mysql_query of " . $query);

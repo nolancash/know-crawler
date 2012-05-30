@@ -1,3 +1,9 @@
+<!--
+settings_service.php is a service that handles KNOW-Crawler's configuration 
+from the user. It allows the user to enable or disable the crawler, specify 
+the crawling schedule, and the list of news sources (URLs of the news websites) to crawl.
+-->
+
 <?php
 include("html_display.php");
 
@@ -70,10 +76,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 			}
 		}
 		
-	} else {
-		// url setting: no url selected
-		$remove_all_query = "DELETE FROM " . USER_TABLE . ";";
-		do_query($remove_all_query);
 	}
 	
 	display_settings();

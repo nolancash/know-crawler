@@ -1,7 +1,13 @@
+<!--
+html_display.php populates KNOW-Crawler website with the current 
+crawler's configuration.
+-->
+
 <?php
 include("db_manager.php");
 
-# Queries and displays time and url settings.
+# Queries and displays crawler switch ("On" or "Off"), schedule 
+# and news sources settings.
 function display_settings() {
 	display_crawler_switch();
 	
@@ -48,7 +54,7 @@ function display_crawler_switch() {
 	<?php
 }
 
-# Creates HTML elements to display the time setting.
+# Creates HTML elements to display the schedule setting.
 function display_time_setting() {
 	$rows = get_rows(SCHEDULE_TABLE, DAY_COLUMN);
 			
@@ -135,7 +141,7 @@ function display_time_setting() {
 	<?php
 }
 
-# Creates HTML elements to display the url setting.
+# Creates HTML elements to display the news sources setting.
 function display_url_setting($user_urls, $white_urls) {
 	foreach ($white_urls as $white_url) {		
 		if (in_array($white_url, $user_urls)) {
