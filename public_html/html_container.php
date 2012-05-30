@@ -22,39 +22,50 @@ function html_doc_top() {
 	<?php
 }
 
+function crawler_switch() {
+	?>
+	
+	<?php
+}
+
 function time_setting_top() {
 	?>
+	<fieldset>
+		<legend>Time Schedule:</legend>
+		<div>
+			<strong>Crawler:</strong>
+			<label><input type="radio" id="crawlerOn" name="state" value="on" checked="true" />On</label>
+			<label><input type="radio" id="crawlerOff" name="state" value="off" />Off</label>
+		</div>
 		<form id="schedule" action="index.php" method="post"> 
-			<fieldset>
-				<legend>Time Schedule:</legend>
-				<!-- Get time setting from database -->
+			<!-- Get time setting from database -->
 	<?php
 }
 
 function time_setting_bottom() {
 	?>
-				<div>
-					<input type="submit" value="Submit" />
-				</div>
-			</fieldset>
+			<div>
+				<input type="submit" value="Submit" />
+			</div>
 		</form>
+	</fieldset>
 	<?php
 }
 
 function url_setting_top() {
 	?>
-	<form id="sources" action="index.php" method="post"> 
-		<fieldset>
-			<legend>Articles to Crawl:</legend>
+	<fieldset>
+		<legend>Articles to Crawl:</legend>
+		<div>
+			<strong>Article List:</strong>
+		<div>
+		<div>
+			<button id="selectAllUrls">Select All</button>
+			<button id="deselectAllUrls">Deselect All</button>
+		</div>
+		<form id="sources" action="index.php" method="post"> 
 			<div>
-				<strong>Article List:</strong>
-			<div>
-			<div>
-				<input type="button" id="selectAllUrls" value="Select All" />
-				<input type="button" id="deselectAllUrls" value="Deselect All" />
-			</div>
-			<div>
-				<!-- Get articles from database -->
+				<!-- Get news sources from database -->
 	<?php
 }
 
@@ -64,8 +75,8 @@ function url_setting_bottom() {
 			<div>
 				<input type="submit" value="Submit" />
 			</div>
-		</fieldset>
-	</form>
+		</form>
+	</fieldset>
 	<?php
 }
 
