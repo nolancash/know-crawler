@@ -6,7 +6,7 @@ Created on May 2, 2012
 import unittest
 import sys
 sys.path.append("../src/crawler")
-from crawler import DBManager
+import DBManager
 
 """
 This class runs our unit tests for DBManager.py.
