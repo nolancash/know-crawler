@@ -72,17 +72,20 @@ class ArticleParser(HTMLParser):
     """
     def __get_tag_by_name(self, tag, attrs, result_index):
         found_description = False
+        content = None
         if (self.results[result_index] == "null"):
             for attr in attrs:
-                if attr[0] != "content" and (attr[1] != None and attr[1].find(tag) != -1):
+                if (attr[1] != None and attr[1].lower().find(tag) != -1):
                     found_description = True
 #                    print attr[1]
-                if attr[0].find("content") != -1 and found_description:
-                    try:
-                        self.results[result_index] = attr[1].decode("utf-8").encode("ascii", "ignore")
-                    except UnicodeDecodeError:
-                        print "Decode error: Article attribute."
-                        pass
+                if attr[0].find("content") != -1:
+                    content = attr[1].decode("utf-8").encode("ascii", "ignore")
+            try:
+                if content != None and found_description:
+                    self.results[result_index] = content
+            except UnicodeDecodeError:
+                print "Decode error: Article attribute."
+                pass
     
     """
     Overides the HTMLparser handle_starttag and takes a string tag which represents the html tag that has been found and
@@ -96,7 +99,7 @@ class ArticleParser(HTMLParser):
                 self.__get_tag_by_name("description", attrs, 1)
                 self.__get_tag_by_name("keywords", attrs, 2)
                 self.__get_tag_by_name("author", attrs, 3)
-                self.__get_tag_by_name("type", attrs, 4)
+                self.__get_tag_by_name("og:type", attrs, 4)
             elif tag == "p":
                 self.__got_text = True
             elif tag == "title":
@@ -138,7 +141,7 @@ class ArticleParser(HTMLParser):
                 self.results[6] = ", ".join(locations)
         if tag == "title":
             self.__got_title = False
-            self.results[0] = self.__title
+            self.results[0] = self.__title.strip()
 #            print self.results[2]
     
     """
@@ -158,5 +161,3 @@ class ArticleParser(HTMLParser):
         locations = self.__util.get_locations(", ".join(self.__text), common_locations)
         top_4_locations = self.__util.top_k_locations(locations, 4)
         return top_4_locations
-            
-                
