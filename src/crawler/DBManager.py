@@ -123,9 +123,9 @@ class DBManager(object):
         rows = curs.fetchall()
         if len(rows) > 0:
             try:
-    #            query1 = "delete from white_list where url like \"%" + url +"%\";"
+                query1 = "delete from white_list where url like \"%" + url +"%\";"
                 query2 = "delete from user_list where url like \"%" + url +"%\";"
-    #            self.conn.query(query1)
+                self.conn.query(query1)
                 self.conn.query(query2)
                 query3 = "insert into black_list values(\"" + url + "\");"
                 self.conn.query(query3)
