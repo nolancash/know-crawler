@@ -5,4 +5,4 @@ To run an executable of the webcrawler application, run the file know-crawler-1.
 python know-crawler-1.0.0.zip -p 4
 
 You may run the following command for additional help:
-python know-crawler-1.0.0.zip -help
+python know-crawler-1.0.0.zip --help
