@@ -118,7 +118,7 @@ def __run_from_list(websites):
             
         del crawler
     
-    print "\nDone."
+    print "\nDone: " + str(datetime.datetime.now().replace(microsecond = 0))
     db2.close()
 
 """
