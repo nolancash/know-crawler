@@ -24,7 +24,11 @@ function html_doc_top() {
 
 function crawler_switch() {
 	?>
-	
+	<fieldset>
+		<legend>Crawler:</legend>
+		<label><input type="radio" id="crawlerOn" name="state" value="on" checked="true" />On</label>
+		<label><input type="radio" id="crawlerOff" name="state" value="off" />Off</label>
+	</fieldset>
 	<?php
 }
 
@@ -32,11 +36,6 @@ function time_setting_top() {
 	?>
 	<fieldset>
 		<legend>Time Schedule:</legend>
-		<div>
-			<strong>Crawler:</strong>
-			<label><input type="radio" id="crawlerOn" name="state" value="on" checked="true" />On</label>
-			<label><input type="radio" id="crawlerOff" name="state" value="off" />Off</label>
-		</div>
 		<form id="schedule" action="index.php" method="post"> 
 			<!-- Get time setting from database -->
 	<?php
