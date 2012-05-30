@@ -160,7 +160,7 @@ function time_setting_top() {
 	?>
 	<fieldset>
 		<legend>Time Schedule:</legend>
-		<form id="schedule" action="index.php" method="post"> 
+		<form class="ex1" id="schedule" action="index.php" method="post"> 
 			<!-- Get time setting from database -->
 	<?php
 }
@@ -186,8 +186,8 @@ function url_setting_top() {
 			<button id="selectAllUrls">Select All</button>
 			<button id="deselectAllUrls">Deselect All</button>
 		</div>
-		<form id="sources" action="index.php" method="post"> 
-			<div>
+        <form id="sources" action="index.php" method="post"> 
+			<div class="ex">
 				<!-- Get news sources from database -->
 	<?php
 }
