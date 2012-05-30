@@ -15,10 +15,11 @@ and then returns a list of strings that represents that summary in this format
 ["title", "description", "keywords", "author", "date", "url"].
 """
 class ArticleParser(HTMLParser):
+    
+    """
+    Constructor for the Article parser
+    """
     def __init__(self):
-        """
-        Constructor for the Article parser
-        """
         HTMLParser.__init__(self)
         self.__ignore_line = -1
         self.__got_text = False
@@ -117,6 +118,8 @@ class ArticleParser(HTMLParser):
             try:
                 self.__title += data.decode("utf-8").encode("ascii", "ignore")
             except UnicodeDecodeError:
+                # This error usually occurs when titles include character in other languages.
+                # i.e. Japanese.
                 print "Decode error: Title."
                 pass
             
@@ -128,16 +131,21 @@ class ArticleParser(HTMLParser):
         if tag == "p":
             self.__got_text = False
         if tag == "html":
+            
+            # Adds new keywords
             if self.results[2] == "null":
                 self.results[2] = ", ".join(self.__get_top_words())
             else:
                 self.results[2] += ", " + ", ".join(self.__get_top_words())
             self.results[2] = self.results[2].lower()
+            
+            # Adds locations
             locations = self.__get_related_locations()
             if len(locations) > 0:
                 self.results[5] = locations.pop()
             if len(locations) > 0:
                 self.results[6] = ", ".join(locations)
+                
         if tag == "title":
             self.__got_title = False
             self.results[0] = self.__title.strip()
@@ -158,5 +166,5 @@ class ArticleParser(HTMLParser):
     def __get_related_locations(self):
         common_locations = self.__util.common_locations
         locations = self.__util.get_locations(", ".join(self.__text), common_locations)
-        top_4_locations = self.__util.top_k_locations(locations, 4)
-        return top_4_locations
+        top_locations = self.__util.top_k_locations(locations, 4)
+        return top_locations

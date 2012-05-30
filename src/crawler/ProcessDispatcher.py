@@ -33,6 +33,7 @@ def parse_arguments():
 Crawls the passed arguments url and saves all data to the sql database.
 """
 def main(options):
+    
     # Redirects standard output to a log file.
     __log_file_setup()
     
@@ -88,7 +89,7 @@ def __run_from_list(websites):
     print "Dry run: " + str(dry_run)
     print "Running on list of news sources."   
     
-    db = DBManager.DBManager()
+    db2 = DBManager.DBManager()
     for site in websites:
         print site
         crawler = WebsiteCrawler.WebsiteCrawler()
@@ -100,22 +101,25 @@ def __run_from_list(websites):
         if results:
             count = 0
             for article in results:
-                if db.add_article_list(article, dry_run):
+                if db2.add_article_list(article, dry_run):
                     count += 1
+                    
+            # We tolerate news sources that yield a minimum of 10% valid articles out of the the pages
+            # we parse.
             PERCENT_GOOD = 0.1
             valid_articles = (count * 1.0)/ len(results)
             print "Percentage of valid articles: " + str(count) + "/" + str(len(results)) + " : " + str(valid_articles)
             if (valid_articles < PERCENT_GOOD) and not dry_run:
-                db.blacklist(site)
+                db2.blacklist(site)
         else:
             print "No articles found for :" + str(site)
             if not dry_run:
-                db.blacklist(site)
+                db2.blacklist(site)
             
         del crawler
     
-    db.close()
     print "\nDone."
+    db2.close()
 
 """
 Concatenates the file name for the log file in the format:

@@ -67,16 +67,16 @@ class WebsiteCrawler(object):
             articles = set(articles)
             return articles
         except HTTPError:
-            print "Http error."
+            print "Http error: " + base_url
             pass
         except mechanize._form.ParseError:
-            print "Parser error."
+            print "Parser error: " + base_url
             pass
         except mechanize._mechanize.BrowserStateError:
-            print "Empty url."
+            print "Empty url: " + base_url
             pass
         except urllib2.URLError:
-            print "Url error."
+            print "Url error: " + base_url
             pass
         except TimeoutException.TimeoutException:
             self.__blacklist_source(base_url, articles)
@@ -84,6 +84,7 @@ class WebsiteCrawler(object):
             
     """
     Takes a url and strips it of all url encoded parameters.
+    This also concatenates relative url strings.
     """    
     def __normalize_url(self, url):
         res = url
