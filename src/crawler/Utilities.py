@@ -27,7 +27,10 @@ class Utilities(object):
             self.common_words.append(row[0])
         rows = db.send_query("select location from locations;")
         for row in rows:
-            self.common_locations.append(row[0])
+            try:
+                self.common_locations.append(row[0].decode("utf-8").encode("ascii", "ignore"))
+            except UnicodeDecodeError:
+                print "Decode error: locations."
     
     """
     Makes Utilities a singleton.

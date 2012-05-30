@@ -10,6 +10,8 @@ import mechanize
 import HTMLParser
 import urllib2
 import TimeoutException
+import DBManager
+import sys
  
 """
 This class oversees all of the crawling of a news website. It collects all of the links on a page that 
@@ -80,7 +82,7 @@ class WebsiteCrawler(object):
             print "Url error."
             pass
         except TimeoutException:
-            print "Timeout Exception."
+            self.__blacklist_source(base_url, articles)
             pass
             
     """
@@ -103,7 +105,7 @@ class WebsiteCrawler(object):
     Given a list of strings that represent urls this method parses them and returns a list. This list contains summaries of 
     articles which are themselves list with the following structure ["title", "description", "keywords", "author", "date", "url"].
     """
-    @TimeoutException.timeout(45)
+    @TimeoutException.timeout(60)
     def parse_articles(self, articles):
         try:
             if articles:
@@ -127,9 +129,19 @@ class WebsiteCrawler(object):
                         print "HTTP error."
                         pass
         except TimeoutException:
-            print "Timeout Exception."
+            self.__blacklist_source(self.mech.geturl(), self.__article_results)
             pass
         finally:
+            sys.stdout.flush()
             return self.__article_results
     
+    """
+    This function is called when there is a timeout exception and checks to see
+    whether or not a source should be blacklisted.
+    """    
+    def __blacklist_source(self, url, results):
+        print "Timeout Exception: " + str(len(results)) + " articles: " + str(url)
+        if len(results) == 0 or results == None:
+            db = DBManager.DBManager()
+            db.blacklist(url)
 

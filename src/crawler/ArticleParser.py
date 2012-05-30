@@ -81,7 +81,7 @@ class ArticleParser(HTMLParser):
                     try:
                         self.results[result_index] = attr[1].decode("utf-8").encode("ascii", "ignore")
                     except UnicodeDecodeError:
-                        print "Decode error."
+                        print "Decode error: Article attribute."
                         pass
     
     """
@@ -115,7 +115,7 @@ class ArticleParser(HTMLParser):
             try:
                 self.__title += data.decode("utf-8").encode("ascii", "ignore")
             except UnicodeDecodeError:
-                print "Decode error."
+                print "Decode error: Title."
                 pass
             
     """
@@ -127,8 +127,9 @@ class ArticleParser(HTMLParser):
             self.__got_text = False
         if tag == "html":
             if self.results[2] == "null":
-                self.results[2] == ""
-            self.results[2] += ", " + ", ".join(self.__get_top_words())
+                self.results[2] = ", ".join(self.__get_top_words())
+            else:
+                self.results[2] += ", " + ", ".join(self.__get_top_words())
             self.results[2] = self.results[2].lower()
             locations = self.__get_related_locations()
             if len(locations) > 0:

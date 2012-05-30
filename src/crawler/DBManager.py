@@ -89,6 +89,7 @@ class DBManager(object):
                                              article[7], article[5], article[6], dry_run)
             else:
                 print "Article already in database: " + article[7]
+                return True
         return False
     
     """
@@ -101,9 +102,30 @@ class DBManager(object):
         for row in r.fetch_row(0):
             res.append(row[0])
             print row
-            
+    
+    """
+    Query to see all articles in the database.
+    """        
     def send_query(self, query = "select * from articles;"):
         curs = self.conn.cursor()
         curs.execute(query)
         rows = curs.fetchall()
         return rows
+    
+    """
+    Blacklists url from the list of sources that can be run.
+    """
+    def blacklist(self, url):
+        print "Attempting to blacklist: " + str(url)
+#        query = "select * from white_list where url like \"" + url + "\";"
+#        curs = self.conn.cursor()
+#        curs.execute(query)
+#        rows = curs.fetchall()
+#        if len(rows) > 0:
+#            query1 = "delete from white_list where url like \"%" + url +"%\";"
+#            query2 = "delete from user_list where url like \"%" + url +"%\";"
+#            self.conn.query(query1)
+#            self.conn.query(query2)
+#            query3 = "insert into black_list values(\"" + url + "\");"
+#            self.conn.query(query3)
+#            print "Blacklisting successful."
