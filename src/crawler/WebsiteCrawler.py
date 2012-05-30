@@ -145,12 +145,3 @@ class WebsiteCrawler(object):
         if len(results) == 0 or results == None:
             db = DBManager.DBManager()
             db.blacklist(url)
-
-#a = WebsiteCrawler()
-#link = a.get_links("http://guardian.co.tt/")
-#for l in link:
-#    print l
-#print len(link)
-#q = a.parse_articles(link)
-#for z in q:
-#    print z

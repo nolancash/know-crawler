@@ -20,7 +20,7 @@ This script runs the web crawler.
 Parses out the passed arguments.
 """
 def parse_arguments():
-    parser = optparse.OptionParser(description="know-crawler-0.3.1")
+    parser = optparse.OptionParser(description="know-crawler-1.0.0")
     parser.add_option("-u", dest="SOURCE_URL",
         help="The url of the news source to be processed.")
     parser.add_option("-d", action="store_true", dest="DRY_RUN", default=False,
@@ -43,10 +43,14 @@ def main(options):
         sys.stdout = open("log_0.txt" , "w")
         print "Running on " + str(options.SOURCE_URL) + "."
         
-        crawler = WebsiteCrawler.WebsiteCrawler()
-        results = crawler.parse_articles(crawler.get_links(options.SOURCE_URL))
+        try:
+            crawler = WebsiteCrawler.WebsiteCrawler()
+            results = crawler.parse_articles(crawler.get_links(options.SOURCE_URL))
+        except TimeoutException.TimeoutException:
+            print "Timeout Exception (outer)."
         for article in results:
             db1.add_article_list(article, options.DRY_RUN)
+        print "\nDone: " + str(datetime.datetime.now().replace(microsecond = 0))
     else:     
         divisor = int(options.NUM_PROCESSES)
         process_lists = []
