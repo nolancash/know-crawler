@@ -1,4 +1,6 @@
 window.onload = function() {
+	$("crawlerOn").onclick = turnCrawler;
+	$("crawlerOff").onclick = turnCrawler;
 	$("selectAllUrls").onclick = function() { allUrls(true); };
 	$("deselectAllUrls").onclick = function() { allUrls(false); };
 	$("schedule").onsubmit = function() {
@@ -25,4 +27,19 @@ function validateCheckboxes(checkboxName, message) {
 	}
 	alert("Please select at least one " + message + ".");
 	return false;
+}
+
+function turnCrawler() {
+	var xmlhttp;
+	if (window.XMLHttpRequest) {
+		// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp = new XMLHttpRequest();
+	} else {
+		// code for IE6, IE5
+	  xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	
+	xmlhttp.open("POST","index.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send("state=" + this.value);
 }

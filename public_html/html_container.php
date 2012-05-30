@@ -15,20 +15,10 @@ function html_doc_top() {
 		<!-- some JS libraries I used before, we can use them if we want later -->
 		<script src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js" type="text/javascript"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.3/scriptaculous.js" type="text/javascript"></script>
-		<script src="interact.js" type="text/javascript"></script>
+		<script src="interactive.js" type="text/javascript"></script>
 
 	</head>
 	<body>
-	<?php
-}
-
-function crawler_switch() {
-	?>
-	<fieldset>
-		<legend>Crawler:</legend>
-		<label><input type="radio" id="crawlerOn" name="state" value="on" checked="true" />On</label>
-		<label><input type="radio" id="crawlerOff" name="state" value="off" />Off</label>
-	</fieldset>
 	<?php
 }
 
