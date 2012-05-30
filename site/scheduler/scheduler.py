@@ -1,5 +1,6 @@
-# Scheduler handles KNOW-Crawler's time setting. It queries the time setting 
-# from the database and schedules a cron job to run the crawler accordingly.
+# Scheduler handles KNOW-Crawler's time setting. It checks if the crawler is enabled. 
+# If so, queries the time setting from the database and schedules a cron job to run 
+# the crawler accordingly. Otherwise, it removes any existing crawler cron job.
 
 import MySQLdb
 from crontab import CronTab
@@ -22,7 +23,8 @@ class Scheduler:
 		curs.execute(query)
 		rows = curs.fetchall()
 		
-		assert !rows, "'crawler_switch' table is empty"
+		if not rows:
+			raise Exception, "'crawler_switch' table is empty"
 			
 		state = rows[0][0];
 		return state;			
@@ -33,7 +35,8 @@ class Scheduler:
 		curs.execute(query)
 		rows = curs.fetchall()
 		
-		assert !rows, "'schedule' table is empty"
+		if not rows:
+			raise Exception, "'schedule' table is empty"
 		
 		hour = rows[0][HOUR_COLUMN_INDEX]
 		days = []
@@ -72,6 +75,7 @@ def main():
 		tab = CronTab()
 		# remove crawler cron job(s)
 		tab.remove_all(CRAWLER_COMMAND)
+		tab.write()
 
 if __name__ == "__main__":
 	main()
