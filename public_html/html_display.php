@@ -18,9 +18,9 @@ function display_settings() {
 	
 	url_setting_top();
 	// query user_list and white_list tables
-	$user_urls = get_rows(USER_TABLE, URL_COLUMN, URL_COLUMN);
-	$white_urls = get_rows(WHITE_TABLE, URL_COLUMN, URL_COLUMN);
-	display_url_setting($user_urls, $white_urls);
+	$user_nsource_rows = get_nsource_rows(USER_TABLE);
+	$white_nsource_rows = get_nsource_rows(WHITE_TABLE);
+	display_url_setting($user_nsource_rows, $white_nsource_rows);
 	url_setting_bottom();
 }
 
@@ -142,15 +142,15 @@ function display_time_setting() {
 }
 
 # Creates HTML elements to display the news sources setting.
-function display_url_setting($user_urls, $white_urls) {
-	foreach ($white_urls as $white_url) {		
-		if (in_array($white_url, $user_urls)) {
+function display_url_setting($user_nsource_rows, $white_nsource_rows) {
+	foreach ($white_nsource_rows as $white_nsource_row) {
+		if (in_array($white_nsource_row, $user_nsource_rows)) {
 			?>
-			<input type="checkbox" name="urls[]" value=<?= "\"" . $white_url . "\"" ?> checked="checked" /> <?= $white_url ?> <br/>
+			<input type="checkbox" name="urls[]" value=<?= "\"" . $white_nsource_row[NSOURCE_URL_COLUMN] . "\"" ?> checked="checked" /> <?= $white_nsource_row[NSOURCE_NAME_COLUMN] ?> <br/>
 			<?php
 		} else {
 			?>
-			<input type="checkbox" name="urls[]" value=<?= "\"" . $white_url . "\"" ?> /> <?= $white_url ?> <br/>
+			<input type="checkbox" name="urls[]" value=<?= "\"" . $white_nsource_row[NSOURCE_URL_COLUMN] . "\"" ?> /> <?= $white_nsource_row[NSOURCE_NAME_COLUMN] ?> <br/>
 			<?php
 		}
 	}
@@ -160,7 +160,7 @@ function time_setting_top() {
 	?>
 	<fieldset>
 		<legend>Time Schedule:</legend>
-		<form class="ex1" id="schedule" action="index.php" method="post"> 
+		<form id="schedule" action="index.php" method="post"> 
 			<!-- Get time setting from database -->
 	<?php
 }
@@ -186,8 +186,8 @@ function url_setting_top() {
 			<button id="selectAllUrls">Select All</button>
 			<button id="deselectAllUrls">Deselect All</button>
 		</div>
-        <form id="sources" action="index.php" method="post"> 
-			<div class="ex">
+		<form id="sources" action="index.php" method="post"> 
+			<div>
 				<!-- Get news sources from database -->
 	<?php
 }

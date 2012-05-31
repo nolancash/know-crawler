@@ -17,6 +17,9 @@ const SCHEDULE_TABLE = "schedule";
 const DAY_COLUMN = "day";
 const HOUR_COLUMN = "hour";
 
+const NEWS_SOURCES_TABLE = "news_sources";
+const NSOURCE_URL_COLUMN = "nsource_url";
+const NSOURCE_NAME_COLUMN = "nsource_name";
 const USER_TABLE = "user_list";
 const WHITE_TABLE = "white_list";
 const URL_COLUMN = "url";
@@ -61,5 +64,23 @@ function get_rows($table, $order_by, $target_column = NULL) {
 	}
 	
 	return $rows;
+}
+
+# Returns a list of rows, where each row contains 
+# a news source name and its url.
+function get_nsource_rows($url_table) {
+	$query = "SELECT a." . NSOURCE_NAME_COLUMN . ", a." . NSOURCE_URL_COLUMN .
+					" FROM " . NEWS_SOURCES_TABLE . " a, $url_table b " . 
+					"where a." . NSOURCE_URL_COLUMN . " = b." . URL_COLUMN . 
+					" ORDER BY a." . NSOURCE_NAME_COLUMN . " ASC;";
+	$result = do_query($query);
+	
+	$nsource_rows = array();
+	
+	while ($row = mysql_fetch_array($result)) {
+		array_push($nsource_rows, $row);
+	}
+	
+	return $nsource_rows;
 }
 ?>
