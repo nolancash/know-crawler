@@ -1,3 +1,8 @@
+"""
+schedule_crawler.py is a console application that allows the user 
+to view the current schedule of the crawler and to update the schedule.
+"""
+
 import sys
 import crontab
 from crontab import CronTab

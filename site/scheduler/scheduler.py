@@ -1,6 +1,8 @@
-# Scheduler handles KNOW-Crawler's time setting. It checks if the crawler is enabled. 
-# If so, queries the time setting from the database and schedules a cron job to run 
-# the crawler accordingly. Otherwise, it removes any existing crawler cron job.
+"""
+Scheduler handles KNOW-Crawler's time setting. It checks if the crawler is enabled. 
+If so, queries the time setting from the database and schedules a cron job to run 
+the crawler accordingly. Otherwise, it removes any existing crawler cron job.
+"""
 
 import MySQLdb
 from crontab import CronTab
@@ -17,6 +19,9 @@ class Scheduler:
 																db = "know_db",
 																port = 32002)
 																
+	"""
+	Checks if the crawler is enabled.
+	"""
 	def queryCrawlerSwitch(self):
 		curs = self.conn.cursor()
 		query = "select * from crawler_switch;"
@@ -29,6 +34,9 @@ class Scheduler:
 		state = rows[0][0];
 		return state;			
 	
+	"""
+	Queries and returns the crawl schedule as a tuple of (hour, days).
+	"""
 	def querySchedule(self):
 		curs = self.conn.cursor()
 		query = "select * from schedule;"
@@ -47,6 +55,9 @@ class Scheduler:
 			
 		return hour, days
 		
+	"""
+	Schedules a cron job to run the crawler.
+	"""
 	def setCronTab(self, hour, minute, days):
 		tab = CronTab()
 		
