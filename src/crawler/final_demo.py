@@ -60,8 +60,8 @@ def main(options):
             query += " and"
         count += 1
     if options.DATE_START and options.DATE_END:
-    	if options.KEYWORDS or options.LOCATIONS:
-    	    query += " and"
+        if options.KEYWORDS or options.LOCATIONS:
+            query += " and"
         query += " datetime between \"" + options.DATE_START + "\" and \"" + options.DATE_END + "\""
     #if options.DATE_END:
         #query += " and datetime before \"" + options.DATE_END + "\""
