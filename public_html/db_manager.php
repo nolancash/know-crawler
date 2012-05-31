@@ -69,7 +69,7 @@ function get_rows($table, $order_by, $target_column = NULL) {
 # Returns a list of rows, where each row contains 
 # a news source name and its url.
 function get_nsource_rows($url_table) {
-	$query = "SELECT a." . NSOURCE_NAME_COLUMN . ", a." . NSOURCE_URL_COLUMN .
+	$query = "SELECT DISTINCT a." . NSOURCE_NAME_COLUMN . ", a." . NSOURCE_URL_COLUMN .
 					" FROM " . NEWS_SOURCES_TABLE . " a, $url_table b " . 
 					"where a." . NSOURCE_URL_COLUMN . " = b." . URL_COLUMN . 
 					" ORDER BY a." . NSOURCE_NAME_COLUMN . " ASC;";
