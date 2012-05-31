@@ -6,3 +6,5 @@ python know-crawler-1.0.0.zip -p 4
 
 You may run the following command for additional help:
 python know-crawler-1.0.0.zip --help
+
+Note: All parts of this project currently only run locally on ovid01.u.washington.edu due to new server constraints.
